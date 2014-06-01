@@ -1,0 +1,30 @@
+{
+  "name": "mybower",
+  "version": "0.0.1",
+  "authors": [
+    "Yutaro <yutaro@studio-rubbish.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*",
+    "bxSlider": "*",
+    "easytabs": "*"
+  },
+  "devDependencies": {
+    "jquery": "*",
+    "bxSlider": "*",
+    "jquery.smooth-scroll": "*",
+    "easytabs": "*",
+    "magnific-popup": "*",
+    "perfect-scrollbar": "~0.4.10"
+  }
+}

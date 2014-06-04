@@ -16,15 +16,12 @@
   ],
   "dependencies": {
     "jquery": "*",
-    "bxSlider": "*",
-    "easytabs": "*"
+    "foundation": "*",
+    "bxSlider": "*"
   },
   "devDependencies": {
     "jquery": "*",
-    "bxSlider": "*",
-    "jquery.smooth-scroll": "*",
-    "easytabs": "*",
-    "magnific-popup": "*",
-    "perfect-scrollbar": "~0.4.10"
+    "foundation": "*",
+    "bxSlider": "*"
   }
 }

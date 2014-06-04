@@ -7,6 +7,8 @@ var gulp		=	require('gulp')
 ,	cmq			=	require('gulp-combine-media-queries')
 ,	concat		=	require('gulp-concat')
 ,	filter		=	require('gulp-filter')
+,	forEach		=	require('gulp-foreach')
+,	gulpif		=	require('gulp-if')
 ,	imagemin	=	require('gulp-imagemin')
 ,	jade		=	require('gulp-jade')
 ,	minifycss	=	require('gulp-csso')
@@ -41,42 +43,27 @@ var paths = {
  * 3. initialize browser-sync && bower_components
 *******************************************************************************/
 var bowerJS = [
-	// { name: 'jQuery', dir: 'jquery/src/jquery.js', prefix: false },
-	{ name: 'bxSlider', dir: 'bxSlider/jquery.bxslider.min.js', prefix: true },
-	// { name: 'smooth-scroll', dir: 'jquery.smooth-scroll/jquery.smooth-scroll.min.js', prefix: true },
-	{ name: 'easytabs', dir: 'easytabs/lib/jquery.easytabs.min.js', prefix: true },
-	{ name: 'magnific-popup', dir: 'magnific-popup/dist/jquery.magnific-popup.min.js', prefix: true },
-	{ name: 'perfect-scrollbar', dir: 'perfect-scrollbar/min/perfect-scrollbar-0.4.10.with-mousewheel.min.js', prefix: true }
+	{ name: 'jQuery', dir: 'jquery/dist/jquery.js', prefix: false },
+	{ name: 'bxSlider', dir: 'bxSlider/jquery.bxslider.min.js', prefix: true }
 ];
-
 var bowerCSS = [
-	{ name: 'maginific-popup', dir: 'magnific-popup/dist/magnific-popup.css', prefix: true },
-	{ name: 'perfect-scrollbar', dir: 'perfect-scrollbar/src/perfect-scrollbar.css', prefix: true }
+	{ name: 'foundation', dir: 'foundation/css/foundation.css', prefix: true }
 ];
 
 gulp.task('init', function() {
-	gulp.src('bower_components/jquery/src/jquery.js')
-		.pipe(gulp.dest(paths.jsDest))
-		.pipe(gulp.src('bower_components/' + bowerJS[0]['dir']))
-		.pipe(rename({ prefix: '_' }))
-		.pipe(gulp.dest(paths.jsDest))
-		.pipe(gulp.src('bower_components/' + bowerJS[1]['dir']))
-		.pipe(rename({ prefix: '_' }))
-		.pipe(gulp.dest(paths.jsDest))
-		.pipe(gulp.src('bower_components/' + bowerJS[2]['dir']))
-		.pipe(rename({ prefix: '_' }))
-		.pipe(gulp.dest(paths.jsDest))
-		.pipe(gulp.src('bower_components/' + bowerJS[3]['dir']))
-		.pipe(rename({ prefix: '_' }))
-		.pipe(gulp.dest(paths.jsDest))
-		.pipe(gulp.src('bower_components/' + bowerCSS[0]['dir']))
-		.pipe(rename({ prefix: '_', extname: '.scss' }))
-		.pipe(gulp.dest(paths.scssDest))
-		.pipe(gulp.src('bower_components/' + bowerCSS[1]['dir']))
-		.pipe(rename({ prefix: '_', extname: '.scss' }))
-		.pipe(gulp.dest(paths.scssDest))
-		.pipe(gulp.src('bower_components/bxSlider/images/*'))
-		.pipe(gulp.dest(paths.imgDest));
+	bowerJS.forEach(function(bowerjs){
+		gulp.src('bower_components/' + bowerjs['dir'])
+			.pipe(gulpif(bowerjs['prefix'], rename({ prefix: '_' })))
+			.pipe(gulp.dest(paths.jsDest))
+	});
+	bowerCSS.forEach(function(bowercss){
+		gulp.src('bower_components/' + bowercss['dir'])
+			.pipe(gulpif(bowercss['prefix'],
+				rename({ prefix: '_', extname: '.scss' }),
+				rename({ extname: '.scss' })
+			))
+			.pipe(gulp.dest(paths.scssDest))
+	});
 });
 
 gulp.task('browser-sync', function() {
@@ -88,7 +75,7 @@ gulp.task('browser-sync', function() {
 });
 
 gulp.task('browser-sync-vhost', function() {
-	browserSync.init(['./*.css', 'js/*.js'], {
+	browserSync.init(null, {
 		proxy: paths.vhost,
 		port: 8080
 	});
@@ -129,8 +116,7 @@ gulp.task('scss', function() {
 		.pipe(plumber({ errorHandler: handleError }))
 		.pipe(sass({ style: 'expanded' }))
 		.pipe(prefix('last 2 version'))
-		.pipe(gulp.dest(paths.dest))
-		.pipe(browserSync.reload({stream:true}));
+		.pipe(gulp.dest(paths.dest));
 });
 
 gulp.task('scssProd', function() {
@@ -141,8 +127,7 @@ gulp.task('scssProd', function() {
 		.pipe(prefix('last 2 version'))
 		//.pipe(rename({suffix: '.min'}))
 		.pipe(minifycss())
-		.pipe(gulp.dest(paths.dest))
-		.pipe(browserSync.reload({stream:true}));
+		.pipe(gulp.dest(paths.dest));
 });
 
 function handleError(err) {
@@ -180,8 +165,7 @@ gulp.task('watch', function() {
 	gulp.watch(['index.html']), ['html'];
 	gulp.watch([paths.jsDir], ['concat']);
 	gulp.watch([paths.scssDir], ['scss']);
-	gulp.watch(['./*.php'], ['bs-reload']);
-	gulp.watch('./*.css', ['bs-reload']);
+	gulp.watch(['./*.php', './*.css'], ['bs-reload']);
 });
 
 gulp.task('default', [

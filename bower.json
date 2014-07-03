@@ -1,10 +1,9 @@
 {
-  "name": "mybower",
-  "version": "0.0.1",
+  "name": "myproject",
+  "version": "0.0.2",
   "authors": [
     "Yutaro <yutaro@studio-rubbish.com>"
   ],
-  "description": "",
   "license": "MIT",
   "private": true,
   "ignore": [
@@ -17,11 +16,17 @@
   "dependencies": {
     "jquery": "*",
     "foundation": "*",
-    "bxSlider": "*"
   },
-  "devDependencies": {
-    "jquery": "*",
-    "foundation": "*",
-    "bxSlider": "*"
+  "overrides": {
+    "jquery": {
+      "ignore": true
+    },
+    "foundation": {
+      "main": [
+        "**/foundation.min.js",
+        "**/*.scss"
+      ],
+      "dependencies": null
+    }
   }
 }

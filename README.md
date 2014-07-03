@@ -4,17 +4,24 @@ First, You will need your own environment of wordpress as development project.
 ## Setup
 Install gulp
 
-        sudo npm install -g gulp
+        $ sudo npm install -g gulp
 
 Install node_modules
 
-        npm install
+        $ npm install
 
-Modify line 36 and 37 in gulpfile.js
+Set proxy url in gulpfile.js
 
         'vhost': 'wordpress.dev'
-        'portNo': 8080
 
 Run gulp and there are some options that I was prepared
 
-        gulp
+        $ gulp
+
+or
+
+		$ npm start
+
+## 0.0.2
+* Modify folder structure
+* Automatic foundation initialize

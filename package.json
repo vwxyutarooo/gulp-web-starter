@@ -1,34 +1,36 @@
 {
-  "name": "jade-convert-with-gulp",
-  "version": "0.0.1",
+  "name": "mynewproject",
+  "version": "0.0.2",
   "description": "",
   "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yutaro Miyazaki",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "gulp": "*",
     "browser-sync": "*",
+    "gulp": "*",
     "gulp-autoprefixer": "*",
     "gulp-bower-files": "*",
     "gulp-changed": "*",
-    "gulp-combine-media-queries": "*",
     "gulp-concat": "*",
+    "gulp-csscomb": "*",
+    "gulp-csso": "*",
     "gulp-filter": "*",
     "gulp-flatten": "*",
-    "gulp-foreach": "*",
     "gulp-if": "*",
     "gulp-imagemin": "*",
     "gulp-jade": "*",
     "gulp-plumber": "*",
     "gulp-prettify": "*",
     "gulp-rename": "*",
-    "gulp-sass": "*",
+    "gulp-ruby-sass": "*",
+    "gulp-uglify": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
     "gulp.spritesmith": "*"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Yutaro Miyazaki",
-  "license": "MIT"
+  }
 }

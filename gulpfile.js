@@ -2,13 +2,13 @@
  * 1. DEPENDENCIES
 *******************************************************************************/
 var gulp		=	require('gulp')
+,	bower		=	require('gulp-bower-files')
 ,	browserSync	=	require('browser-sync')
 ,	changed		=	require('gulp-changed')
-,	cmq			=	require('gulp-combine-media-queries')
 ,	concat		=	require('gulp-concat')
-,	filter		=	require('gulp-filter')
-,	forEach		=	require('gulp-foreach')
-,	gulpif		=	require('gulp-if')
+,	csscomb		=	require('gulp-csscomb')
+,	flatten		=	require('gulp-flatten')
+,	gulpFilter	=	require('gulp-filter')
 ,	imagemin	=	require('gulp-imagemin')
 ,	jade		=	require('gulp-jade')
 ,	minifycss	=	require('gulp-csso')
@@ -17,7 +17,9 @@ var gulp		=	require('gulp')
 ,	prettify	=	require('gulp-prettify')
 ,	rename		=	require('gulp-rename')
 ,	sass		=	require('gulp-ruby-sass')
+,	sourcemaps	=	require('gulp-sourcemaps')
 ,	spritesmith	=	require('gulp.spritesmith')
+,	uglify		=	require('gulp-uglify')
 ;
 
 /*******************************************************************************
@@ -26,11 +28,10 @@ var gulp		=	require('gulp')
 var paths = {
 	'dest':			''
 ,	'htmlDest':		'src/html'
-,	'htmlDir':		'src/html/*.html'
-,	'imgDest':		'files'
+,	'imgDest':		'images'
 ,	'imgDir':		'src/img/**'
 ,	'jadeDir':		'src/jade/*.jade'
-,	'jsConcat':		'src/js/_*.js'
+,	'jsLib':		'src/lib/*.js'
 ,	'jsDest':		'src/js'
 ,	'jsDir':		'src/js/*.js'
 ,	'scssDest':		'src/scss'
@@ -42,42 +43,44 @@ var paths = {
 /*******************************************************************************
  * 3. initialize browser-sync && bower_components
 *******************************************************************************/
-var bowerJS = [
-	{ name: 'jQuery', dir: 'jquery/dist/jquery.js', prefix: false },
-	{ name: 'bxSlider', dir: 'bxSlider/jquery.bxslider.min.js', prefix: true }
-];
-var bowerCSS = [
-	{ name: 'foundation', dir: 'foundation/css/foundation.css', prefix: true }
-];
+gulp.task('bower-init', function(){
+	var filterJs = gulpFilter('*.js');
+	var filterCss = gulpFilter('*.css');
+	bower().pipe(gulp.dest('src/lib'))
+	gulp.src('src/lib/**')
+		.pipe(filterJs)
+		.pipe(concat('lib.js'))
+		.pipe(uglify())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest('js'))
+		.pipe(filterJs.restore())
+		.pipe(filterCss)
+		.pipe(rename({ prefix: '_module-', extname: '.scss' }))
+		.pipe(flatten())
+		.pipe(gulp.dest(paths.scssDest + '/module'));
+});
 
-gulp.task('init', function() {
-	bowerJS.forEach(function(bowerjs){
-		gulp.src('bower_components/' + bowerjs['dir'])
-			.pipe(gulpif(bowerjs['prefix'], rename({ prefix: '_' })))
-			.pipe(gulp.dest(paths.jsDest))
-	});
-	bowerCSS.forEach(function(bowercss){
-		gulp.src('bower_components/' + bowercss['dir'])
-			.pipe(gulpif(bowercss['prefix'],
-				rename({ prefix: '_', extname: '.scss' }),
-				rename({ extname: '.scss' })
-			))
-			.pipe(gulp.dest(paths.scssDest))
-	});
+gulp.task('foundation-init', function() {
+	var filter = gulpFilter(['foundation.scss', 'normalize.scss']);
+	gulp.src('src/lib/foundation/scss/**')
+		.pipe(filter)
+		.pipe(rename({ prefix: '_' }))
+		.pipe(filter.restore())
+		.pipe(gulp.dest(paths.scssDest + '/core'));
 });
 
 gulp.task('browser-sync', function() {
 	browserSync.init(null, {
 		server: {
 			baseDir: './'
-		}
+		},
+		startPath: 'src/html'
 	});
 });
 
 gulp.task('browser-sync-vhost', function() {
 	browserSync.init(null, {
-		proxy: paths.vhost,
-		port: 8080
+		proxy: paths.vhost
 	});
 });
 
@@ -100,12 +103,15 @@ gulp.task('jade', function() {
 /*******************************************************************************
  * 5. js Tasks
 *******************************************************************************/
-gulp.task('concat', function() {
-	return gulp.src(paths.jsConcat)
-		.pipe(concat('jquery.plugins.js'))
-		.pipe(gulp.dest('./js'))
-		.pipe(gulp.src('src/js/scripts.js'))
-		.pipe(gulp.dest('./js'));
+gulp.task('js', function() {
+	return gulp.src('src/lib/app/*.js')
+		.pipe(sourcemaps.init())
+		.pipe(concat('script.js'))
+		.pipe(uglify())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('js'))
+		.pipe(browserSync.reload({stream: true}));
 });
 
 /*******************************************************************************
@@ -114,20 +120,10 @@ gulp.task('concat', function() {
 gulp.task('scss', function() {
 	return gulp.src(paths.scssDir)
 		.pipe(plumber({ errorHandler: handleError }))
-		.pipe(sass({ style: 'expanded' }))
-		.pipe(prefix('last 2 version'))
-		.pipe(gulp.dest(paths.dest));
-});
-
-gulp.task('scssProd', function() {
-	return gulp.src(paths.scssDir)
-		.pipe(plumber({ errorHandler: handleError }))
-		// .pipe(sass({ style: 'expanded' }))
 		.pipe(sass())
 		.pipe(prefix('last 2 version'))
-		//.pipe(rename({suffix: '.min'}))
-		.pipe(minifycss())
-		.pipe(gulp.dest(paths.dest));
+		.pipe(gulp.dest(paths.dest))
+		.pipe(browserSync.reload({stream: true}));
 });
 
 function handleError(err) {
@@ -142,17 +138,18 @@ gulp.task('image', function() {
 	return gulp.src(paths.imgDir)
 		.pipe(changed(paths.imgDest))
 		.pipe(imagemin({optimizationLevel: 3}))
-		.pipe(gulp.dest(paths.imgDest));
+		.pipe(gulp.dest(paths.imgDest))
+		.pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('sprite', function () {
-	var spriteData = gulp.src('images/sprite/*.png')
+	var spriteData = gulp.src(paths.imgDest + '/sprite/*.png')
 	.pipe(spritesmith({
-		imgName: 'images/sprite.png',
-		cssName: '_sprite.scss'
+		imgName: paths.imgDest + '/sprite.png',
+		cssName: '_module-sprite.scss'
 	}));
 	spriteData.img.pipe(gulp.dest("./"));
-	spriteData.css.pipe(gulp.dest(paths.scssDest));
+	spriteData.css.pipe(gulp.dest(paths.scssDest + '/module'));
 });
 
 /*******************************************************************************
@@ -162,17 +159,16 @@ gulp.task('watch', function() {
 	gulp.watch([paths.jadeDir], ['jade']);
 	gulp.watch([paths.imgDir], ['image']);
 	gulp.watch([paths.imgDest + '/sprite/*.png'], ['sprite']);
-	gulp.watch(['index.html']), ['html'];
-	gulp.watch([paths.jsDir], ['concat']);
+	gulp.watch([paths.jsDir], ['js']);
 	gulp.watch([paths.scssDir], ['scss']);
-	gulp.watch(['./*.php', './*.css'], ['bs-reload']);
+	gulp.watch(['./*.php'], ['bs-reload']);
 });
 
 gulp.task('default', [
 	'browser-sync',
 	'scss',
 	'jade',
-	'concat',
+	'js',
 	'image',
 	'sprite',
 	'watch'
@@ -182,14 +178,13 @@ gulp.task('vhost', [
 	'browser-sync-vhost',
 	'scss',
 	'jade',
-	'concat',
+	'js',
 	'image',
 	'sprite',
 	'watch'
 ]);
 
-gulp.task('prod', [
-	'scssProd',
-	'image',
-	'jade'
+gulp.task('init', [
+	'bower-init',
+	'foundation-init'
 ]);

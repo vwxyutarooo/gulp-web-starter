@@ -30,6 +30,7 @@ Thumbs.db
 nbproject
 .sublime-project
 .sublime-workspace
+.csscomb.json
 
 # Folders to ignore
 .hg
@@ -39,6 +40,7 @@ nbproject
 .ssh
 .grunt
 node_modules
+bower_components
 dist
 lib-cov
 lcov.info

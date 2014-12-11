@@ -1,0 +1,118 @@
+@charset "utf-8";
+/* =========================================================
+   The root elemen
+========================================================= */
+html{
+  font-size: 10px;
+}
+body{
+  background-color: #fff;
+  background-repeat: no-repeat;
+  color: $colorText;
+  word-wrap: break-word;
+  font-family: $fontFamily;
+  font-weight: 300;
+  letter-spacing: 0.1px;
+}
+
+/* =========================================================
+   Grouping content
+========================================================= */
+iframe{
+  vertical-align: middle;
+}
+
+/* =========================================================
+   Text-level semantics
+========================================================= */
+a{
+  color: $colorLink;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  &:focus{
+    outline: thin dotted;
+  }
+  &:link,
+  &:visited{
+    color: $colorLink;
+  }
+  &:hover,
+  &:active,
+  &:focus{
+    outline: 0;
+    color: $colorLinkHover;
+    text-decoration: underline;
+  }
+}
+p{
+  margin-bottom: 1.125em;
+  color: $colorText;
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+h1, h2, h3, h4, h5, h6{
+  &,
+  & > a{
+    color: $colorTitle;
+  }
+}
+pre{
+  background-color: #f4f4f4;
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+code{
+  color: $colorSubText;
+  font-size: 0.9em;
+}
+::selection{
+  background: transparent;
+  background-color: $colorSelection;
+  color: $colorText
+}
+.fa{
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* =========================================================
+   List items
+========================================================= */
+dl{
+  margin-bottom: 2em;
+  &:last-child{
+    margin-bottom: 0;
+  }
+  dt{
+    margin-bottom: 1em;
+  }
+  dd{
+    margin-bottom: 1em;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* =========================================================
+   Embedded content
+========================================================= */
+img{
+  vertical-align: bottom;
+  border: 0;
+}
+svg:not(:root){
+  overflow: hidden;
+}
+
+/* =========================================================
+   Tabular data
+========================================================= */
+table{
+  font: 100%;
+  font-size: inherit;
+  border-spacing: 0;
+  border-collapse: collapse;
+}

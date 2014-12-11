@@ -1,0 +1,62 @@
+@charset "utf-8";
+// Basic collumn sizes
+%baseWidth{
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+  max-width: 1040px;
+  width: 100%;
+}
+%largeVariableWidth{
+  width: 100%;
+  max-width: 1400px;
+  min-width: 840px;
+  margin-right: auto;
+  margin-left: auto;
+}
+%mediumWidth{
+  width: 840px;
+  margin-right: auto;
+  margin-left: auto;
+}
+%narrowWidth{
+  width: 716px;
+  margin-right: auto;
+  margin-left: auto;
+}
+%fullWidth{
+  padding-right: 0;
+  padding-left: 0;
+  max-width: 100%;
+  width: 100%;
+}
+%fullWidthInner{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 810px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+// Content size
+%contentWidth{
+  box-sizing: border-box;
+  padding: 0;
+  max-width: 900px;
+}
+
+
+/* media queries
+---------------------------------------- */
+@mixin module-grid-over-594 {
+  %fullWidthInner{
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+  %baseWidth{
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}

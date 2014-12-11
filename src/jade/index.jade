@@ -1,0 +1,20 @@
+include inc/core/_config
+extends inc/core/_base
+block title
+  - var title = ''
+  title= title
+block prepend meta
+  - var sitename = name
+  - var keywords = page.top.keywords
+  - var description = page.top.description
+  - var ogpimage = page.top.ogpimage
+  - var bodyClass = 'home'
+block append meta
+block body
+  .l-container
+    include inc/layout/_layout_header
+
+    #main.l-main
+
+    include inc/layout/_layout_footer
+block append scriptFooter

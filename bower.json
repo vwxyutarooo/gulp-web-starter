@@ -1,6 +1,6 @@
 {
   "name": "myproject",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "authors": [
     "Yutaro <yutaro@studio-rubbish.com>"
   ],
@@ -16,6 +16,7 @@
   "dependencies": {
     "jquery": "*",
     "foundation": "*",
+    "bxSlider": "*"
   },
   "overrides": {
     "jquery": {
@@ -23,8 +24,16 @@
     },
     "foundation": {
       "main": [
-        "**/foundation.min.js",
-        "**/*.scss"
+        "**/foundation.js"
+      ],
+      "dependencies": null
+    },
+    "bxSlider": {
+      "main": [
+        "**/jquery.bxslider.min.js",
+        "**/jquery.bxslider.css",
+        "**/images/bx_loader.gif",
+        "**/images/controls.png"
       ],
       "dependencies": null
     }

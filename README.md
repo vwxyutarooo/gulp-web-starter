@@ -1,27 +1,35 @@
 # Personal gulpfile.js
 First, You will need your own environment of wordpress as development project.
 
+## Requires
+* node.js
+* npm
+* bower
+* sass
+* sass-globbing
+
 ## Setup
-Install gulp
-
-        $ sudo npm install -g gulp
-
 Install node_modules
 
-        $ npm install
+    $ npm install
 
-Set proxy url in gulpfile.js
+Set hostname at gulpfile.js If you would like to connect "browser-sync" with local server.
 
-        'vhost': 'wordpress.dev'
+    'vhost': 'wordpress.dev'
 
-Run gulp and there are some options that I was prepared
+Run gulp and there are some options that I was prepared.
 
-        $ gulp
+    $ npm start
 
-or
+## Use without global gulp
+Install bower components and initialize them.
 
-		$ npm start
+    $ npm run gulp-init
 
-## 0.0.2
-* Modify folder structure
-* Automatic foundation initialize
+Run gulp with default task.
+
+    $ npm run gulp
+
+Call specified task.
+
+    $ npm run gulp -- taskname

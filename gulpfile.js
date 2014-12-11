@@ -1,190 +1,257 @@
 /*******************************************************************************
  * 1. DEPENDENCIES
 *******************************************************************************/
-var gulp		=	require('gulp')
-,	bower		=	require('gulp-bower-files')
-,	browserSync	=	require('browser-sync')
-,	changed		=	require('gulp-changed')
-,	concat		=	require('gulp-concat')
-,	csscomb		=	require('gulp-csscomb')
-,	flatten		=	require('gulp-flatten')
-,	gulpFilter	=	require('gulp-filter')
-,	imagemin	=	require('gulp-imagemin')
-,	jade		=	require('gulp-jade')
-,	minifycss	=	require('gulp-csso')
-,	plumber		=	require('gulp-plumber')
-,	prefix		=	require('gulp-autoprefixer')
-,	prettify	=	require('gulp-prettify')
-,	rename		=	require('gulp-rename')
-,	sass		=	require('gulp-ruby-sass')
-,	sourcemaps	=	require('gulp-sourcemaps')
-,	spritesmith	=	require('gulp.spritesmith')
-,	uglify		=	require('gulp-uglify')
+var gulp = require('gulp'),
+  $ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'gulp.*'],
+    replaceString: /\bgulp[\-.]/
+  }),
+  browserSync = require('browser-sync'),
+  mainBowerFiles = require('main-bower-files'),
+  saveLicense = require('uglify-save-license')
 ;
 
 /*******************************************************************************
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 *******************************************************************************/
 var paths = {
-	'dest':			''
-,	'htmlDest':		'src/html'
-,	'imgDest':		'images'
-,	'imgDir':		'src/img/**'
-,	'jadeDir':		'src/jade/*.jade'
-,	'jsLib':		'src/lib/*.js'
-,	'jsDest':		'src/js'
-,	'jsDir':		'src/js/*.js'
-,	'scssDest':		'src/scss'
-,	'scssDir':		['src/scss/*.scss', 'src/scss/*.sass']
-,	'vhost':		'wordpress.dev'
-,	'port':			8080
+  'dest': './'
+, 'prodDest': '../build'
+, 'vhost': 'wordpress.dev'
+, 'port': 3000
+// html
+, 'htmlFiles': 'src/html/*.html'
+, 'htmlDest': 'src/html'
+// images
+, 'imgDir': 'src/images'
+, 'imgDest': 'shared/images'
+// jade
+, 'jadeFiles': ['src/jade/*.jade', 'src/jade/**/*.jade']
+, 'jadeDir': 'src/jade/*.jade'
+// JavaScript
+, 'jsDir': 'src/js'
+, 'jsFiles': 'src/js/**/*.js'
+, 'jsDest': 'shared/js'
+// others
+, 'phpFiles': ['*.php', './**/*.php']
+// scss
+, 'scssFiles': ['src/scss/**/*.scss', 'src/scss/**/*.sass']
+, 'scssDir': 'src/scss'
+, 'scssDest': 'shared/css'
 }
 
 /*******************************************************************************
  * 3. initialize browser-sync && bower_components
 *******************************************************************************/
 gulp.task('bower-init', function(){
-	var filterJs = gulpFilter('*.js');
-	var filterCss = gulpFilter('*.css');
-	bower().pipe(gulp.dest('src/lib'))
-	gulp.src('src/lib/**')
-		.pipe(filterJs)
-		.pipe(concat('lib.js'))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest('js'))
-		.pipe(filterJs.restore())
-		.pipe(filterCss)
-		.pipe(rename({ prefix: '_module-', extname: '.scss' }))
-		.pipe(flatten())
-		.pipe(gulp.dest(paths.scssDest + '/module'));
+  var filterJs = $.filter('*.js');
+  var filterCss = $.filter('*.css');
+  var filterScss = $.filter('*.scss');
+  var filterImage = $.filter(['*.png', '*.gif', '*.jpg']);
+  return gulp.src(mainBowerFiles())
+    .pipe(filterJs)
+    .pipe(gulp.dest(paths.jsDir + '/lib'))
+    .pipe(filterJs.restore())
+    .pipe(filterCss)
+    .pipe($.rename({ prefix: '_m-', extname: '.scss' }))
+    .pipe(gulp.dest('src/scss/module'))
+    .pipe(filterCss.restore())
+    .pipe(filterImage)
+    .pipe(gulp.dest(paths.imgDest + '/global'))
+    .pipe(filterImage.restore());
 });
 
 gulp.task('foundation-init', function() {
-	var filter = gulpFilter(['foundation.scss', 'normalize.scss']);
-	gulp.src('src/lib/foundation/scss/**')
-		.pipe(filter)
-		.pipe(rename({ prefix: '_' }))
-		.pipe(filter.restore())
-		.pipe(gulp.dest(paths.scssDest + '/core'));
+  var filterCore = $.filter('scss/*.scss');
+  var filterSettings = $.filter('scss/foundation/_*.scss');
+  var filterComponents = $.filter('scss/foundation/components/_*.scss');
+  return gulp.src('bower_components/foundation/**/*.scss')
+    .pipe(filterCore)
+    .pipe($.rename({ prefix: '_' }))
+    .pipe($.flatten())
+    .pipe(gulp.dest(paths.scssDest + '/core'))
+    .pipe(filterCore.restore())
+    .pipe(filterSettings)
+    .pipe($.flatten())
+    .pipe(gulp.dest(paths.scssDest + '/core/foundation'))
+    .pipe(filterSettings.restore())
+    .pipe(filterComponents)
+    .pipe($.flatten())
+    .pipe(gulp.dest(paths.scssDest + '/core/foundation/components'))
+    .pipe(filterComponents.restore());
 });
 
 gulp.task('browser-sync', function() {
-	browserSync.init(null, {
-		server: {
-			baseDir: './'
-		},
-		startPath: 'src/html'
-	});
+  browserSync({
+    server: {
+      baseDir: paths.dest
+    },
+    startPath: paths.htmlDest
+  });
 });
 
 gulp.task('browser-sync-vhost', function() {
-	browserSync.init(null, {
-		proxy: paths.vhost
-	});
+  browserSync({
+    proxy: paths.vhost,
+    open: 'external'
+  });
 });
 
 gulp.task('bs-reload', function() {
-	browserSync.reload()
+  browserSync.reload()
 });
 
 /*******************************************************************************
  * 4. Jade Tasks
 *******************************************************************************/
 gulp.task('jade', function() {
-	return gulp.src(paths.jadeDir)
-		.pipe(jade())
-		.pipe(gulp.dest(paths.htmlDest))
-		.pipe(prettify())
-		.pipe(gulp.dest(paths.htmlDest))
-		.pipe(browserSync.reload({stream:true}));
+  return gulp.src(paths.jadeDir)
+    .pipe($.data(function(file) {
+      return require('./setting.json');
+    }))
+    // .pipe($.changed(paths.htmlDest, { extension: '.html' }))
+    .pipe($.plumber())
+    .pipe($.jade({ pretty: true }))
+    .pipe(gulp.dest(paths.htmlDest))
+    .pipe(browserSync.reload({ stream: true }));
 });
 
 /*******************************************************************************
  * 5. js Tasks
 *******************************************************************************/
-gulp.task('js', function() {
-	return gulp.src('src/lib/app/*.js')
-		.pipe(sourcemaps.init())
-		.pipe(concat('script.js'))
-		.pipe(uglify())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('js'))
-		.pipe(browserSync.reload({stream: true}));
+gulp.task('jsApp', function() {
+  return gulp.src(paths.jsDir + '/app/*.js')
+    .pipe($.sourcemaps.init())
+    .pipe($.concat('script.js'))
+    .pipe($.uglify())
+    .pipe($.rename({ suffix: '.min' }))
+    .pipe(gulp.dest(paths.jsDest))
+    .pipe($.sourcemaps.write())
+    .pipe($.rename({ suffix: '.dev' }))
+    .pipe(gulp.dest(paths.jsDest))
+    .pipe(browserSync.reload({ stream: true }));
 });
+
+gulp.task('jsLib', function() {
+  return gulp.src(paths.jsDir + '/lib/*.js')
+    .pipe($.concat('lib.js'))
+    .pipe($.uglify({
+      preserveComments: saveLicense
+    }))
+    .pipe($.rename({ suffix: '.min' }))
+    .pipe(gulp.dest(paths.jsDest))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
+gulp.task('jsTasks', [
+  'jsApp',
+  'jsLib'
+]);
 
 /*******************************************************************************
  * 6. sass Tasks
 *******************************************************************************/
 gulp.task('scss', function() {
-	return gulp.src(paths.scssDir)
-		.pipe(plumber({ errorHandler: handleError }))
-		.pipe(sass())
-		.pipe(prefix('last 2 version'))
-		.pipe(gulp.dest(paths.dest))
-		.pipe(browserSync.reload({stream: true}));
+  return gulp.src(paths.scssFiles)
+    .pipe($.plumber({ errorHandler: handleError }))
+    .pipe($.rubySass({
+      r: 'sass-globbing',
+      'sourcemap=none': true
+      // sourcemap: none // #113 "Try updating to master. A fix for this went in but I won't be releasing anything until 1.0."
+    }))
+    .pipe($.filter('*.css'))
+    .pipe($.pleeease({
+      autoprefixer: {
+        browsers: ['last 2 versions']
+      },
+      sourcemaps: true
+    }))
+    .pipe($.filter('*.css').restore())
+    .pipe(gulp.dest(paths.scssDest))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
+gulp.task('scss', function() {
+  return gulp.src(paths.scssDest + '*.css')
 });
 
 function handleError(err) {
-	console.log(err.toString());
-	this.emit('end');
+  console.log(err.toString());
+  this.emit('end');
 }
 
 /*******************************************************************************
  * 7. Image file tasks
 *******************************************************************************/
-gulp.task('image', function() {
-	return gulp.src(paths.imgDir)
-		.pipe(changed(paths.imgDest))
-		.pipe(imagemin({optimizationLevel: 3}))
-		.pipe(gulp.dest(paths.imgDest))
-		.pipe(browserSync.reload({stream: true}));
+gulp.task('image-min', function() {
+  return gulp.src(paths.imgDest)
+    .pipe($.changed(paths.imgDest))
+    .pipe($.imagemin({ optimizationLevel: 3 }))
+    .pipe(gulp.dest(paths.imgDest))
+    .pipe(browserSync.reload({ stream: true }));
 });
 
 gulp.task('sprite', function () {
-	var spriteData = gulp.src(paths.imgDest + '/sprite/*.png')
-	.pipe(spritesmith({
-		imgName: paths.imgDest + '/sprite.png',
-		cssName: '_module-sprite.scss'
-	}));
-	spriteData.img.pipe(gulp.dest("./"));
-	spriteData.css.pipe(gulp.dest(paths.scssDest + '/module'));
+  var spriteData = gulp.src(paths.imgDir + '/sprite/*.png')
+  .pipe($.spritesmith({
+    imgName: paths.imgDest + '/sprite.png',
+    cssName: '_m-sprite.scss'
+  }));
+  spriteData.img.pipe(gulp.dest('./'));
+  spriteData.css.pipe(gulp.dest(paths.scssDest + '/module'));
 });
 
 /*******************************************************************************
- * 8. gulp Tasks
+ * 8. Build distribution
+*******************************************************************************/
+// gulp.task('prod-files', function() {
+//  var buildFiles = [
+//    '**',
+//    '!./{bower_components,bower_components/**}',
+//    '!./{node_modules,node_modules/**}',
+//    '!./{src,src/**}',
+//    '!./' + {paths.imgDir, paths.imgDir + '/**'},
+//    '!bower.json'
+//    '!gulpfile.js',
+//    '!package.json',
+//    '!README.md',
+//    '!readme.md',
+//  ]
+//  , filter = gulpFilter(paths.imgDir);
+//  return gulp.src(buildFiles)
+//    .pipe(filter)
+//    .pipe(changed(paths.imgDir))
+//    .pipe(imagemin({ optimizationLevel: 3 }))
+//    .pipe(filter.restore())
+//    .pipe(gulp.dest(paths.prod));
+// });
+
+/*******************************************************************************
+ * 9. gulp Tasks
 *******************************************************************************/
 gulp.task('watch', function() {
-	gulp.watch([paths.jadeDir], ['jade']);
-	gulp.watch([paths.imgDir], ['image']);
-	gulp.watch([paths.imgDest + '/sprite/*.png'], ['sprite']);
-	gulp.watch([paths.jsDir], ['js']);
-	gulp.watch([paths.scssDir], ['scss']);
-	gulp.watch(['./*.php'], ['bs-reload']);
+  gulp.watch([paths.jadeFiles], ['jade']);
+  gulp.watch([paths.jsFiles], ['jsTasks']);
+  gulp.watch([paths.scssFiles], ['scss']);
+  gulp.watch([paths.imgDest + '/sprite/*.png'], ['sprite']);
+  gulp.watch([paths.phpFiles], ['bs-reload']);
 });
 
 gulp.task('default', [
-	'browser-sync',
-	'scss',
-	'jade',
-	'js',
-	'image',
-	'sprite',
-	'watch'
-]);
-
-gulp.task('vhost', [
-	'browser-sync-vhost',
-	'scss',
-	'jade',
-	'js',
-	'image',
-	'sprite',
-	'watch'
+  'browser-sync',
+  'scss',
+  'jade',
+  'jsTasks',
+  'sprite',
+  'watch'
 ]);
 
 gulp.task('init', [
-	'bower-init',
-	'foundation-init'
+  'bower-init',
+  'foundation-init',
+  'jsTasks'
+]);
+
+gulp.task('build', [
+  'prod-files'
 ]);

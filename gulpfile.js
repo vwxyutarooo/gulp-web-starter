@@ -42,7 +42,8 @@ var paths = {
 // scss
 , 'scssFiles':  ['src/scss/**/*.scss', 'src/scss/**/*.sass']
 , 'scssDir':    'src/scss'
-, 'scssDest':   'shared/css'
+// css
+, 'cssDest':   'shared/css'
 };
 
 /*------------------------------------------------------------------------------
@@ -90,7 +91,7 @@ gulp.task('browser-sync', function() {
   var args = {};
   if (bsOpt.proxy == false) {
     args.server = { baseDir: paths.dest };
-    args.startPath = 'src/html';
+    args.startPath = paths.htmlDest;
   } else {
     args.proxy = bsOpt.proxy;
     args.open = 'external';
@@ -171,7 +172,7 @@ gulp.task('scss', function() {
       sourcemaps: true
     }))
     .pipe($.filter('*.css').restore())
-    .pipe(gulp.dest(paths.scssDest))
+    .pipe(gulp.dest(paths.cssDest))
     .pipe(browserSync.reload({ stream: true }));
 });
 

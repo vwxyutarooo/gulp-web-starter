@@ -72,10 +72,10 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   │   │   │   ├── _config.jade
     │   │   │   │   └── _mixin.jade
     │   │   │   ├── layout
-    │   │   │   │   ├── _layout_footer.jade
-    │   │   │   │   └── _layout_header.jade
+    │   │   │   │   ├── _l-footer.jade
+    │   │   │   │   └── _l-header.jade
     │   │   │   └── module
-    │   │   │       └── _sns.jade
+    │   │   │       └── _m-button.jade
     │   │   └── index.jade
     │   ├── js
     │   │   ├── app

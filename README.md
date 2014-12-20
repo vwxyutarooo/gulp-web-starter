@@ -14,8 +14,19 @@ Install node_modules
 
 Set hostname at gulpfile.js If you would like to connect "browser-sync" with local server.
 
-    20:  'vhost': 'wordpress.dev'
-    216: 'browser-sync' → 'browser-sync-proxy'
+    19:  'proxy': 'wordpress.dev'
+
+comment out or remove following line
+
+    20: 'proxy': false
+
+When you need tunnel option, set subdomain as you want
+
+    21: 'tunnel': 'randomstring23232'
+
+comment out or remove following line
+
+    22: 'tunnel': false
 
 
 ## Use without global gulp
@@ -61,10 +72,10 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   │   │   │   ├── _config.jade
     │   │   │   │   └── _mixin.jade
     │   │   │   ├── layout
-    │   │   │   │   ├── _layout_footer.jade
-    │   │   │   │   └── _layout_header.jade
+    │   │   │   │   ├── _l-footer.jade
+    │   │   │   │   └── _l-header.jade
     │   │   │   └── module
-    │   │   │       └── _sns.jade
+    │   │   │       └── _m-button.jade
     │   │   └── index.jade
     │   ├── js
     │   │   ├── app

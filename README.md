@@ -14,7 +14,7 @@ Install node_modules
 
 Set hostname at gulpfile.js If you would like to connect "browser-sync" with local server.
 
-    20:  'vhost': 'wordpress.dev'
+    20:  'proxy': 'wordpress.dev'
     216: 'browser-sync' → 'browser-sync-proxy'
 
 

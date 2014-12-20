@@ -1,6 +1,6 @@
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 1. DEPENDENCIES
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'gulp.*'],
@@ -11,9 +11,9 @@ var gulp = require('gulp'),
   saveLicense = require('uglify-save-license')
 ;
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 var paths = {
   'dest': './'
 , 'prodDest': '../build'
@@ -40,9 +40,9 @@ var paths = {
 , 'scssDest': 'shared/css'
 }
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 3. initialize browser-sync && bower_components
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('bower-init', function(){
   var filterJs = $.filter('*.js');
   var filterCss = $.filter('*.css');
@@ -62,23 +62,23 @@ gulp.task('bower-init', function(){
 });
 
 gulp.task('foundation-init', function() {
-  var filterCore = $.filter('scss/*.scss');
-  var filterSettings = $.filter('scss/foundation/_*.scss');
-  var filterComponents = $.filter('scss/foundation/components/_*.scss');
+  var $_filterCore = $.filter('scss/*.scss');
+  var $_filterSettings = $.filter('scss/foundation/_*.scss');
+  var $_filterComponents = $.filter('scss/foundation/components/_*.scss');
   return gulp.src('bower_components/foundation/**/*.scss')
-    .pipe(filterCore)
+    .pipe($_filterCore)
     .pipe($.rename({ prefix: '_' }))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.scssDir + '/core'))
-    .pipe(filterCore.restore())
-    .pipe(filterSettings)
+    .pipe($_filterCore.restore())
+    .pipe($_filterSettings)
     .pipe($.flatten())
     .pipe(gulp.dest(paths.scssDir + '/core/foundation'))
-    .pipe(filterSettings.restore())
-    .pipe(filterComponents)
+    .pipe($_filterSettings.restore())
+    .pipe($_filterComponents)
     .pipe($.flatten())
     .pipe(gulp.dest(paths.scssDir + '/core/foundation/components'))
-    .pipe(filterComponents.restore());
+    .pipe($_filterComponents.restore());
 });
 
 gulp.task('browser-sync', function() {
@@ -101,9 +101,9 @@ gulp.task('bs-reload', function() {
   browserSync.reload()
 });
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 4. Jade Tasks
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('jade', function() {
   return gulp.src(paths.jadeDir)
     .pipe($.data(function(file) {
@@ -116,9 +116,9 @@ gulp.task('jade', function() {
     .pipe(browserSync.reload({ stream: true }));
 });
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 5. js Tasks
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('jsApp', function() {
   return gulp.src(paths.jsDir + '/app/*.js')
     .pipe($.sourcemaps.init())
@@ -148,9 +148,9 @@ gulp.task('jsTasks', [
   'jsLib'
 ]);
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 6. sass Tasks
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('scss', function() {
   return gulp.src(paths.scssFiles)
     .pipe($.plumber({ errorHandler: handleError }))
@@ -176,9 +176,9 @@ function handleError(err) {
   this.emit('end');
 }
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 7. Image file tasks
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('image-min', function() {
   return gulp.src(paths.imgDest)
     .pipe($.changed(paths.imgDest))
@@ -197,9 +197,9 @@ gulp.task('sprite', function () {
   spriteData.css.pipe(gulp.dest(paths.scssDir + '/module'));
 });
 
-/*******************************************************************************
+/*------------------------------------------------------------------------------
  * 8. gulp Tasks
-*******************************************************************************/
+------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
   gulp.watch([paths.jadeFiles], ['jade']);
   gulp.watch([paths.jsFiles], ['jsTasks']);

@@ -14,31 +14,36 @@ var gulp = require('gulp'),
 /*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
+var bsOpt = {
+  'port':       3000
+, 'proxy':      'wordpress.dev'
+, 'proxy':      false
+, 'tunnel':     'randomstring23232'  // Subdomains must be between 4 and 20 alphanumeric characters.
+, 'tunnel':     false
+};
 var paths = {
-  'dest': './'
-, 'prodDest': '../build'
-, 'proxy': 'wordpress.dev'
-, 'port': 3000
+  'dest':       './'
+, 'prodDest':   '../build'
 // html
-, 'htmlFiles': 'src/html/*.html'
-, 'htmlDest': 'src/html'
+, 'htmlFiles':  'src/html/*.html'
+, 'htmlDest':   'src/html'
 // images
-, 'imgDir': 'src/images'
-, 'imgDest': 'shared/images'
+, 'imgDir':     'src/images'
+, 'imgDest':    'shared/images'
 // jade
-, 'jadeFiles': ['src/jade/*.jade', 'src/jade/**/*.jade']
-, 'jadeDir': 'src/jade/*.jade'
+, 'jadeFiles':  ['src/jade/*.jade', 'src/jade/**/*.jade']
+, 'jadeDir':    'src/jade/*.jade'
 // JavaScript
-, 'jsDir': 'src/js'
-, 'jsFiles': 'src/js/**/*.js'
-, 'jsDest': 'shared/js'
+, 'jsDir':      'src/js'
+, 'jsFiles':    'src/js/**/*.js'
+, 'jsDest':     'shared/js'
 // others
-, 'phpFiles': ['*.php', './**/*.php']
+, 'phpFiles':   ['*.php', './**/*.php']
 // scss
-, 'scssFiles': ['src/scss/**/*.scss', 'src/scss/**/*.sass']
-, 'scssDir': 'src/scss'
-, 'scssDest': 'shared/css'
-}
+, 'scssFiles':  ['src/scss/**/*.scss', 'src/scss/**/*.sass']
+, 'scssDir':    'src/scss'
+, 'scssDest':   'shared/css'
+};
 
 /*------------------------------------------------------------------------------
  * 3. initialize browser-sync && bower_components
@@ -82,19 +87,18 @@ gulp.task('foundation-init', function() {
 });
 
 gulp.task('browser-sync', function() {
-  browserSync({
-    server: {
-      baseDir: paths.dest
-    },
-    startPath: paths.htmlDest
-  });
-});
-
-gulp.task('browser-sync-proxy', function() {
-  browserSync({
-    proxy: paths.proxy,
-    open: 'external'
-  });
+  var args = {};
+  if (bsOpt.proxy == false) {
+    args.server = { baseDir: paths.dest };
+    args.startPath = 'src/html';
+  } else {
+    args.proxy = bsOpt.proxy;
+    args.open = 'external';
+  }
+  if (bsOpt.tunnel != false) {
+    args.tunnel = bsOpt.tunnel
+  }
+  browserSync(args);
 });
 
 gulp.task('bs-reload', function() {

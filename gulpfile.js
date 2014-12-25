@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     replaceString: /\bgulp[\-.]/
   }),
   browserSync = require('browser-sync'),
+  del = require('del'),
   mainBowerFiles = require('main-bower-files'),
   saveLicense = require('uglify-save-license')
 ;
@@ -50,7 +51,7 @@ var paths = {
 /*------------------------------------------------------------------------------
  * 3. initialize browser-sync && bower_components
 ------------------------------------------------------------------------------*/
-gulp.task('bower-init', function(){
+gulp.task('bower-init', function() {
   gulp.src(mainBowerFiles(), {base: './bower_components'})
     .pipe($.bowerNormalize())
     .pipe(gulp.dest(paths.dest));
@@ -66,6 +67,10 @@ gulp.task('foundation-init', function() {
     .pipe(gulp.dest(paths.scssDir + '/core'))
   gulp.src(bfDir + '/**/_*.scss')
     .pipe(gulp.dest(paths.scssDir + '/core'));
+});
+
+gulp.task('bower-clean', function() {
+  del('bower_components/');
 });
 
 gulp.task('browser-sync', function() {

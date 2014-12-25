@@ -43,6 +43,7 @@ var paths = {
 , 'scssFiles':  ['src/scss/**/*.scss', 'src/scss/**/*.sass']
 , 'scssDir':    'src/scss'
 // css
+, 'cssFiles':  'bower_components/tmp/css/*.css'
 , 'cssDest':   'shared/css'
 };
 
@@ -50,41 +51,20 @@ var paths = {
  * 3. initialize browser-sync && bower_components
 ------------------------------------------------------------------------------*/
 gulp.task('bower-init', function(){
-  var filterJs = $.filter('*.js');
-  var filterCss = $.filter('*.css');
-  var filterScss = $.filter('*.scss');
-  var filterImage = $.filter(['*.png', '*.gif', '*.jpg']);
-  return gulp.src(mainBowerFiles())
-    .pipe(filterJs)
-    .pipe(gulp.dest(paths.jsDir + '/lib'))
-    .pipe(filterJs.restore())
-    .pipe(filterCss)
+  gulp.src(mainBowerFiles(), {base: './bower_components'})
+    .pipe($.bowerNormalize())
+    .pipe(gulp.dest(paths.dest));
+  gulp.src(paths.cssFiles)
     .pipe($.rename({ prefix: '_m-', extname: '.scss' }))
-    .pipe(gulp.dest('src/scss/module'))
-    .pipe(filterCss.restore())
-    .pipe(filterImage)
-    .pipe(gulp.dest(paths.imgDest + '/global'))
-    .pipe(filterImage.restore());
+    .pipe(gulp.dest(paths.scssDir + '/module'));
 });
 
 gulp.task('foundation-init', function() {
-  var $_filterCore = $.filter('scss/*.scss');
-  var $_filterSettings = $.filter('scss/foundation/_*.scss');
-  var $_filterComponents = $.filter('scss/foundation/components/_*.scss');
-  return gulp.src('bower_components/foundation/**/*.scss')
-    .pipe($_filterCore)
+  var bfDir = 'bower_components/foundation/**';
+  return gulp.src([bfDir + '/foundation.scss', bfDir + '/normalize.scss'])
     .pipe($.rename({ prefix: '_' }))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.scssDir + '/core'))
-    .pipe($_filterCore.restore())
-    .pipe($_filterSettings)
-    .pipe($.flatten())
-    .pipe(gulp.dest(paths.scssDir + '/core/foundation'))
-    .pipe($_filterSettings.restore())
-    .pipe($_filterComponents)
-    .pipe($.flatten())
-    .pipe(gulp.dest(paths.scssDir + '/core/foundation/components'))
-    .pipe($_filterComponents.restore());
 });
 
 gulp.task('browser-sync', function() {

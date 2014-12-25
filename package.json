@@ -15,6 +15,7 @@
   "devDependencies": {
     "browser-sync": "latest",
     "gulp": "latest",
+    "gulp-bower-normalize": "^1.0.3",
     "gulp-changed": "latest",
     "gulp-concat": "latest",
     "gulp-data": "latest",

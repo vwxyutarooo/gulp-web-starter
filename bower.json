@@ -42,7 +42,7 @@
       "normalize": {
         "../shared/images": ["*.gif", "*.png"],
         "../src/js/lib": "**/*.js",
-        "../bower_components/tmp/css": "**/*.css"
+        "../src/scss/module": "**/*.css"
       }
     }
   }

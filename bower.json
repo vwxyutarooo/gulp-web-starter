@@ -23,19 +23,31 @@
       "ignore": true
     },
     "foundation": {
+      "dependencies": null,
       "main": [
-        "**/foundation.js"
+        "**/foundation.js",
+        "scss/foundation/components/_*.scss",
+        "scss/foundation/_*.scss"
       ],
-      "dependencies": null
+      "normalize": {
+        "../src/js/lib": "*.js",
+        "../src/scss/core/foundation": ["_functions.scss", "_settings.scss"],
+        "../src/scss/core/foundation/components": ["!_functions.scss", "!_settings.scss", "_*.scss"]
+      }
     },
     "bxSlider": {
+      "dependencies": null,
       "main": [
         "**/jquery.bxslider.min.js",
         "**/jquery.bxslider.css",
-        "**/images/bx_loader.gif",
-        "**/images/controls.png"
+        "**/bx_loader.gif",
+        "**/controls.png"
       ],
-      "dependencies": null
+      "normalize": {
+        "../shared/images": ["*.gif", "*.png"],
+        "../shared/js": "**/*.js",
+        "../bower_components/tmp/css": "**/*.css"
+      }
     }
   }
 }

@@ -25,14 +25,10 @@
     "foundation": {
       "dependencies": null,
       "main": [
-        "**/foundation.js",
-        "scss/foundation/components/_*.scss",
-        "scss/foundation/_*.scss"
+        "**/foundation.js"
       ],
       "normalize": {
-        "../src/js/lib": "*.js",
-        "../src/scss/core/foundation": ["_functions.scss", "_settings.scss"],
-        "../src/scss/core/foundation/components": ["!_functions.scss", "!_settings.scss", "_*.scss"]
+        "../src/js/lib": "*.js"
       }
     },
     "bxSlider": {
@@ -45,7 +41,7 @@
       ],
       "normalize": {
         "../shared/images": ["*.gif", "*.png"],
-        "../shared/js": "**/*.js",
+        "../src/js/lib": "**/*.js",
         "../bower_components/tmp/css": "**/*.css"
       }
     }

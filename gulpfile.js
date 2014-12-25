@@ -60,11 +60,12 @@ gulp.task('bower-init', function(){
 });
 
 gulp.task('foundation-init', function() {
-  var bfDir = 'bower_components/foundation/**';
-  return gulp.src([bfDir + '/foundation.scss', bfDir + '/normalize.scss'])
+  var bfDir = 'bower_components/foundation/scss';
+  gulp.src([bfDir + '/foundation.scss', bfDir + '/normalize.scss'])
     .pipe($.rename({ prefix: '_' }))
-    .pipe($.flatten())
     .pipe(gulp.dest(paths.scssDir + '/core'))
+  gulp.src(bfDir + '/**/_*.scss')
+    .pipe(gulp.dest(paths.scssDir + '/core'));
 });
 
 gulp.task('browser-sync', function() {

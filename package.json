@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "gulp": "gulp",
-    "gulp-init": "bower install; npm run gulp -- init",
+    "gulp-init": "npm run gulp -- bower-clean; bower install; npm run gulp -- init",
     "gulp-build": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +14,7 @@
   "dependencies": {},
   "devDependencies": {
     "browser-sync": "latest",
+    "del": "latest",
     "gulp": "latest",
     "gulp-bower-normalize": "^1.0.3",
     "gulp-changed": "latest",

@@ -52,12 +52,17 @@ var paths = {
  * 3. initialize browser-sync && bower_components
 ------------------------------------------------------------------------------*/
 gulp.task('bower-init', function() {
+  var $_filterCss = $.filter('**/src/scss/module/*.*');
   gulp.src(mainBowerFiles(), {base: './bower_components'})
     .pipe($.bowerNormalize())
-    .pipe(gulp.dest(paths.dest));
-  gulp.src(paths.cssFiles)
+    .pipe($_filterCss)
     .pipe($.rename({ prefix: '_m-', extname: '.scss' }))
-    .pipe(gulp.dest(paths.scssDir + '/module'));
+    .pipe($_filterCss.restore())
+    .pipe(gulp.dest(paths.dest));
+});
+
+gulp.task('bower-clean', function() {
+  del('bower_components/');
 });
 
 gulp.task('foundation-init', function() {
@@ -67,10 +72,6 @@ gulp.task('foundation-init', function() {
     .pipe(gulp.dest(paths.scssDir + '/core'))
   gulp.src(bfDir + '/**/_*.scss')
     .pipe(gulp.dest(paths.scssDir + '/core'));
-});
-
-gulp.task('bower-clean', function() {
-  del('bower_components/');
 });
 
 gulp.task('browser-sync', function() {
@@ -210,6 +211,5 @@ gulp.task('default', [
 
 gulp.task('init', [
   'bower-init',
-  'foundation-init',
-  'jsTasks'
+  'foundation-init'
 ]);

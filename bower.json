@@ -1,6 +1,6 @@
 {
   "name": "myproject",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "authors": [
     "Yutaro <yutaro@studio-rubbish.com>"
   ],
@@ -40,7 +40,7 @@
         "**/controls.png"
       ],
       "normalize": {
-        "../shared/images": ["*.gif", "*.png"],
+        "../assets/images": ["*.gif", "*.png"],
         "../src/js/lib": "**/*.js",
         "../src/scss/module": "**/*.css"
       }

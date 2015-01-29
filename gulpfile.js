@@ -137,10 +137,10 @@ gulp.task('scss', function() {
     }))
     .pipe($.csso())
     .pipe($.sourcemaps.write('maps', {
-      includeContent: false,
-      sourceRoot: paths.destDir + 'css'
+      includeContent: false
     }))
     .pipe(gulp.dest(paths.destDir + 'css'))
+    .pipe($.filter('**/*.css'))
     .pipe(browserSync.reload({ stream: true }));
 });
 

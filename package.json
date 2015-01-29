@@ -19,7 +19,7 @@
     "gulp-bower-normalize": "^1.0.3",
     "gulp-changed": "^1.1.1",
     "gulp-concat": "^2.4.3",
-    "gulp-csso": "^0.2.9",
+    "gulp-csso": "^1.0.0",
     "gulp-data": "^1.2.0",
     "gulp-filter": "latest",
     "gulp-flatten": "latest",

@@ -101,7 +101,7 @@ gulp.task('jsApp', function() {
     .pipe($.concat('script.js'))
     .pipe($.uglify())
     .pipe($.rename({ suffix: '.min' }))
-    .pipe($.sourcemaps.write(paths.destDir + 'js/maps'))
+    .pipe($.sourcemaps.write('maps'))
     .pipe(gulp.dest(paths.destDir + 'js'))
     .pipe(browserSync.reload({ stream: true }));
 });

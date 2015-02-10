@@ -17,8 +17,10 @@ var gulp = require('gulp'),
 ------------------------------------------------------------------------------*/
 var bsOpt = {
   'port':       3000
+  // to enable setver: flase or to enable proxy: local hosts name of virtual machine
 , 'proxy':      'wordpress.dev'
 , 'proxy':      false
+  // to enable tunnel option: set strings. usually set false
 , 'tunnel':     'randomstring23232'  // Subdomains must be between 4 and 20 alphanumeric characters.
 , 'tunnel':     false
 };
@@ -132,7 +134,36 @@ gulp.task('scss', function() {
     })
     .on('error', function (err) { console.error('Error!', err.message); })
     .pipe($.autoprefixer({
-      browsers: ['last 2 versions'],
+      browsers: ['> 1%', 'last 2 versions', 'ie 9'],
+      cascade: false
+    }))
+    .pipe($.csso())
+    .pipe($.sourcemaps.write('maps', {
+      includeContent: false
+    }))
+    .pipe(gulp.dest(paths.destDir + 'css'))
+    .pipe($.filter('**/*.css'))
+    .pipe(browserSync.reload({ stream: true }));
+});
+
+gulp.task('compass', function() {
+  gulp.src('src/scss/*.scss')
+    .pipe($.plumber({
+      errorHandler: function (error) {
+        console.log(error.message);
+        this.emit('end');
+    }}))
+    .pipe($.compass({
+      css: paths.destDir + 'css',
+      sass: paths.sourceDir + 'src/scss',
+      'require sass-globbing': true
+    }))
+    .on('error', function(error) {
+      // console.log(error);
+      // this.emit('end');
+    })
+    .pipe($.autoprefixer({
+      browsers: ['> 1%', 'last 2 versions', 'ie 9'],
       cascade: false
     }))
     .pipe($.csso())
@@ -159,7 +190,7 @@ gulp.task('sprite', function () {
   .pipe($.spritesmith({
     imgName: 'sprite.png',
     imgPath: '/' + paths.destDir + 'images/sprite.png',
-    cssName: '_m-sprite.scss'
+    cssName: '_m-a-sprite.scss'
   }));
   spriteData.img
     .pipe($.imagemin({ optimizationLevel: 3 }))

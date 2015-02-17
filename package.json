@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^1.9.1",
+    "browser-sync": "^2.1.1",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
@@ -25,7 +25,8 @@
     "gulp-filter": "^2.0.1",
     "gulp-flatten": "0.0.4",
     "gulp-imagemin": "^2.1.0",
-    "gulp-jade": "^0.11.0",
+    "gulp-jade": "^1.0.0",
+    "gulp-jshint": "^1.9.2",
     "gulp-load-plugins": "^0.8.0",
     "gulp-plumber": "^0.6.6",
     "gulp-rename": "^1.2.0",

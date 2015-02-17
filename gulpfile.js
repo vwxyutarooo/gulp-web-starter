@@ -1,37 +1,34 @@
 /*------------------------------------------------------------------------------
  * 1. DEPENDENCIES
 ------------------------------------------------------------------------------*/
-var gulp = require('gulp'),
-  $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'gulp.*'],
-    replaceString: /\bgulp[\-.]/
-  }),
-  browserSync = require('browser-sync'),
-  del = require('del'),
-  mainBowerFiles = require('main-bower-files'),
-  saveLicense = require('uglify-save-license')
+var gulp          = require('gulp'),
+  $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
+  browserSync     = require('browser-sync'),
+  del             = require('del'),
+  fs              = require('fs'),
+  mainBowerFiles  = require('main-bower-files'),
+  saveLicense     = require('uglify-save-license')
 ;
 
 /*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
+// @param false or virtual host name of local machine such as . Set false to browser-sync start as server mode.
+// @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
 var bsOpt = {
-  'port':       3000
-  // to enable setver: flase or to enable proxy: local hosts name of virtual machine
-, 'proxy':      'wordpress.dev'
-, 'proxy':      false
-  // to enable tunnel option: set strings. usually set false
-, 'tunnel':     'randomstring23232'  // Subdomains must be between 4 and 20 alphanumeric characters.
-, 'tunnel':     false
+  'proxy'      : 'wordpress.dev',
+  'proxy'      : false,
+  'tunnel'     : 'randomstring23232',
+  'tunnel'     : false,
+  'browser'    : 'google chrome canary'
 };
+// basic locations
 var paths = {
-// based paths
-  'root':       './'
-, 'sourceDir':  'src/'
-, 'destDir':    'assets/'
-// others
-, 'htmlDir':    'src/html'
-, 'phpFiles':   ['*.php', './**/*.php']
+  'root':       './',
+  'sourceDir':  'src/',
+  'destDir':    'assets/',
+  'htmlDir':    'src/html',
+  'phpFiles':   ['*.php', './**/*.php']
 };
 
 /*------------------------------------------------------------------------------
@@ -72,7 +69,7 @@ gulp.task('browser-sync', function() {
   if (bsOpt.tunnel != false) {
     args.tunnel = bsOpt.tunnel;
   }
-  args.browser = "google chrome canary";
+  args.browser = bsOpt.browser;
   browserSync(args);
 });
 
@@ -85,9 +82,7 @@ gulp.task('bs-reload', function() {
 ------------------------------------------------------------------------------*/
 gulp.task('jade', function() {
   return gulp.src(paths.sourceDir + 'jade/*.jade')
-    .pipe($.data(function(file) {
-      return require('./setting.json');
-    }))
+    .pipe($.data(function(file) { return require('./setting.json'); }))
     .pipe($.plumber())
     .pipe($.jade({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir))
@@ -99,11 +94,11 @@ gulp.task('jade', function() {
 ------------------------------------------------------------------------------*/
 gulp.task('jsApp', function() {
   return gulp.src(paths.sourceDir + 'js/app/*.js')
-    .pipe($.sourcemaps.init())
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('default'))
     .pipe($.concat('script.js'))
     .pipe($.uglify())
     .pipe($.rename({ suffix: '.min' }))
-    .pipe($.sourcemaps.write('maps'))
     .pipe(gulp.dest(paths.destDir + 'js'))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -111,9 +106,7 @@ gulp.task('jsApp', function() {
 gulp.task('jsLib', function() {
   return gulp.src(paths.sourceDir + 'js/lib/*.js')
     .pipe($.concat('lib.js'))
-    .pipe($.uglify({
-      preserveComments: saveLicense
-    }))
+    .pipe($.uglify({ preserveComments: saveLicense }))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(paths.destDir + 'js'))
     .pipe(browserSync.reload({ stream: true }));
@@ -132,15 +125,13 @@ gulp.task('scss', function() {
       require: 'sass-globbing',
       sourcemap: true
     })
-    .on('error', function (err) { console.error('Error!', err.message); })
+    .on('error', function(err) { console.error('Error!', err.message); })
     .pipe($.autoprefixer({
-      browsers: ['> 1%', 'last 2 versions', 'ie 9'],
+      browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
       cascade: false
     }))
     .pipe($.csso())
-    .pipe($.sourcemaps.write('maps', {
-      includeContent: false
-    }))
+    .pipe($.sourcemaps.write('maps', { includeContent: false }))
     .pipe(gulp.dest(paths.destDir + 'css'))
     .pipe($.filter('**/*.css'))
     .pipe(browserSync.reload({ stream: true }));
@@ -149,27 +140,22 @@ gulp.task('scss', function() {
 gulp.task('compass', function() {
   gulp.src('src/scss/*.scss')
     .pipe($.plumber({
-      errorHandler: function (error) {
+      errorHandler: function(error) {
         console.log(error.message);
         this.emit('end');
     }}))
     .pipe($.compass({
       css: paths.destDir + 'css',
-      sass: paths.sourceDir + 'src/scss',
+      sass: paths.sourceDir + 'scss',
       'require sass-globbing': true
     }))
-    .on('error', function(error) {
-      // console.log(error);
-      // this.emit('end');
-    })
+    .on('error', function(error) { })
     .pipe($.autoprefixer({
-      browsers: ['> 1%', 'last 2 versions', 'ie 9'],
+      browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
       cascade: false
     }))
     .pipe($.csso())
-    .pipe($.sourcemaps.write('maps', {
-      includeContent: false
-    }))
+    .pipe($.sourcemaps.write('maps', { includeContent: false }))
     .pipe(gulp.dest(paths.destDir + 'css'))
     .pipe($.filter('**/*.css'))
     .pipe(browserSync.reload({ stream: true }));
@@ -185,7 +171,7 @@ gulp.task('image-min', function() {
     .pipe(browserSync.reload({ stream: true }));
 });
 
-gulp.task('sprite', function () {
+gulp.task('sprite', function() {
   var spriteData = gulp.src(paths.sourceDir + 'images/sprite/*.png')
   .pipe($.spritesmith({
     imgName: 'sprite.png',
@@ -206,7 +192,6 @@ gulp.task('watch', function() {
   gulp.watch([paths.sourceDir + 'js/**/*.js'], ['jsTasks']);
   gulp.watch([paths.sourceDir + 'scss/**/*.scss'], ['scss']);
   gulp.watch([paths.sourceDir + 'images/sprite/*.png'], ['sprite']);
-  gulp.watch([paths.sourceDir + 'images/page/**/*.png'], ['image-min']);
   gulp.watch([paths.phpFiles], ['bs-reload']);
 });
 

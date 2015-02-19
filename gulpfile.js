@@ -83,7 +83,6 @@ gulp.task('bs-reload', function() {
 gulp.task('jade', function() {
   gulp.src(paths.srcJade + '*.jade')
     .pipe($.data(function(file) { return require(paths.srcDir + 'json/setting.json'); }))
-    .pipe($.plumber())
     .pipe($.jade({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir))
     .pipe(browserSync.reload({ stream: true }));

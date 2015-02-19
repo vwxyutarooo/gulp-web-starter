@@ -8,7 +8,6 @@ var gulp          = require('gulp'),
   browserSync     = require('browser-sync'),
   buffer          = require('vinyl-buffer'),
   del             = require('del'),
-  fs              = require('fs'),
   merge           = require('merge-stream'),
   runSequence     = require('run-sequence'),
   source          = require('vinyl-source-stream')
@@ -17,10 +16,6 @@ var gulp          = require('gulp'),
 /*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
-// @param foundation or bootstrap
-var opt = {
-  'cssBase'      : 'bootstrap'
-}
 // @param false or virtual host name of local machine such as . Set false to browser-sync start as server mode.
 // @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
 var bsOpt = {
@@ -54,70 +49,11 @@ gulp.task('clean:bower', function(cb) {
   del('./bower_components', cb);
 });
 
-gulp.task('bower:cssFramework', function() {
-  return $.bower({ directory: './bower_components', cwd: paths.srcJson + opt.cssBase })
-    .pipe(gulp.dest('./bower_components'));
-});
-gulp.task('override:cssFramework', function() {
-  var jsonFile = paths.srcDir + 'json/' + opt.cssBase + '/bower.json';
-  gulp.src(mainBowerFiles({ patsh: { bowerJson: jsonFile } }), { base: paths.root + 'bower_components' })
-    .pipe($.bowerNormalize({
-      bowerJson: jsonFile,
-      flatten: true
-    }))
-    .pipe(gulp.dest(paths.root));
-});
+gulp.task('bower:install', $.shell.task(['bower install']));
 
-gulp.task('copy:cssFramework', function(cb) {
-  if (opt.cssBase === 'foundation') {
-    var bowerFoundationDir = 'bower_components/foundation/scss/';
-    fs.open(paths.srcScss + 'core/_foundation.scss', 'r', function(err, fd) {
-      if (err) {
-        fs.open(paths.srcScss + 'core/_settings.scss', 'r', function(err, fd) {
-          if (err) {
-            runSequence('copy:foundation', cb);
-          } else {
-            console.log('"_settings.scss" is already exists.');
-          }
-        });
-      } else {
-        console.log('"_foundation.scss" is already exists.');
-      }
-      fd && fs.close(fd, function(err) {});
-    });
-  } else if (opt.cssBase === 'bootstrap') {
-    var boerBootstrapDir = 'bower_components/bootstrap-sass-official/assets/stylesheets/**'
-    fs.open(paths.srcScss + 'core/_bootstrap.scss', 'r', function(err, fd) {
-      if (err) {
-        runSequence('copy:bootstrap', cb);
-      } else {
-        console.log('bootstrap-sass is already exists.');
-      }
-      fd && fs.close(fd, function(err) {});
-    });
-    console.log('bootstrap');
-  }
-});
-
-gulp.task('copy:foundation', function(cb) {
-  var bowerFoundationDir = 'bower_components/foundation/scss/';
-  var $_filter = $.filter('foundation.scss');
-  var core = gulp.src([bowerFoundationDir + 'foundation.scss', bowerFoundationDir + 'foundation/_settings.scss'])
-    .pipe($_filter)
-    .pipe($.rename({ prefix: '_' }))
-    .pipe($_filter.restore())
-    .pipe(gulp.dest(paths.srcScss + 'core'));
-  var files = gulp.src(bowerFoundationDir + '/**/_*.scss')
-    .pipe(gulp.dest(paths.srcScss + 'core'));
-  return merge(core, files);
-});
-
-gulp.task('copy:bootstrap', function() {
-  var bowerBootstrapDir = 'bower_components/bootstrap-sass-official/assets/stylesheets/**';
-  return gulp.src(bowerBootstrapDir)
-    .pipe(gulp.dest(paths.srcScss + 'core'));
-});
-
+gulp.task('copy:foundation', $.shell.task([
+  'bash src/shell/foundation.sh'
+]));
 
 /*------------------------------------------------------------------------------
  * 4. browser-sync
@@ -233,5 +169,5 @@ gulp.task('default', [
 ]);
 
 gulp.task('init', function(cb) {
-  runSequence('bower:cssFramework', ['copy:cssFramework', 'override:cssFramework'], ['clean:bower'], cb);
+  runSequence('bower:install', ['copy:foundation'], cb);
 });

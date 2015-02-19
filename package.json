@@ -11,19 +11,23 @@
   "author": "Yutaro Miyazaki",
   "license": "MIT",
   "dependencies": {},
+  "browserify": {
+    "transform": [
+      "debowerify"
+    ]
+  },
   "devDependencies": {
     "browser-sync": "^2.1.1",
+    "browserify": "^8.1.3",
+    "debowerify": "^1.2.0",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-bower": "0.0.10",
-    "gulp-bower-normalize": "^1.0.3",
     "gulp-changed": "^1.1.1",
-    "gulp-concat": "^2.4.3",
     "gulp-csso": "^1.0.0",
     "gulp-data": "^1.2.0",
     "gulp-filter": "^2.0.2",
-    "gulp-flatten": "0.0.4",
     "gulp-imagemin": "^2.2.0",
     "gulp-jade": "^1.0.0",
     "gulp-jshint": "^1.9.2",
@@ -34,9 +38,8 @@
     "gulp-sourcemaps": "^1.3.0",
     "gulp-uglify": "^1.0.2",
     "gulp.spritesmith": "^2.5.0",
-    "main-bower-files": "^2.5.0",
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.0.2",
-    "uglify-save-license": "^0.4.1"
+    "vinyl-buffer": "^1.0.0"
   }
 }

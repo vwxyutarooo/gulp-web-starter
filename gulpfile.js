@@ -4,13 +4,14 @@
 ------------------------------------------------------------------------------*/
 var gulp          = require('gulp'),
   $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'], replaceString: /\bgulp[\-.]/ }),
+  browserify      = require('browserify'),
   browserSync     = require('browser-sync'),
+  buffer          = require('vinyl-buffer'),
   del             = require('del'),
   fs              = require('fs'),
-  mainBowerFiles  = require('main-bower-files'),
   merge           = require('merge-stream'),
-  saveLicense     = require('uglify-save-license'),
-  runSequence     = require('run-sequence')
+  runSequence     = require('run-sequence'),
+  source          = require('vinyl-source-stream')
 ;
 
 /*------------------------------------------------------------------------------
@@ -32,12 +33,12 @@ var bsOpt = {
 // basic locations
 var paths = {
   'root'         : './',
-  'srcDir'    : 'src/',
-  'srcImg'    : 'src/images/',
-  'srcJade'   : 'src/jade/',
-  'srcJs'     : 'src/js/',
-  'srcJson'   : 'src/json/',
-  'srcScss'   : 'src/scss/',
+  'srcDir'       : 'src/',
+  'srcImg'       : 'src/images/',
+  'srcJade'      : 'src/jade/',
+  'srcJs'        : 'src/js/',
+  'srcJson'      : 'src/json/',
+  'srcScss'      : 'src/scss/',
   'destDir'      : 'assets/',
   'destImg'      : 'assets/images/',
   'destCss'      : 'assets/css/',
@@ -49,16 +50,6 @@ var paths = {
 /*------------------------------------------------------------------------------
  * 3. initializing bower_components
 ------------------------------------------------------------------------------*/
-gulp.task('bower-init', function() {
-  var $_filterCss = $.filter('**/src/scss/module/*.*');
-  gulp.src(mainBowerFiles(), {base: paths.root + 'bower_components' })
-    .pipe($.bowerNormalize())
-    .pipe($_filterCss)
-    .pipe($.rename({ prefix: '_m-', extname: '.scss' }))
-    .pipe($_filterCss.restore())
-    .pipe(gulp.dest(paths.root));
-});
-
 gulp.task('clean:bower', function(cb) {
   del('./bower_components', cb);
 });
@@ -166,30 +157,17 @@ gulp.task('jade', function() {
 /*------------------------------------------------------------------------------
  * 6. js Tasks
 ------------------------------------------------------------------------------*/
-gulp.task('jsApp', function() {
-  gulp.src(paths.srcJs + 'app/*.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('default'))
-    .pipe($.concat('script.js'))
+gulp.task('js', function() {
+  browserify('./src/js/app.js')
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
     .pipe($.uglify())
-    .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(paths.destDir + 'js'))
     .pipe(browserSync.reload({ stream: true }));
 });
 
-gulp.task('jsLib', function() {
-  gulp.src(paths.srcJs + 'lib/*.js')
-    .pipe($.concat('lib.js'))
-    .pipe($.uglify({ preserveComments: saveLicense }))
-    .pipe($.rename({ suffix: '.min' }))
-    .pipe(gulp.dest(paths.destDir + 'js'))
-    .pipe(browserSync.reload({ stream: true }));
-});
-
-gulp.task('jsTasks', [
-  'jsApp',
-  'jsLib'
-]);
+gulp.task('js:hint', function() {});
 
 /*------------------------------------------------------------------------------
  * 7. sass Tasks
@@ -239,7 +217,7 @@ gulp.task('sprite', function() {
 ------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
   gulp.watch([paths.srcJade + '**/*.jade'], ['jade']);
-  gulp.watch([paths.srcJs + '**/*.js'], ['jsTasks']);
+  gulp.watch([paths.srcJs + '**/*.js'], ['js']);
   gulp.watch([paths.srcScss + '**/*.scss'], ['scss']);
   gulp.watch([paths.srcImg + 'sprite/*.png'], ['sprite']);
   gulp.watch([paths.phpFiles], ['bs-reload']);
@@ -249,7 +227,7 @@ gulp.task('default', [
   'browser-sync',
   'scss',
   'jade',
-  'jsTasks',
+  'js',
   'sprite',
   'watch'
 ]);
@@ -257,5 +235,3 @@ gulp.task('default', [
 gulp.task('init', function(cb) {
   runSequence('bower:cssFramework', ['copy:cssFramework', 'override:cssFramework'], ['clean:bower'], cb);
 });
-
-gulp.task('init:base')

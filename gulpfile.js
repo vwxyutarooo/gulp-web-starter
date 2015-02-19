@@ -27,17 +27,17 @@ var bsOpt = {
 // basic locations
 var paths = {
   'root'         : './',
-  'srcDir'       : 'src/',
-  'srcImg'       : 'src/images/',
-  'srcJade'      : 'src/jade/',
-  'srcJs'        : 'src/js/',
-  'srcJson'      : 'src/json/',
-  'srcScss'      : 'src/scss/',
-  'destDir'      : 'assets/',
-  'destImg'      : 'assets/images/',
-  'destCss'      : 'assets/css/',
-  'destJs'       : 'assets/js/',
-  'htmlDir'      : 'src/html',
+  'srcDir'       : './src/',
+  'srcImg'       : './src/images/',
+  'srcJade'      : './src/jade/',
+  'srcJs'        : './src/js/',
+  'srcJson'      : './src/json/',
+  'srcScss'      : './src/scss/',
+  'destDir'      : './assets/',
+  'destImg'      : './assets/images/',
+  'destCss'      : './assets/css/',
+  'destJs'       : './assets/js/',
+  'htmlDir'      : './src/html',
   'phpFiles'     : ['*.php', './**/*.php']
 };
 
@@ -82,7 +82,7 @@ gulp.task('bs-reload', function() {
 ------------------------------------------------------------------------------*/
 gulp.task('jade', function() {
   gulp.src(paths.srcJade + '*.jade')
-    .pipe($.data(function(file) { return require(paths.srcDir + 'json/setting.json'); }))
+    .pipe($.data(function(file) { return require('./src/json/setting.json'); }))
     .pipe($.jade({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir))
     .pipe(browserSync.reload({ stream: true }));
@@ -131,7 +131,7 @@ gulp.task('scss', function() {
  * 8. Image file tasks
 ------------------------------------------------------------------------------*/
 gulp.task('image-min', function() {
-  gulp.src(paths.destImg + 'page/{*.png, **/*.png}')
+  gulp.src(paths.destImg + 'page/**/*.*')
     .pipe($.imagemin({ optimizationLevel: 3 }))
     .pipe(gulp.dest(paths.destImg + 'page/'))
     .pipe(browserSync.reload({ stream: true }));
@@ -142,7 +142,7 @@ gulp.task('sprite', function() {
   .pipe($.spritesmith({
     imgName: 'sprite.png',
     imgPath: '/' + paths.destImg + '/sprite.png',
-    cssName: '_m-a-sprite.scss'
+    cssName: '_ma-sprite.scss'
   }));
   spriteData.img
     .pipe($.imagemin({ optimizationLevel: 3 }))

@@ -8,7 +8,6 @@ var gulp          = require('gulp'),
   browserSync     = require('browser-sync'),
   buffer          = require('vinyl-buffer'),
   del             = require('del'),
-  merge           = require('merge-stream'),
   runSequence     = require('run-sequence'),
   source          = require('vinyl-source-stream')
 ;

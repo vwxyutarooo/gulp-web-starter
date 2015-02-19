@@ -1,7 +1,6 @@
 # gulpfile for web development
 
 ## Requires
-* node.js
 * npm
 * bower
 * sass
@@ -10,30 +9,31 @@
 ## Setup
 Install node_modules
 
+    $ npm install; bower install
+
+Or, to initialize project
+
     $ npm install
+    $ npm run gulp -- init
 
-Set hostname at gulpfile.js If you would like to connect "browser-sync" with local server.
+Set hostname at gulpfile.js If you would like to connect "BrowserSync" with local server.
 
-    19:  'proxy': 'wordpress.dev'
+    'proxy'        : false,
+    'tunnel'       : false,
+    'browser'      : 'google chrome canary'
 
-comment out or remove following line
+## foundation
 
-    20: 'proxy': false
+    src/scss/core/_settings.scss
+    src/scss/core/_foundation.scss
 
-When you need tunnel option, set subdomain as you want
+## browserify
 
-    21: 'tunnel': 'randomstring23232'
+    src/js/app.js
 
-comment out or remove following line
-
-    22: 'tunnel': false
-
+When proxy has false, BrowserSync will run as server mode.
 
 ## Use without global gulp
-Install bower components and initialize them.
-
-    $ npm run gulp-init
-
 Run gulp with default task.
 
     $ npm run gulp
@@ -50,21 +50,12 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     ├── bower.json
     ├── gulpfile.js
     ├── package.json
-    ├── setting.json
-    ├── shared
-    │   ├── css
-    │   │   └── app.css
-    │   ├── images
-    │   │   └── global
-    │   └── js
-    │       ├── lib.min.js
-    │       ├── script.min.dev.js
-    │       └── script.min.js
     ├── src
     │   ├── html
     │   │   └── index.html
     │   ├── images
     │   │   └── sprite
+    │   │       └── _dummy.png
     │   ├── jade
     │   │   ├── inc
     │   │   │   ├── core
@@ -80,19 +71,22 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   ├── js
     │   │   ├── app
     │   │   │   └── script.js
-    │   │   └── lib
-    │   └── scss
-    │       ├── app.scss
-    │       ├── core
-    │       │   ├── _config.scss
-    │       │   ├── _default.scss
-    │       │   └── _mixins.scss
-    │       ├── layout
-    │       │   ├── _l-common.scss
-    │       │   ├── _l-footer.scss
-    │       │   ├── _l-header.scss
-    │       │   └── _mediaqueries.scss
-    │       └── module
-    │           ├── _m-buttons.scss
-    │           └── _m-grid.scss
+    │   │   └── app.js
+    │   ├── json
+    │   │   └── setting.json
+    │   ├── scss
+    │   │   ├── app.scss
+    │   │   ├── core
+    │   │   │   ├── _config.scss
+    │   │   │   ├── _default.scss
+    │   │   │   └── _mixins.scss
+    │   │   ├── layout
+    │   │   │   ├── _l-common.scss
+    │   │   │   ├── _l-footer.scss
+    │   │   │   └── _l-header.scss
+    │   │   └── module
+    │   │       ├── _m-buttons.scss
+    │   │       └── _m-grid.scss
+    │   └── shell
+    │       └── foundation.sh
     └── style.css

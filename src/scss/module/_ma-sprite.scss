@@ -11,22 +11,22 @@ $icon-home: x y offset_x offset_y width height total_width total_height image_pa
 At the bottom of this section, we provide information about the spritesheet itself
 $spritesheet: width height image $spritesheet-sprites;
 */
-$_dummy-name: '_dummy';
-$_dummy-x: 0px;
-$_dummy-y: 0px;
-$_dummy-offset-x: 0px;
-$_dummy-offset-y: 0px;
-$_dummy-width: 10px;
-$_dummy-height: 10px;
-$_dummy-total-width: 10px;
-$_dummy-total-height: 10px;
-$_dummy-image: '/assets/images//sprite.png';
-$_dummy: 0px 0px 0px 0px 10px 10px 10px 10px '/assets/images//sprite.png' '_dummy';
+$-dummy-name: '_dummy';
+$-dummy-x: 0px;
+$-dummy-y: 0px;
+$-dummy-offset-x: 0px;
+$-dummy-offset-y: 0px;
+$-dummy-width: 10px;
+$-dummy-height: 10px;
+$-dummy-total-width: 10px;
+$-dummy-total-height: 10px;
+$-dummy-image: '/./assets/images//sprite.png';
+$-dummy: 0px 0px 0px 0px 10px 10px 10px 10px '/./assets/images//sprite.png' '_dummy';
 $spritesheet-width: 10px;
 $spritesheet-height: 10px;
-$spritesheet-image: '/assets/images//sprite.png';
-$spritesheet-sprites: $_dummy;
-$spritesheet: 10px 10px '/assets/images//sprite.png' $spritesheet-sprites;
+$spritesheet-image: '/./assets/images//sprite.png';
+$spritesheet-sprites: $-dummy;
+$spritesheet: 10px 10px '/./assets/images//sprite.png' $spritesheet-sprites;
 
 /*
 The provided mixins are intended to be used with the array-like variables

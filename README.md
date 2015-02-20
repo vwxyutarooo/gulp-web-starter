@@ -6,12 +6,13 @@
 * sass
 * sass-globbing
 
+
 ## Setup
-Install node_modules
+Normal setup
 
     $ npm install; bower install
 
-Or, to initialize project
+Or, to initialize hole of project, which included foundation and _s
 
     $ npm install
     $ npm run gulp -- init
@@ -22,16 +23,19 @@ Set hostname at gulpfile.js If you would like to connect "BrowserSync" with loca
     'tunnel'       : false,
     'browser'      : 'google chrome canary'
 
+When proxy has false, BrowserSync will run as server mode.
+
+
 ## foundation
 
     src/scss/core/_settings.scss
     src/scss/core/_foundation.scss
 
+
 ## browserify
 
     src/js/app.js
 
-When proxy has false, BrowserSync will run as server mode.
 
 ## Use without global gulp
 Run gulp with default task.
@@ -41,6 +45,7 @@ Run gulp with default task.
 Call specified task.
 
     $ npm run gulp -- taskname
+
 
 ## File structure
 Basically source file placed in "src/". It passed to "shared/" as destination through the "gulp".

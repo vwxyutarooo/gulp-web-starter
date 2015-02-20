@@ -50,9 +50,9 @@ gulp.task('clean:bower', function(cb) {
 
 gulp.task('bower:install', $.shell.task(['bower install']));
 
-gulp.task('copy:foundation', $.shell.task([
-  'bash src/shell/foundation.sh'
-]));
+gulp.task('install:foundation', $.shell.task(['bash src/shell/foundation.sh']));
+
+gulp.task('install:_s', $.shell.task(['bash src/shell/_s.sh']));
 
 /*------------------------------------------------------------------------------
  * 4. browser-sync
@@ -171,5 +171,5 @@ gulp.task('default', [
 ]);
 
 gulp.task('init', function(cb) {
-  runSequence('bower:install', ['copy:foundation'], cb);
+  runSequence('bower:install', ['install:foundation'], 'install:_s', cb);
 });

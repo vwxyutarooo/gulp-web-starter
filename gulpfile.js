@@ -3,11 +3,10 @@
  * 1. DEPENDENCIES
 ------------------------------------------------------------------------------*/
 var gulp          = require('gulp'),
-  $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'], replaceString: /\bgulp[\-.]/ }),
+  $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
   browserify      = require('browserify'),
   browserSync     = require('browser-sync'),
   buffer          = require('vinyl-buffer'),
-  del             = require('del'),
   runSequence     = require('run-sequence'),
   source          = require('vinyl-source-stream')
 ;
@@ -27,27 +26,23 @@ var bsOpt = {
 // basic locations
 var paths = {
   'root'         : './',
-  'srcDir'       : './src/',
-  'srcImg'       : './src/images/',
-  'srcJade'      : './src/jade/',
-  'srcJs'        : './src/js/',
-  'srcJson'      : './src/json/',
-  'srcScss'      : './src/scss/',
-  'destDir'      : './assets/',
-  'destImg'      : './assets/images/',
-  'destCss'      : './assets/css/',
-  'destJs'       : './assets/js/',
-  'htmlDir'      : './src/html',
-  'phpFiles'     : ['*.php', './**/*.php']
+  'srcDir'       : 'src/',
+  'srcImg'       : 'src/images/',
+  'srcJade'      : 'src/jade/',
+  'srcJs'        : 'src/js/',
+  'srcJson'      : 'src/json/',
+  'srcScss'      : 'src/scss/',
+  'destDir'      : 'assets/',
+  'destImg'      : 'assets/images/',
+  'destCss'      : 'assets/css/',
+  'destJs'       : 'assets/js/',
+  'htmlDir'      : 'src/html',
+  'phpFiles'     : ['*.php', '**/*.php']
 };
 
 /*------------------------------------------------------------------------------
  * 3. initializing bower_components
 ------------------------------------------------------------------------------*/
-gulp.task('clean:bower', function(cb) {
-  del('./bower_components', cb);
-});
-
 gulp.task('bower:install', $.shell.task(['bower install']));
 
 gulp.task('install:foundation', $.shell.task(['bash src/shell/foundation.sh']));
@@ -81,8 +76,9 @@ gulp.task('bs-reload', function() {
  * 5. Jade Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('jade', function() {
-  gulp.src(paths.srcJade + '*.jade')
+  return gulp.src(paths.srcJade + '*.jade')
     .pipe($.data(function(file) { return require('./src/json/setting.json'); }))
+    .pipe($.plumber())
     .pipe($.jade({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir))
     .pipe(browserSync.reload({ stream: true }));
@@ -141,7 +137,7 @@ gulp.task('sprite', function() {
   var spriteData = gulp.src(paths.srcImg + 'sprite/*.png')
   .pipe($.spritesmith({
     imgName: 'sprite.png',
-    imgPath: '/' + paths.destImg + '/sprite.png',
+    imgPath: '../images/sprite.png',
     cssName: '_ma-sprite.scss'
   }));
   spriteData.img
@@ -154,18 +150,15 @@ gulp.task('sprite', function() {
  * 9. gulp Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
-  gulp.watch([paths.srcJade + '**/*.jade'], ['jade']);
-  gulp.watch([paths.srcJs + '**/*.js'], ['js', 'js:hint']);
-  gulp.watch([paths.srcScss + '**/*.scss'], ['scss']);
-  gulp.watch([paths.srcImg + 'sprite/*.png'], ['sprite']);
-  gulp.watch([paths.phpFiles], ['bs-reload']);
+  gulp.watch([paths.srcJade   + '**/*.jade'],    ['jade']);
+  gulp.watch([paths.srcJs     + '**/*.js'],      ['js', 'js:hint']);
+  gulp.watch([paths.srcScss   + '**/*.scss'],    ['scss']);
+  gulp.watch([paths.srcImg    + 'sprite/*.png'], ['sprite']);
+  gulp.watch([paths.phpFiles],                   ['bs-reload']);
 });
 
 gulp.task('default', [
   'browser-sync',
-  'scss',
-  'jade',
-  'js',
   'sprite',
   'watch'
 ]);

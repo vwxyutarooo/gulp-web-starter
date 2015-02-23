@@ -20,13 +20,13 @@ $-dummy-width: 10px;
 $-dummy-height: 10px;
 $-dummy-total-width: 10px;
 $-dummy-total-height: 10px;
-$-dummy-image: '/./assets/images//sprite.png';
-$-dummy: 0px 0px 0px 0px 10px 10px 10px 10px '/./assets/images//sprite.png' '_dummy';
+$-dummy-image: '../images/sprite.png';
+$-dummy: 0px 0px 0px 0px 10px 10px 10px 10px '../images/sprite.png' '_dummy';
 $spritesheet-width: 10px;
 $spritesheet-height: 10px;
-$spritesheet-image: '/./assets/images//sprite.png';
+$spritesheet-image: '../images/sprite.png';
 $spritesheet-sprites: $-dummy;
-$spritesheet: 10px 10px '/./assets/images//sprite.png' $spritesheet-sprites;
+$spritesheet: 10px 10px '../images/sprite.png' $spritesheet-sprites;
 
 /*
 The provided mixins are intended to be used with the array-like variables

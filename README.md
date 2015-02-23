@@ -12,19 +12,27 @@ Normal setup
 
     $ npm install; bower install
 
-Or, to initialize hole of project, which included foundation and _s
+Or, to build hole of project with foundation and _s
 
     $ npm install
     $ npm run gulp -- init
 
-Set hostname at gulpfile.js If you would like to connect "BrowserSync" with local server.
+## How to run gulp tasks
+You don't need gulp global install anyway. To run gulp with default task.
 
-    'proxy'        : false,
-    'tunnel'       : false,
-    'browser'      : 'google chrome canary'
+    $ npm run gulp
 
-When proxy has false, BrowserSync will run as server mode.
+Normally browserSync runs as with proxy option. To avoid proxy and use as server mode.
 
+    $ npm run gulp --mode server
+
+If tunnel option has strings instead of false, gulp-web-starter is automatically enable it.
+
+    'tunnel'       : 'randomstring23232',
+
+To call specified task.
+
+    $ npm run gulp -- taskname
 
 ## foundation
 
@@ -35,16 +43,6 @@ When proxy has false, BrowserSync will run as server mode.
 ## browserify
 
     src/js/app.js
-
-
-## Use without global gulp
-Run gulp with default task.
-
-    $ npm run gulp
-
-Call specified task.
-
-    $ npm run gulp -- taskname
 
 
 ## File structure

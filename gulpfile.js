@@ -8,7 +8,8 @@ var gulp          = require('gulp'),
   browserSync     = require('browser-sync'),
   buffer          = require('vinyl-buffer'),
   runSequence     = require('run-sequence'),
-  source          = require('vinyl-source-stream')
+  source          = require('vinyl-source-stream'),
+  argv            = require('yargs').argv
 ;
 
 /*------------------------------------------------------------------------------
@@ -17,9 +18,7 @@ var gulp          = require('gulp'),
 // @param false or virtual host name of local machine such as . Set false to browser-sync start as server mode.
 // @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
 var bsOpt = {
-  // 'proxy'        : 'wordpress.dev',
-  'proxy'        : false,
-  // 'tunnel'       : 'randomstring23232',
+  'proxy'        : 'wordpress.dev',
   'tunnel'       : false,
   'browser'      : 'google chrome canary'
 };
@@ -54,16 +53,14 @@ gulp.task('install:_s', $.shell.task(['bash src/shell/_s.sh']));
 ------------------------------------------------------------------------------*/
 gulp.task('browser-sync', function() {
   var args = {};
-  if (bsOpt.proxy == false) {
+  if (argv.mode == 'server' ) {
     args.server = { baseDir: paths.root };
     args.startPath = paths.htmlDir;
   } else {
     args.proxy = bsOpt.proxy;
     args.open = 'external';
   }
-  if (bsOpt.tunnel != false) {
-    args.tunnel = bsOpt.tunnel;
-  }
+  if (bsOpt.tunnel != false) args.tunnel = bsOpt.tunnel;
   args.browser = bsOpt.browser;
   browserSync(args);
 });

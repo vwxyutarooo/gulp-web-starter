@@ -1,5 +1,4 @@
 # gulpfile for web development
-
 ## Requires
 * npm
 * bower
@@ -7,15 +6,33 @@
 * sass-globbing
 
 
-## Setup
-Normal setup
+## gulp-web-starter
+Web development environment using
+* gulp
+* browserSync
+* browserify
+* foundation / bootstrap
+* _s (if you would like)
 
-    $ npm install; bower install
+
+## Setup
+Choose css framework at the gulpfile.js
+
+    'cssBase'      : 'foundation'
+    'cssBase'      : 'bootstrap'
+
+Disable installing _s
+
+    '_s'           : false
 
 Or, to build hole of project with foundation and _s
 
-    $ npm install
-    $ npm run gulp -- init
+    $ npm install; npm run gulp -- init
+
+Normal setup for your project members
+
+    $ npm install; bower install
+
 
 ## How to run gulp tasks
 You don't need gulp global install anyway. To run gulp with default task.
@@ -34,10 +51,16 @@ To call specified task.
 
     $ npm run gulp -- taskname
 
+
 ## foundation
 
     src/scss/core/_settings.scss
     src/scss/core/_foundation.scss
+
+
+## bootstrap
+
+    src/scss/core/_bootstrap.scss
 
 
 ## browserify

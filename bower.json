@@ -15,14 +15,12 @@
   ],
   "dependencies": {
     "jquery": "~2.1.3",
-    "foundation": "*"
+    "bootstrap-sass-official": "~3.3.3",
+    "foundation": "~5.5.1"
   },
   "exportsOverride": {
     "jquery": {
       "": "**/jquery.js"
-    },
-    "foundation": {
-      "": "**/foundation.js"
     }
   }
 }

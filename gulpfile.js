@@ -15,9 +15,12 @@ var gulp          = require('gulp'),
 /*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
+// @param Choose css framework between foundatino and bootstrap
 // @param false or virtual host name of local machine such as . Set false to browser-sync start as server mode.
 // @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
-var bsOpt = {
+var opt = {
+  'cssBase'      : 'foundation',
+  '_s'           : true,
   'proxy'        : 'wordpress.dev',
   'tunnel'       : false,
   'browser'      : 'google chrome canary'
@@ -44,9 +47,14 @@ var paths = {
 ------------------------------------------------------------------------------*/
 gulp.task('bower:install', $.shell.task(['bower install']));
 
-gulp.task('install:foundation', $.shell.task(['bash src/shell/foundation.sh']));
+gulp.task('install:cssBase', $.shell.task(['bash src/shell/' + opt.cssBase + '.sh']));
 
-gulp.task('install:_s', $.shell.task(['bash src/shell/_s.sh']));
+gulp.task('install:_s', function() {
+  if (opt._s === true) {
+    return gulp.src('src/shell/_s.sh', {read: false})
+      .pipe($.shell(['bash src/shell/_s.sh']));
+  }
+});
 
 /*------------------------------------------------------------------------------
  * 4. browser-sync
@@ -57,11 +65,11 @@ gulp.task('browser-sync', function() {
     args.server = { baseDir: paths.root };
     args.startPath = paths.htmlDir;
   } else {
-    args.proxy = bsOpt.proxy;
+    args.proxy = opt.proxy;
     args.open = 'external';
   }
-  if (bsOpt.tunnel != false) args.tunnel = bsOpt.tunnel;
-  args.browser = bsOpt.browser;
+  if (opt.tunnel != false) args.tunnel = opt.tunnel;
+  args.browser = opt.browser;
   browserSync(args);
 });
 
@@ -161,5 +169,5 @@ gulp.task('default', [
 ]);
 
 gulp.task('init', function(cb) {
-  runSequence('bower:install', ['install:foundation'], 'install:_s', cb);
+  runSequence('bower:install', ['install:cssBase'], 'install:_s', cb);
 });

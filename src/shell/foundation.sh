@@ -1,8 +1,9 @@
 #!/bin/bash
 
 function copy:foundation() {
+  bower install foundation --save
   cp -r ./bower_components/foundation/scss/foundation ./src/scss/core/foundation
-  cp ./bower_components/foundation/scss/foundation/_settings.scss ./src/scss/core/_settings.scss
+  mv ./src/scss/core/foundation/_settings.scss ./src/scss/core/_settings.scss
   cp ./bower_components/foundation/scss/foundation.scss ./src/scss/core/_foundation.scss
   return
 }

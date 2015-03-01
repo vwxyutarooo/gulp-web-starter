@@ -12,20 +12,22 @@ Web development environment using
 * browserSync
 * browserify
 * foundation / bootstrap
-* _s (if you would like)
+* _s
 
 
 ## Setup
 Choose css framework at the gulpfile.js
 
     'cssBase'      : 'foundation'
+or
+
     'cssBase'      : 'bootstrap'
 
-Disable installing _s
+Disable installing _s if you want
 
     '_s'           : false
 
-Or, to build hole of project with foundation and _s
+To build hole of project with foundation and _s
 
     $ npm install; npm run gulp -- init
 

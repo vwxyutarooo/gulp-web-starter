@@ -1,15 +1,17 @@
 #!/bin/bash
 
 function copy:bootstrap() {
+  rm -rf ./bower_components/bootstrap-sass-official/
   bower install bootstrap-sass-official --save
-  cp -nr ./bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap ./src/scss/core/bootstrap
-  cp -n ./bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss ./src/scss/core/_bootstrap.scss
+  mv ./bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/ ./src/scss/core/bootstrap/
+  mv ./bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap-sprockets.scss ./src/scss/core/_bootstrap-sprockets.scss
+  mv ./bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss ./src/scss/core/_bootstrap.scss
   return
 }
 
-if [[ -f ./src/scss/core/_bootstrap.scss || -d ./src/scss/core/bootstrap ]]
+if [[ -f ./src/scss/core/_bootstrap.scss || -f ./src/scss/core/_bootstrap-sprockets.scss || -d ./src/scss/core/bootstrap/ ]]
 then
-  echo 'file already exists/'
+  echo 'bootstrap files are already exists/'
 else
   echo 'start copy bootstrap files.'
   copy:bootstrap

@@ -1,7 +1,7 @@
 {
   "name": "gulp-web-starter",
   "uri": "https://github.com/vwxyutarooo/gulp-web-starter",
-  "version": "2.0.2",
+  "version": "0.2.1",
   "description": "Environment of web site develop.",
   "scripts": {
     "gulp": "gulp"
@@ -22,7 +22,7 @@
     "gulp-csso": "^1.0.0",
     "gulp-data": "^1.2.0",
     "gulp-filter": "^2.0.2",
-    "gulp-imagemin": "*",
+    "gulp-imagemin": "^2.2.0",
     "gulp-jade": "^1.0.0",
     "gulp-jshint": "^1.9.2",
     "gulp-load-plugins": "^0.8.0",

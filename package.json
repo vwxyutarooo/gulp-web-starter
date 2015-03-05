@@ -4,7 +4,8 @@
   "version": "0.2.1",
   "description": "Environment of web site develop.",
   "scripts": {
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "gulp-server": "gulp default --mode server"
   },
   "author": "Yutaro Miyazaki",
   "license": "MIT",

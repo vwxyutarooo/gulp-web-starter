@@ -19,8 +19,7 @@ Web development environment using
 Choose css framework at the gulpfile.js
 
     'cssBase'      : 'foundation'
-or
-
+    or
     'cssBase'      : 'bootstrap'
 
 Disable installing _s if you want
@@ -43,7 +42,9 @@ You don't need gulp global install anyway. To run gulp with default task.
 
 Normally browserSync runs as with proxy option. To avoid proxy and use as server mode.
 
-    $ npm run gulp --mode server
+    $ npm run gulp -- default --mode server
+    or
+    $ npm run gulp-server
 
 If tunnel option has strings instead of false, gulp-web-starter is automatically enable it.
 

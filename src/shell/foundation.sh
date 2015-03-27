@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function copy:foundation() {
+function copy_foundation() {
   rm -rf ./bower_components/foundation/
   bower install foundation --save
   mv ./bower_components/foundation/scss/foundation/ ./src/scss/core/foundation/
@@ -14,6 +14,6 @@ then
   echo 'foundation files are already exists/'
 else
   echo 'start copy foundation files.'
-  copy:foundation
+  copy_foundation
 fi
 

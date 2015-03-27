@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function copy:bootstrap() {
+function copy_bootstrap() {
   rm -rf ./bower_components/bootstrap-sass-official/
   bower install bootstrap-sass-official --save
   mv ./bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/ ./src/scss/core/bootstrap/
@@ -14,6 +14,6 @@ then
   echo 'bootstrap files are already exists/'
 else
   echo 'start copy bootstrap files.'
-  copy:bootstrap
+  copy_bootstrap
 fi
 

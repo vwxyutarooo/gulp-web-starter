@@ -21,6 +21,8 @@ Choose css framework at the gulpfile.js
     'cssBase'      : 'foundation'
     or
     'cssBase'      : 'bootstrap'
+    or
+    'cssBase'      : false
 
 Disable installing _s if you want
 

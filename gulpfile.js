@@ -20,7 +20,7 @@ var gulp          = require('gulp'),
 // @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
 var opt = {
   'cssBase'      : 'foundation',
-  '_s'           : true,
+  '_s'           : false,
   'proxy'        : 'wordpress.dev',
   'tunnel'       : false,
   'browser'      : 'google chrome canary'
@@ -40,6 +40,12 @@ var paths = {
   'destJs'       : 'assets/js/',
   'htmlDir'      : 'src/html',
   'phpFiles'     : ['*.php', '**/*.php']
+};
+
+var rubySassConf = {
+  loadPath       : [],
+  require        : 'sass-globbing',
+  sourcemap      : true
 };
 
 /*------------------------------------------------------------------------------
@@ -111,11 +117,17 @@ gulp.task('js:hint', function() {
 /*------------------------------------------------------------------------------
  * 7. sass Tasks
 ------------------------------------------------------------------------------*/
+switch(opt.cssBase) {
+  case 'foundation':
+    rubySassConf.loadPath.push('bower_components/foundation/scss');
+    break;
+  case 'bootstrap':
+    rubySassConf.loadPath.push('bower_components/bootstrap-sass-official/assets/stylesheets');
+    break;
+}
+
 gulp.task('scss', function() {
-    return $.rubySass(paths.srcScss, {
-      require: 'sass-globbing',
-      sourcemap: true
-    })
+    return $.rubySass(paths.srcScss, rubySassConf)
     .on('error', function(err) { console.error('Error!', err.message); })
     .pipe($.autoprefixer({
       browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
@@ -143,7 +155,7 @@ gulp.task('sprite', function() {
   .pipe($.spritesmith({
     imgName: 'sprite.png',
     imgPath: '../images/sprite.png',
-    cssName: '_ma-sprite.scss'
+    cssName: '__sprite.scss'
   }));
   spriteData.img
     .pipe($.imagemin({ optimizationLevel: 3 }))

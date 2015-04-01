@@ -3,7 +3,6 @@
 function copy_bootstrap() {
   rm -rf ./bower_components/bootstrap-sass-official/
   bower install bootstrap-sass-official --save
-  mv ./bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/ ./src/scss/core/bootstrap/
   mv ./bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap-sprockets.scss ./src/scss/core/_bootstrap-sprockets.scss
   mv ./bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss ./src/scss/core/_bootstrap.scss
   return

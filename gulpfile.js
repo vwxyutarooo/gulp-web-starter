@@ -57,6 +57,8 @@ gulp.task('install:cssBase', function() {
   if(opt.cssBase) {
     return gulp.src('src/shell/', {read: false})
       .pipe($.shell(['bash src/shell/' + opt.cssBase + '.sh']))
+  } else {
+    console.log('Skip installing css framework');
   }
 });
 
@@ -64,6 +66,8 @@ gulp.task('install:_s', function() {
   if (opt._s === true) {
     return gulp.src('src/shell/_s.sh', {read: false})
       .pipe($.shell(['bash src/shell/_s.sh']));
+  } else {
+    console.log('Skip installing _s');
   }
 });
 

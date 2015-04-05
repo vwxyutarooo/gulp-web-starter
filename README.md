@@ -18,23 +18,22 @@ Web development environment using
 ## Setup
 Choose css framework at the gulpfile.js
 
-    'cssBase'      : 'foundation'
+    22: 'cssBase'      : 'foundation'
     or
-    'cssBase'      : 'bootstrap'
+    22: 'cssBase'      : 'bootstrap'
     or
-    'cssBase'      : false
+    22: 'cssBase'      : false
 
-Disable installing _s if you want
+Enable/Disable installing _s
 
-    '_s'           : false
+    23: '_s'           : true
+    or
+    23: '_s'           : false
 
-To build hole of project with foundation and _s
+Once you to build whole of project with css framework and _s
 
     $ npm install; npm run gulp -- init
 
-Normal setup for your project members
-
-    $ npm install; bower install
 
 
 ## How to run gulp tasks
@@ -50,7 +49,7 @@ Normally browserSync runs as with proxy option. To avoid proxy and use as server
 
 If tunnel option has strings instead of false, gulp-web-starter is automatically enable it.
 
-    'tunnel'       : 'randomstring23232',
+    25: 'tunnel'       : 'randomstring23232',
 
 To call specified task.
 
@@ -112,12 +111,14 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   │   │   ├── _default.scss
     │   │   │   └── _mixins.scss
     │   │   ├── layout
-    │   │   │   ├── _l-common.scss
-    │   │   │   ├── _l-footer.scss
-    │   │   │   └── _l-header.scss
+    │   │   │   ├── _layout.scss
+    │   │   │   ├── _footer.scss
+    │   │   │   └── _header.scss
     │   │   └── module
     │   │       ├── _m-buttons.scss
     │   │       └── _m-grid.scss
     │   └── shell
+    │       └── _s.sh
+    │       └── bootstrap.sh
     │       └── foundation.sh
     └── style.css

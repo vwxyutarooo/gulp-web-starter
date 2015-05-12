@@ -1,7 +1,7 @@
 {
   "name": "gulp-web-starter",
   "uri": "https://github.com/vwxyutarooo/gulp-web-starter",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Environment of web site develop.",
   "scripts": {
     "gulp": "gulp",

@@ -85,7 +85,7 @@ gulp.task('browser-sync', function() {
   }
   if (opt.tunnel != false) args.tunnel = opt.tunnel;
   args.browser = opt.browser;
-  browserSync(args);
+  browserSync.init(args);
 });
 
 gulp.task('bs-reload', function() {

@@ -4,12 +4,13 @@
 ------------------------------------------------------------------------------*/
 var gulp          = require('gulp'),
   $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
+  argv            = require('yargs').argv,
   browserify      = require('browserify'),
   browserSync     = require('browser-sync'),
   buffer          = require('vinyl-buffer'),
   runSequence     = require('run-sequence'),
   source          = require('vinyl-source-stream'),
-  argv            = require('yargs').argv
+  watchify        = require('watchify')
 ;
 
 /*------------------------------------------------------------------------------
@@ -106,21 +107,34 @@ gulp.task('jade', function() {
 /*------------------------------------------------------------------------------
  * 6. js Tasks
 ------------------------------------------------------------------------------*/
-gulp.task('js', function() {
-  browserify('./src/js/app.js')
+gulp.task('js:browserify', function() {
+  var bundler = browserify(opt.srcJs + '/app.js');
+  return jsBundle(bundler);
+});
+
+gulp.task('js:watchify', function() {
+  var bundler = watchify(browserify(paths.srcJs + '/app.js'));
+  bundler.on('update', function() {
+    jsBundle(bundler);
+  });
+  bundler.on('log', function(message) {
+    console.log(message);
+  });
+  return jsBundle(bundler);
+});
+
+function jsBundle(bundler) {
+  return bundler
     .bundle()
+    .on('error', function (err) {
+      console.log(err.toString());
+      this.emit("end");
+    })
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe($.uglify())
     .pipe(gulp.dest(paths.destDir + 'js'))
-    .pipe(browserSync.reload({ stream: true }));
-});
-
-gulp.task('js:hint', function() {
-  return gulp.src(paths.srcJs + 'app/*.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('default'));
-});
+};
 
 /*------------------------------------------------------------------------------
  * 7. sass Tasks
@@ -176,7 +190,7 @@ gulp.task('sprite', function() {
 ------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
   gulp.watch([paths.srcJade + '**/*.jade'],    ['jade', browserSync.reload]);
-  gulp.watch([paths.srcJs   + '**/*.js'],      ['js', 'js:hint']);
+  gulp.watch([paths.srcJs   + '**/*.js'],      ['js:watchify', browserSync.reload]);
   gulp.watch([paths.srcScss + '**/*.scss'],    ['scss']);
   gulp.watch([paths.srcImg  + 'sprite/*.png'], ['sprite']);
   gulp.watch([paths.reloadOnly]) .on('change', browserSync.reload);

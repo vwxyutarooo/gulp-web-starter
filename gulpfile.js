@@ -46,7 +46,7 @@ var paths = {
 var rubySassConf = {
   loadPath       : [],
   require        : 'sass-globbing',
-  sourcemap      : true
+  sourcemap      : false
 };
 
 /*------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ function jsBundle(bundler) {
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe($.uglify())
-    .pipe(gulp.dest(paths.destDir + 'js'));d
+    .pipe(gulp.dest(paths.destDir + 'js'));
 };
 
 /*------------------------------------------------------------------------------
@@ -156,7 +156,6 @@ gulp.task('scss', function() {
       cascade: false
     }))
     .pipe($.csso())
-    .pipe($.sourcemaps.write('maps', { includeContent: false }))
     .pipe(gulp.dest(paths.destCss))
     .pipe($.filter('**/*.css'))
     .pipe(browserSync.reload({ stream: true }));

@@ -108,7 +108,7 @@ gulp.task('jade', function() {
  * 6. js Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('js:browserify', function() {
-  var bundler = browserify(opt.srcJs + '/app.js');
+  var bundler = browserify(paths.srcJs + '/app.js');
   return jsBundle(bundler);
 });
 
@@ -133,7 +133,7 @@ function jsBundle(bundler) {
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe($.uglify())
-    .pipe(gulp.dest(paths.destDir + 'js'));
+    .pipe(gulp.dest(paths.destDir + 'js'));d
 };
 
 /*------------------------------------------------------------------------------

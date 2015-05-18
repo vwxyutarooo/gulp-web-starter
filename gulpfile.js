@@ -113,7 +113,7 @@ gulp.task('js:browserify', function() {
 });
 
 gulp.task('js:watchify', function() {
-  var bundler = watchify(browserify(paths.srcJs + '/app.js'));
+  var bundler = watchify(browserify(paths.srcJs + '/app.js', watchify.args));
   bundler.on('update', function() {
     jsBundle(bundler);
   });
@@ -133,7 +133,7 @@ function jsBundle(bundler) {
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe($.uglify())
-    .pipe(gulp.dest(paths.destDir + 'js'))
+    .pipe(gulp.dest(paths.destDir + 'js'));
 };
 
 /*------------------------------------------------------------------------------

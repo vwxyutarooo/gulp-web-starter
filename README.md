@@ -75,14 +75,11 @@ To call specified task.
 ## File structure
 Basically source file placed in "src/". It passed to "shared/" as destination through the "gulp".
 
-    .
     ├── README.md
     ├── bower.json
     ├── gulpfile.js
     ├── package.json
     ├── src
-    │   ├── html
-    │   │   └── index.html
     │   ├── images
     │   │   └── sprite
     │   │       └── _dummy.png
@@ -106,19 +103,21 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   │   └── setting.json
     │   ├── scss
     │   │   ├── app.scss
+    │   │   ├── base
+    │   │   │   ├── _grid.scss
+    │   │   │   └── _partials.scss
     │   │   ├── core
     │   │   │   ├── _config.scss
     │   │   │   ├── _default.scss
     │   │   │   └── _mixins.scss
     │   │   ├── layout
-    │   │   │   ├── _layout.scss
     │   │   │   ├── _footer.scss
-    │   │   │   └── _header.scss
+    │   │   │   ├── _header.scss
+    │   │   │   └── _layout.scss
     │   │   └── module
-    │   │       ├── _m-buttons.scss
-    │   │       └── _m-grid.scss
+    │   │       └── _buttons.scss
     │   └── shell
-    │       └── _s.sh
-    │       └── bootstrap.sh
+    │       ├── _s.sh
+    │       ├── bootstrap.sh
     │       └── foundation.sh
     └── style.css

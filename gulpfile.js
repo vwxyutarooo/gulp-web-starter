@@ -176,12 +176,12 @@ gulp.task('sprite', function() {
   .pipe($.spritesmith({
     imgName: 'sprite.png',
     imgPath: '../images/sprite.png',
-    cssName: '__sprite.scss'
+    cssName: '_sprite.scss'
   }));
   spriteData.img
     .pipe($.imagemin({ optimizationLevel: 3 }))
     .pipe(gulp.dest(paths.destImg));
-  spriteData.css.pipe(gulp.dest(paths.srcScss + 'module'));
+  spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));
 });
 
 /*------------------------------------------------------------------------------

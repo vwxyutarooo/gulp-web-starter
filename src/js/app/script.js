@@ -3,12 +3,13 @@ module.exports = (function($){
 
     /* Setup Foundation
     ---------------------------------------- */
-    // var fa = {
-    //   init: function() {
-    //     if(typeof $.prototype.foundation !== 'function') return;
-    //     $(document).foundation();
-    //   }
-    // fa.init();
+    var fa = {
+      init: function() {
+        if(typeof $.prototype.foundation !== 'function') return;
+        $(document).foundation();
+      }
+    }
+    fa.init();
 
   });
 })(jQuery);

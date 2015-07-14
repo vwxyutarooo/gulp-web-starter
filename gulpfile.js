@@ -175,7 +175,7 @@ gulp.task('sprite', function() {
   var spriteData = gulp.src(paths.srcImg + 'sprite/*.png')
   .pipe($.spritesmith({
     imgName: 'sprite.png',
-    imgPath: '../images/sprite.png',
+    imgPath: './' + paths.destImg + 'sprite.png',
     cssName: '_sprite.scss'
   }));
   spriteData.img
@@ -192,7 +192,7 @@ gulp.task('watch', function() {
   gulp.watch([paths.srcJs   + '**/*.js'],      ['js:watchify', browserSync.reload]);
   gulp.watch([paths.srcScss + '**/*.scss'],    ['scss']);
   gulp.watch([paths.srcImg  + 'sprite/*.png'], ['sprite']);
-  gulp.watch([paths.reloadOnly]) .on('change', browserSync.reload);
+  gulp.watch([paths.reloadOnly]).on('change', browserSync.reload);
 });
 
 gulp.task('default', [

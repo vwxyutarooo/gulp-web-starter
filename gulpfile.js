@@ -6,8 +6,12 @@ var gulp          = require('gulp'),
   $               = require('gulp-load-plugins')({ pattern: ['gulp-*', 'gulp.*'] }),
   argv            = require('yargs').argv,
   browserify      = require('browserify'),
-  browserSync     = require('browser-sync'),
+  browserSync     = require('browser-sync').create(),
   buffer          = require('vinyl-buffer'),
+  fs              = require('fs'),
+  glob            = require('glob'),
+  merge           = require('merge-stream'),
+  path            = require('path'),
   runSequence     = require('run-sequence'),
   source          = require('vinyl-source-stream'),
   watchify        = require('watchify')
@@ -39,7 +43,7 @@ var paths = {
   'destImg'      : 'assets/images/',
   'destCss'      : 'assets/css/',
   'destJs'       : 'assets/js/',
-  'htmlDir'      : 'src/html',
+  'htmlDir'      : '',
   'reloadOnly'   : ['*.php', '**/*.php']
 };
 
@@ -48,6 +52,12 @@ var rubySassConf = {
   require        : 'sass-globbing',
   sourcemap      : false
 };
+
+function getFolders(dir) {
+  return fs.readdirSync(dir).filter(function(file) {
+    return fs.statSync(path.join(dir, file)).isDirectory();
+  });
+}
 
 /*------------------------------------------------------------------------------
  * 3. initializing bower_components
@@ -108,29 +118,33 @@ gulp.task('jade', function() {
  * 6. js Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('js:browserify', function() {
-  var bundler = browserify(paths.srcJs + '/app.js');
-  return jsBundle(bundler);
+  var folders = getFolders(paths.srcJs);
+  var tasks = folders.map(function(folder) {
+    var bundler = browserify(path.join(paths.srcJs, folder, '/app.js'));
+    return jsBundle(bundler, folder);
+  });
+  return merge(tasks);
 });
 
 gulp.task('js:watchify', function() {
-  var bundler = watchify(browserify(paths.srcJs + '/app.js', watchify.args));
-  bundler.on('update', function() {
-    jsBundle(bundler);
+  var folders = getFolders(paths.srcJs);
+  var tasks = folders.map(function(folder) {
+    var bundler = watchify(browserify(path.join(paths.srcJs, folder, '/app.js'), watchify.args));
+    bundler.on('update', function() { jsBundle(bundler, folder); });
+    bundler.on('log', function(message) { console.log(message); });
+    return jsBundle(bundler, folder);
   });
-  bundler.on('log', function(message) {
-    console.log(message);
-  });
-  return jsBundle(bundler);
+  return merge(tasks);
 });
 
-function jsBundle(bundler) {
+function jsBundle(bundler, folder) {
   return bundler
     .bundle()
     .on('error', function (err) {
       console.log(err.toString());
-      this.emit("end");
+      this.emit('end');
     })
-    .pipe(source('bundle.js'))
+    .pipe(source('bundle_' + folder + '.js'))
     .pipe(buffer())
     .pipe($.uglify())
     .pipe(gulp.dest(paths.destDir + 'js'));
@@ -157,7 +171,7 @@ gulp.task('scss', function() {
     }))
     .pipe($.csso())
     .pipe(gulp.dest(paths.destCss))
-    .pipe(browserSync.stream({ match: '**/*.css' }));
+    .pipe(browserSync.stream());
 });
 
 /*------------------------------------------------------------------------------
@@ -171,32 +185,55 @@ gulp.task('image-min', function() {
 });
 
 gulp.task('sprite', function() {
-  var spriteData = gulp.src(paths.srcImg + 'sprite/*.png')
-  .pipe($.spritesmith({
-    imgName: 'sprite.png',
-    imgPath: './' + paths.destImg + 'sprite.png',
-    cssName: '_sprite.scss'
-  }));
-  spriteData.img
-    .pipe($.imagemin({ optimizationLevel: 3 }))
-    .pipe(gulp.dest(paths.destImg));
-  spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));
+  var folders = getFolders(paths.srcImg + 'sprite');
+  var tasks = folders.map(function(folder) {
+    var spriteData = gulp.src(path.join(paths.srcImg + 'sprite', folder, '/*.png'))
+    .pipe($.spritesmith({
+      imgName: 'sprite-' + folder + '.png',
+      imgPath: '/' + paths.destImg + 'sprite-' + folder + '.png',
+      cssName: '_sprite-' + folder + '.scss'
+    }));
+    spriteData.img
+      .pipe($.imagemin({ optimizationLevel: 3 }))
+      .pipe(gulp.dest(paths.destImg));
+    spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));
+  });
+});
+
+gulp.task('sprite:inline-svg', function() {
+  var folders = getFolders(paths.srcImg + 'sprite-svg');
+  var tasks = folders.map(function(folder) {
+    return gulp.src(path.join(paths.srcImg + 'sprite-svg', folder, '/*.svg'))
+      .pipe($.svgSprite({
+        dest: './',
+        mode: { symbol: { dest: './' } }
+      }))
+      .pipe($.rename({
+        basename: 'symbol',
+        dirname: './',
+        prefix: 'sprite-' + folder + '.'
+      }))
+      .pipe(gulp.dest(paths.destImg));
+  });
+  return merge(tasks);
 });
 
 /*------------------------------------------------------------------------------
  * 9. gulp Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
-  gulp.watch([paths.srcJade + '**/*.jade'],    ['jade', browserSync.reload]);
-  gulp.watch([paths.srcJs   + '**/*.js'],      ['js:watchify', browserSync.reload]);
-  gulp.watch([paths.srcScss + '**/*.scss'],    ['scss']);
-  gulp.watch([paths.srcImg  + 'sprite/*.png'], ['sprite']);
+  gulp.watch([paths.srcJade + '**/*.jade'],       ['jade', browserSync.reload]);
+  gulp.watch([paths.srcJs   + '**/*.js'],         ['js:watchify', browserSync.reload]);
+  gulp.watch([paths.srcScss + '**/*.scss'],       ['scss']);
+  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], ['sprite']);
+  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], ['sprite:inline-svg', browserSync.reload]);
   gulp.watch([paths.reloadOnly]).on('change', browserSync.reload);
 });
 
 gulp.task('default', [
   'browser-sync',
   'sprite',
+  'sprite:inline-svg',
   'watch'
 ]);
 

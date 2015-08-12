@@ -157,8 +157,7 @@ gulp.task('scss', function() {
     }))
     .pipe($.csso())
     .pipe(gulp.dest(paths.destCss))
-    .pipe($.filter('**/*.css'))
-    .pipe(browserSync.reload({ stream: true }));
+    .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
 /*------------------------------------------------------------------------------

@@ -17,6 +17,7 @@ var gulp          = require('gulp'),
   watchify        = require('watchify')
 ;
 
+
 /*------------------------------------------------------------------------------
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
@@ -37,14 +38,14 @@ var paths = {
   'srcImg'       : 'src/images/',
   'srcJade'      : 'src/jade/',
   'srcJs'        : 'src/js/',
-  'srcJson'      : 'src/json/',
+  'srcJson'      : './src/json/',
   'srcScss'      : 'src/scss/',
-  'destDir'      : 'assets/',
+  'destDir'      : './assets/',
   'destImg'      : 'assets/images/',
-  'destCss'      : 'assets/css/',
-  'destJs'       : 'assets/js/',
-  'htmlDir'      : '',
-  'reloadOnly'   : ['*.php', '**/*.php']
+  'destCss'      : './assets/css/',
+  'destJs'       : './assets/js/',
+  'htmlDir'      : './',
+  'reloadOnly'   : ['**/*.php']
 };
 
 var rubySassConf = {
@@ -58,6 +59,7 @@ function getFolders(dir) {
     return fs.statSync(path.join(dir, file)).isDirectory();
   });
 }
+
 
 /*------------------------------------------------------------------------------
  * 3. initializing bower_components
@@ -82,29 +84,9 @@ gulp.task('install:_s', function() {
   }
 });
 
-/*------------------------------------------------------------------------------
- * 4. browser-sync
-------------------------------------------------------------------------------*/
-gulp.task('browser-sync', function() {
-  var args = {};
-  if (argv.mode == 'server' ) {
-    args.server = { baseDir: paths.root };
-    args.startPath = paths.htmlDir;
-  } else {
-    args.proxy = opt.proxy;
-    args.open = 'external';
-  }
-  if (opt.tunnel != false) args.tunnel = opt.tunnel;
-  args.browser = opt.browser;
-  browserSync.init(args);
-});
-
-gulp.task('bs-reload', function() {
-  browserSync.reload()
-});
 
 /*------------------------------------------------------------------------------
- * 5. Jade Tasks
+ * 4. Jade Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('jade', function() {
   return gulp.src(paths.srcJade + '*.jade')
@@ -114,8 +96,9 @@ gulp.task('jade', function() {
     .pipe(gulp.dest(paths.htmlDir));
 });
 
+
 /*------------------------------------------------------------------------------
- * 6. js Tasks
+ * 5. js Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('js:browserify', function() {
   var folders = getFolders(paths.srcJs);
@@ -150,8 +133,9 @@ function jsBundle(bundler, folder) {
     .pipe(gulp.dest(paths.destDir + 'js'));
 };
 
+
 /*------------------------------------------------------------------------------
- * 7. sass Tasks
+ * 6. sass Tasks
 ------------------------------------------------------------------------------*/
 switch(opt.cssBase) {
   case 'foundation':
@@ -171,11 +155,12 @@ gulp.task('scss', function() {
     }))
     .pipe($.csso())
     .pipe(gulp.dest(paths.destCss))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
+
 /*------------------------------------------------------------------------------
- * 8. Image file tasks
+ * 7. Image file tasks
 ------------------------------------------------------------------------------*/
 gulp.task('image-min', function() {
   gulp.src(paths.destImg + 'page/**/*.*')
@@ -218,23 +203,64 @@ gulp.task('sprite:inline-svg', function() {
   return merge(tasks);
 });
 
+
+/*------------------------------------------------------------------------------
+ * 8. browser-sync
+------------------------------------------------------------------------------*/
+gulp.task('jade:bs', ['jade'], function() {
+  browserSync.reload();
+  return;
+});
+gulp.task('js:bs', ['js:watchify'], function() {
+  browserSync.reload();
+  return;
+});
+gulp.task('sprite:bs', ['sprite'], function() {
+  browserSync.reload();
+  return;
+});
+gulp.task('inline-svg:bs', ['sprite:inlin-svg'], function() {
+  browserSync.reload();
+  return;
+});
+
+gulp.task('browser-sync', function() {
+  var args = {};
+  if (argv.mode == 'server' ) {
+    args.server = { baseDir: paths.root };
+    args.startPath = paths.htmlDir;
+  } else {
+    args.proxy = opt.proxy;
+    args.open = 'external';
+  }
+  if (opt.tunnel != false) args.tunnel = opt.tunnel;
+  args.browser = opt.browser;
+  browserSync.init(args);
+
+  gulp.watch([paths.srcJade + '**/*.jade'], {interval: 500}, ['jade:bs']);
+  gulp.watch([paths.srcJs   + '**/*.js'], {interval: 500}, ['js:bs']);
+  gulp.watch([paths.srcScss + '**/*.scss'], {interval: 500}, ['scss']);
+  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], {interval: 500}, ['sprite:bs']);
+  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], {interval: 500}, ['inline-svg:bs']);
+  gulp.watch([paths.reloadOnly], {interval: 500}).on('change', browserSync.reload);
+});
+
+
 /*------------------------------------------------------------------------------
  * 9. gulp Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('watch', function() {
-  gulp.watch([paths.srcJade + '**/*.jade'],       ['jade', browserSync.reload]);
-  gulp.watch([paths.srcJs   + '**/*.js'],         ['js:watchify', browserSync.reload]);
-  gulp.watch([paths.srcScss + '**/*.scss'],       ['scss']);
-  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], ['sprite']);
-  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], ['sprite:inline-svg', browserSync.reload]);
-  gulp.watch([paths.reloadOnly]).on('change', browserSync.reload);
+  gulp.watch([paths.srcJade + '**/*.jade'], {interval: 500}, ['jade']);
+  gulp.watch([paths.srcJs   + '**/*.js'], {interval: 500}, ['js:watchify']);
+  gulp.watch([paths.srcScss + '**/*.scss'], {interval: 500}, ['scss']);
+  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], {interval: 500}, ['sprite']);
+  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], {interval: 500}, ['sprite:inline-svg']);
 });
 
 gulp.task('default', [
   'browser-sync',
   'sprite',
   'sprite:inline-svg',
-  'watch'
 ]);
 
 gulp.task('init', function(cb) {

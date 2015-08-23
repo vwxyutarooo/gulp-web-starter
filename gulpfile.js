@@ -121,15 +121,16 @@ gulp.task('js:watchify', function() {
 });
 
 function jsBundle(bundler, folder) {
-  return bundler
-    .bundle()
+  return bundler.bundle()
+    .pipe(source('bundle_' + folder + '.js'))
+    .pipe(buffer())
     .on('error', function (err) {
       console.log(err.toString());
       this.emit('end');
     })
-    .pipe(source('bundle_' + folder + '.js'))
-    .pipe(buffer())
+    .pipe($.sourcemaps.init({ loadMaps: true }))
     .pipe($.uglify())
+    .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(paths.destDir + 'js'));
 };
 
@@ -147,7 +148,7 @@ switch(opt.cssBase) {
 }
 
 gulp.task('scss', function() {
-    return $.rubySass(paths.srcScss, rubySassConf)
+  return $.rubySass(paths.srcScss, rubySassConf)
     .on('error', function(err) { console.error('Error!', err.message); })
     .pipe($.autoprefixer({
       browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
@@ -211,7 +212,7 @@ gulp.task('jade:bs', ['jade'], function() {
   browserSync.reload();
   return;
 });
-gulp.task('js:bs', ['js:watchify'], function() {
+gulp.task('js:bs', ['js:browserify'], function() {
   browserSync.reload();
   return;
 });

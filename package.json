@@ -1,7 +1,7 @@
 {
   "name": "gulp-web-starter",
   "uri": "https://github.com/vwxyutarooo/gulp-web-starter",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Environment of web site develop.",
   "scripts": {
     "gulp": "gulp",
@@ -32,6 +32,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-ruby-sass": "^1.0.1",
     "gulp-shell": "^0.4.0",
+    "gulp-sourcemaps": "^1.5.2",
     "gulp-svg-sprite": "^1.2.8",
     "gulp-uglify": "^1.0.2",
     "gulp.spritesmith": "^4.0.0",

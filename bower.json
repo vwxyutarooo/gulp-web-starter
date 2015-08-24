@@ -15,10 +15,5 @@
   ],
   "dependencies": {
     "jquery": "~2.1.3"
-  },
-  "exportsOverride": {
-    "jquery": {
-      "": "**/jquery.js"
-    }
   }
 }

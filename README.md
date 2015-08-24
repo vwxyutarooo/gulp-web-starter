@@ -16,21 +16,22 @@ Web development environment using
 
 
 ## Setup
-Choose css framework at the gulpfile.js
+Edit `src/gulp/config.js`
+Choose css framework at the
 
-    22: 'cssBase'      : 'foundation'
+    'cssBase'      : 'foundation'
     or
-    22: 'cssBase'      : 'bootstrap'
+    'cssBase'      : 'bootstrap'
     or
-    22: 'cssBase'      : false
+    'cssBase'      : false
 
 Enable/Disable installing _s
 
-    23: '_s'           : true
+    '_s'           : true
     or
-    23: '_s'           : false
+    '_s'           : false
 
-Once you to build whole of project with css framework and _s
+After that, Once you initializing project with css framework and _s
 
     $ npm install; npm run gulp -- init
 
@@ -49,7 +50,7 @@ Normally browserSync runs as with proxy option. To avoid proxy and use as server
 
 If tunnel option has strings instead of false, gulp-web-starter is automatically enable it.
 
-    25: 'tunnel'       : 'randomstring23232',
+    'tunnel'       : 'randomstring23232',
 
 To call specified task.
 

@@ -18,7 +18,7 @@ var paths         = require('./src/gulp/config.js').paths;
 var rubySassConf  = require('./src/gulp/config.js').rubySassConf;
 
 $.autoprefixer    = require('gulp-autoprefixer');
-$.csso            = require('gulp-csso');
+$.minifyCss       = require('gulp-minify-css');
 $.rubySass        = require('gulp-ruby-sass');
 $.sourcemaps      = require('gulp-sourcemaps');
 
@@ -28,10 +28,10 @@ $.sourcemaps      = require('gulp-sourcemaps');
 ------------------------------------------------------------------------------*/
 switch(opt.cssBase) {
   case 'foundation':
-    rubySassConf.loadPath.push('bower_components/foundation/scss');
+    rubySassConf.loadPath.push(paths.srcBower + 'foundation/scss');
     break;
   case 'bootstrap':
-    rubySassConf.loadPath.push('bower_components/bootstrap-sass-official/assets/stylesheets');
+    rubySassConf.loadPath.push(paths.srcBower + 'bootstrap-sass-official/assets/stylesheets');
     break;
 }
 
@@ -42,7 +42,11 @@ gulp.task('scss', function() {
       browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
       cascade: false
     }))
-    .pipe($.csso())
+    .pipe($.minifyCss())
+    .pipe($.sourcemaps.write('maps', {
+      includeContent: false,
+      sourceRoot: paths.srcScss
+    }))
     .pipe(gulp.dest(paths.destCss))
     .pipe(browserSync.stream({ match: '**/*.css' }));
 });
@@ -63,7 +67,7 @@ gulp.task('sprite:bs', ['sprite'], function() {
   browserSync.reload();
   return;
 });
-gulp.task('inline-svg:bs', ['sprite:inlin-svg'], function() {
+gulp.task('inline-svg:bs', ['sprite:inline-svg'], function() {
   browserSync.reload();
   return;
 });

@@ -20,16 +20,17 @@ $.uglify          = require('gulp-uglify');
 ------------------------------------------------------------------------------*/
 var jsBundle = function(bundler, folder) {
   return bundler.bundle()
-    .pipe(source('bundle_' + folder + '.js'))
-    .pipe(buffer())
     .on('error', function (err) {
       console.log(err.toString());
       this.emit('end');
     })
+    .pipe(source('bundle_' + folder + '.js'))
+    .pipe(buffer())
     .pipe($.sourcemaps.init({ loadMaps: true }))
     .pipe($.uglify())
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(paths.destDir + 'js'));
+    // .pipe(browserSync.stream({ match: **/*.js }));
 };
 
 gulp.task('js:browserify', function() {
@@ -47,7 +48,7 @@ gulp.task('js:watchify', function() {
     var bundler = watchify(browserify(path.join(paths.srcJs, folder, '/app.js'), watchify.args));
     bundler.on('update', function() { jsBundle(bundler, folder); });
     bundler.on('log', function(message) { console.log(message); });
-    return _this.jsBundle(bundler, folder);
+    return jsBundle(bundler, folder);
   });
   return merge(tasks);
 });

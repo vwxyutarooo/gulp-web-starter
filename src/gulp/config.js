@@ -20,6 +20,7 @@ module.exports = {
   // basic locations
   'paths': {
     'root'         : './',
+    'srcBower'     : 'bower_components/'
     'srcDir'       : 'src/',
     'srcImg'       : 'src/images/',
     'srcJade'      : 'src/jade/',
@@ -27,7 +28,7 @@ module.exports = {
     'srcJson'      : './src/json/',
     'srcScss'      : 'src/scss/',
     'destDir'      : './assets/',
-    'destImg'      : 'assets/images/',
+    'destImg'      : './assets/images/',
     'destCss'      : './assets/css/',
     'destJs'       : './assets/js/',
     'htmlDir'      : './',
@@ -36,6 +37,6 @@ module.exports = {
   'rubySassConf': {
     loadPath       : [],
     require        : 'sass-globbing',
-    sourcemap      : false
+    sourcemap      : true
   }
 }

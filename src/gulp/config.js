@@ -34,9 +34,7 @@ module.exports = {
     'htmlDir'      : './',
     'reloadOnly'   : ['**/*.php']
   },
-  'rubySassConf': {
-    loadPath       : [],
-    require        : 'sass-globbing',
-    sourcemap      : true
+  'nodeSassConf': {
+    includePaths   : []
   }
 }

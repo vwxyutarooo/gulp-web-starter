@@ -15,7 +15,7 @@ var browserSync   = require('browser-sync').create();
 var gulp          = require('gulp');
 var opt           = require('./src/gulp/config.js').opt;
 var paths         = require('./src/gulp/config.js').paths;
-var rubySassConf  = require('./src/gulp/config.js').rubySassConf;
+var nodeSassConf  = require('./src/gulp/config.js').nodeSassConf;
 
 $.autoprefixer    = require('gulp-autoprefixer');
 $.minifyCss       = require('gulp-minify-css');
@@ -28,16 +28,19 @@ $.sourcemaps      = require('gulp-sourcemaps');
 ------------------------------------------------------------------------------*/
 switch(opt.cssBase) {
   case 'foundation':
-    rubySassConf.loadPath.push(paths.srcBower + 'foundation/scss');
+    nodeSassConf.includePaths.push(paths.srcBower + 'foundation/scss');
     break;
   case 'bootstrap':
-    rubySassConf.loadPath.push(paths.srcBower + 'bootstrap-sass-official/assets/stylesheets');
+    nodeSassConf.includePaths.push(paths.srcBower + 'bootstrap-sass-official/assets/stylesheets');
     break;
 }
 
-gulp.task('scss', function() {
-  return $.rubySass(paths.srcScss, rubySassConf)
-    .on('error', function(err) { console.error('Error!', err.message); })
+gulp.task('sass:node', function() {
+  return gulp.src(paths.srcScss + '*.scss')
+    .pipe($.changed(paths.destCss, { extension: '.css' }))
+    .pipe($.sourcemaps.init())
+    .pipe($.cssGlobbing({ extensions: ['.scss'] }))
+    .pipe($.sass(nodeSassConf).on('error', $.sass.logError))
     .pipe($.autoprefixer({
       browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
       cascade: false
@@ -87,7 +90,7 @@ gulp.task('browser-sync', function() {
 
   gulp.watch([paths.srcJade + '**/*.jade'], { interval: 500 }, ['jade:bs']);
   gulp.watch([paths.srcJs   + '**/*.js'], { interval: 500 }, ['js:bs']);
-  gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['scss']);
+  gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['sass:node']);
   gulp.watch([paths.srcImg  + 'sprite/**/*.png'], { interval: 500 }, ['sprite:bs']);
   gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], { interval: 500 }, ['inline-svg:bs']);
   gulp.watch([paths.reloadOnly], { interval: 500 }).on('change', browserSync.reload);

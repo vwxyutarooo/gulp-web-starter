@@ -18,8 +18,10 @@ var paths         = require('./src/gulp/config.js').paths;
 var nodeSassConf  = require('./src/gulp/config.js').nodeSassConf;
 
 $.autoprefixer    = require('gulp-autoprefixer');
+$.changed         = require('gulp-changed');
+$.cssGlobbing     = require('gulp-css-globbing');
 $.minifyCss       = require('gulp-minify-css');
-$.rubySass        = require('gulp-ruby-sass');
+$.sass            = require('gulp-sass');
 $.sourcemaps      = require('gulp-sourcemaps');
 
 

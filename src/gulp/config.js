@@ -20,7 +20,7 @@ module.exports = {
   // basic locations
   'paths': {
     'root'         : './',
-    'srcBower'     : 'bower_components/'
+    'srcBower'     : 'bower_components/',
     'srcDir'       : 'src/',
     'srcImg'       : 'src/images/',
     'srcJade'      : 'src/jade/',
@@ -35,6 +35,6 @@ module.exports = {
     'reloadOnly'   : ['**/*.php']
   },
   'nodeSassConf': {
-    includePaths   : []
+    'includePaths'   : []
   }
 }

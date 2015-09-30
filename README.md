@@ -81,9 +81,25 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     ├── gulpfile.js
     ├── package.json
     ├── src
+    │   ├── gulp
+    │   │   ├── bundlejs.js
+    │   │   ├── config.js
+    │   │   ├── functions.js
+    │   │   ├── image.js
+    │   │   ├── install.js
+    │   │   ├── jade.js
+    │   │   └── tasks.js
     │   ├── images
-    │   │   └── sprite
-    │   │       └── _dummy.png
+    │   │   ├── sprite
+    │   │   │   ├── pc
+    │   │   │   │   └── _dummy.png
+    │   │   │   └── sp
+    │   │   │       └── _dummy.png
+    │   │   └── sprite-svg
+    │   │       ├── pc
+    │   │       │   └── dummy.svg
+    │   │       └── sp
+    │   │           └── dummy.svg
     │   ├── jade
     │   │   ├── inc
     │   │   │   ├── core
@@ -97,16 +113,23 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
     │   │   │       └── _m-button.jade
     │   │   └── index.jade
     │   ├── js
-    │   │   ├── app
-    │   │   │   └── script.js
-    │   │   └── app.js
+    │   │   ├── pc
+    │   │   │   ├── app
+    │   │   │   │   └── script.js
+    │   │   │   └── app.js
+    │   │   └── sp
+    │   │       ├── app
+    │   │       │   └── script.js
+    │   │       └── app.js
     │   ├── json
     │   │   └── setting.json
     │   ├── scss
     │   │   ├── app.scss
     │   │   ├── base
     │   │   │   ├── _grid.scss
-    │   │   │   └── _partials.scss
+    │   │   │   ├── _partials.scss
+    │   │   │   ├── _sprite-pc.scss
+    │   │   │   └── _sprite-sp.scss
     │   │   ├── core
     │   │   │   ├── _config.scss
     │   │   │   ├── _default.scss

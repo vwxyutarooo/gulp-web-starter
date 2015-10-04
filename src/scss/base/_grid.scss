@@ -1,2 +1,14 @@
 @charset "utf-8";
 // Basic collumn sizes
+.l-baseColumn {
+  width: 1080px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.l-spColumn {
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: auto;
+  margin-left: auto;
+}

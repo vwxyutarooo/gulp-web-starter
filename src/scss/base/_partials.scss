@@ -1,2 +1,26 @@
 @charset "utf-8";
-// partial classes such as %xxx
+// Clearfix
+%group {
+  &:after {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    height: 0;
+    content: ".";
+    font-size: 0;
+  }
+}
+
+// touch cllout for iOS devices
+%disableTouch {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+// hover to transparent
+%hover {
+  transition: opacity .1s;
+  &:hover {
+    opacity: .7;
+  }
+}

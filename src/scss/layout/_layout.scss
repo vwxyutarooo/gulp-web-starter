@@ -1,1 +1,14 @@
 @charset "utf-8";
+/* l-table
+---------------------------------------- */
+.l-table {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  .l-table__row {
+    display: table-row;
+  }
+  .l-table__cell {
+    display: table-cell;
+  }
+}

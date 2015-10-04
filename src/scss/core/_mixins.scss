@@ -1,29 +1,48 @@
 @charset "utf-8";
-/* =========================================================
-   extends
-========================================================= */
-// Table
-%table {
-  display: table;
-  vertical-align: middle;
-  >*{
-    display: table-row;
-    vertical-align: middle;
-    >*{
-      display: table-cell;
-      vertical-align: middle;
+//***********************
+// disable margin offset
+//
+// @param margin direction
+//***********************
+@mixin marginForce($direction: both) {
+  @if ($direction == 'top' or $direction == 'both' ) {
+    &:before {
+      @extend %marginForce;
+    }
+  }
+  @if ($direction == 'bottom' or $direction == 'both') {
+    &:after {
+      @extend %marginForce;
     }
   }
 }
-// Clearfix
-%group {
-  &:after {
-    display: block;
-    visibility: hidden;
-    clear: both;
-    height: 0;
-    content: ".";
-    font-size: 0;
+%marginForce {
+  content: '.';
+  visibility: hidden;
+  display: block;
+  height: 0;
+  font-size: 0;
+}
+
+//***********************
+// Centering using position absolute
+//
+// @param boolen horizontal
+// @param boolen vertical
+//***********************
+@mixin fixMiddle($x: middle, $y: middle, $top: 0, $right: 0, $bottom: 0, $middle: 0, $position: absolute) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  @if ($x) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  @if ($y) {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
 
@@ -72,9 +91,10 @@
 }
 
 //***********************
-// Use Genericon
-// @link http://genericons.com/
+// use iconfont
+// @link https://github.com/FortAwesome/Font-Awesome
 //
+// @param font-family
 // @param content
 // @param font-size
 // @param vartical-align
@@ -82,18 +102,21 @@
 // @param display
 // @param line-height
 //***********************
-@mixin genericon($content:'\f100', $fontsize: 1em, $valaign: text-bottom, $position: static, $display: inline-block, $line-height: 1em) {
+@mixin iconfont($font-family: '',  $content: '', $fontsize: 1em, $valaign: baseline, $position: static, $display: inline-block, $line-height: 1em) {
   position: $position;
   display: $display;
   content: $content;
   vertical-align: $valaign;
+  text-decoration: inherit;
+  font-weight: normal;
+  font-style: normal;
   font-size: $fontsize;
-  font-family: Genericons;
-  line-height: $line-height;
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
 }
 
 //***********************
-// use font-awesome
+// use icomoon
 // @link https://github.com/FortAwesome/Font-Awesome
 //
 // @param content
@@ -103,23 +126,28 @@
 // @param display
 // @param line-height
 //***********************
-@mixin fa($content: '', $fontsize: 1em, $valaign: baseline, $position: static, $display: inline-block, $line-height: 1em) {
+@mixin icomoon($content: '', $fontsize: 1em, $valaign: baseline, $line-height: 1, $position: static, $display: inline-block) {
+  @extend .icon-#{$content}:before;
   position: $position;
   display: $display;
-  content: $content;
   vertical-align: $valaign;
   text-decoration: inherit;
   font-weight: normal;
   font-style: normal;
   font-size: $fontsize;
-  font-family: FontAwesome;
+  font-family: 'icomoon';
+  line-height: $line-height;
   -webkit-font-smoothing: antialiased;
 }
 
 //***********************
-// css graphic
-//***********************
 // Triangle
+//
+// @param string direction
+// @pram numeric width
+// @param numeric height
+// @param hex or rgba color
+//***********************
 @mixin triangle($direction, $width, $height, $color) {
   width: 0;
   height: 0;
@@ -142,6 +170,13 @@
   }
 }
 
+//***********************
+// Cornered Triangle
+//
+// @param string direction
+// @pram numeric size
+// @param hex or rgba color
+//***********************
 @mixin corner-triangle($corner, $size, $color) {
   width: 0;
   height: 0;

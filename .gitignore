@@ -30,7 +30,6 @@ Thumbs.db
 nbproject
 .sublime-project
 .sublime-workspace
-.csscomb.json
 
 # Folders to ignore
 .hg

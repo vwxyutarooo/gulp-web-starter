@@ -1,13 +1,13 @@
-@charset "utf-8";
+@charset 'utf-8';
 // Clearfix
 %group {
   &:after {
+    font-size: 0;
     display: block;
     visibility: hidden;
     clear: both;
     height: 0;
-    content: ".";
-    font-size: 0;
+    content: '.';
   }
 }
 
@@ -15,6 +15,12 @@
 %disableTouch {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+}
+
+// font-smoothing
+%fontSmoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 // hover to transparent

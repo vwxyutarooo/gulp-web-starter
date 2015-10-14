@@ -18,7 +18,6 @@ var paths         = require('./src/gulp/config.js').paths;
 var nodeSassConf  = require('./src/gulp/config.js').nodeSassConf;
 
 $.autoprefixer    = require('gulp-autoprefixer');
-$.changed         = require('gulp-changed');
 $.cssGlobbing     = require('gulp-css-globbing');
 $.minifyCss       = require('gulp-minify-css');
 $.sass            = require('gulp-sass');
@@ -39,7 +38,6 @@ switch(opt.cssBase) {
 
 gulp.task('sass:node', function() {
   return gulp.src(paths.srcScss + '*.scss')
-    .pipe($.changed(paths.destCss, { extension: '.css' }))
     .pipe($.sourcemaps.init())
     .pipe($.cssGlobbing({ extensions: ['.scss'] }))
     .pipe($.sass(nodeSassConf).on('error', $.sass.logError))

@@ -26,16 +26,18 @@ gulp.task('sprite', function() {
   var folders = functions.getFolders(paths.srcImg + 'sprite');
   var tasks = folders.map(function(folder) {
     var spriteData = gulp.src(path.join(paths.srcImg + 'sprite', folder, '/*.png'))
-    .pipe($.spritesmith({
-      imgName: 'sprite-' + folder + '.png',
-      imgPath: '/' + paths.destImg + 'sprite-' + folder + '.png',
-      cssName: '_sprite-' + folder + '.scss'
-    }));
-    spriteData.img
+      .pipe($.spritesmith({
+        imgName: 'sprite-' + folder + '.png',
+        imgPath: '/' + paths.destImg + 'sprite-' + folder + '.png',
+        cssName: '_sprite-' + folder + '.scss'
+      }));
+    var streamImg = spriteData.img
       .pipe($.imagemin({ optimizationLevel: 3 }))
       .pipe(gulp.dest(paths.destImg));
-    spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));
+    var streamCss = spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));
+    return merge(streamImg, streamCss);
   });
+  return merge(tasks);
 });
 
 gulp.task('sprite:inline-svg', function() {

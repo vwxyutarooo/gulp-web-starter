@@ -1,6 +1,7 @@
 'use strict';
 
 var $             = [];
+var babelify      = require('babelify');
 var browserify    = require('browserify');
 var buffer        = require('vinyl-buffer');
 var functions     = require('./functions.js');
@@ -19,7 +20,7 @@ $.uglify          = require('gulp-uglify');
  * js Tasks
 ------------------------------------------------------------------------------*/
 var jsBundle = function(bundler, folder) {
-  return bundler.bundle()
+  return bundler.transform(babelify.configure({ presets: ['es2015'], ignore: ['**/bower_components/**/*.js'] })).bundle()
     .on('error', function (err) {
       console.log(err.toString());
       this.emit('end');

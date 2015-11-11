@@ -12,7 +12,7 @@
 module.exports = {
   'opt': {
     'cssBase'      : 'foundation',
-    '_s'           : true,
+    '_s'           : false,
     'proxy'        : '192.168.33.10',
     'tunnel'       : false,
     'browser'      : 'google chrome canary'

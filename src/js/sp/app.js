@@ -1,5 +1,11 @@
-/* General scripts
+/* Document Ready
 ---------------------------------------- */
-// var foundation = require('../../bower_components/foundation/js/foundation/foundation.js');
-// var offcanvas = require('../../bower_components/foundation/js/foundation/foundation.offcanvas.js');
-require('./app/script.js');
+import Foundation_Control from './classes/Foundation_Control';
+
+(function($){
+  $(document).ready(function() {
+
+    let FoundationControl = new Foundation_Control('test');
+
+  });
+})(jQuery);

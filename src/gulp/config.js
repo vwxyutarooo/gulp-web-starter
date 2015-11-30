@@ -13,11 +13,17 @@
 module.exports = {
   'opt': {
     'cssBase'      : 'foundation',
-    'cssBaseVer    : 'latest',
+    'cssBaseVer'   : 'latest',
     '_s'           : false,
     'proxy'        : '192.168.33.10',
     'tunnel'       : false,
-    'browser'      : 'google chrome canary'
+    'bs'           : {
+      'browser'    : 'google chrome canary',
+      'ghostMode'  : {
+        'clicks'     : false,
+        'scroll'     : false
+      }
+    }
   },
   // basic locations
   'paths': {

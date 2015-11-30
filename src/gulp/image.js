@@ -1,6 +1,7 @@
 'use strict';
 
 var $             = [];
+var buffer        = require('vinyl-buffer');
 var functions     = require('./functions.js');
 var gulp          = require('gulp');
 var merge         = require('merge-stream');
@@ -22,6 +23,17 @@ gulp.task('imagemin', function() {
     .pipe(gulp.dest(paths.destImg + 'page/'));
 });
 
+var gulp = require('gulp');
+var spritesmith = require('gulp.spritesmith');
+
+gulp.task('sprite', function () {
+  var spriteData = gulp.src('images/*.png').pipe(spritesmith({
+    imgName: 'sprite.png',
+    cssName: 'sprite.css'
+  }));
+  return spriteData.pipe(gulp.dest('path/to/output/'));
+});
+
 gulp.task('sprite', function() {
   var folders = functions.getFolders(paths.srcImg + 'sprite');
   var tasks = folders.map(function(folder) {
@@ -32,6 +44,7 @@ gulp.task('sprite', function() {
         cssName: '_sprite-' + folder + '.scss'
       }));
     var streamImg = spriteData.img
+      .pipe(buffer())
       .pipe($.imagemin({ optimizationLevel: 3 }))
       .pipe(gulp.dest(paths.destImg));
     var streamCss = spriteData.css.pipe(gulp.dest(paths.srcScss + 'base'));

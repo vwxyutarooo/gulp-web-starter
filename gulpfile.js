@@ -77,6 +77,8 @@ gulp.task('inline-svg:bs', ['sprite:inline-svg'], function() {
 
 gulp.task('browser-sync', function() {
   var args = {};
+  args = opt.bs;
+
   if (argv.mode == 'server' ) {
     args.server = { baseDir: paths.root };
     args.startPath = paths.htmlDir;
@@ -84,8 +86,9 @@ gulp.task('browser-sync', function() {
     args.proxy = opt.proxy;
     args.open = 'external';
   }
+
   if (opt.tunnel != false) args.tunnel = opt.tunnel;
-  args.browser = opt.browser;
+
   browserSync.init(args);
 
   gulp.watch([paths.srcJade + '**/*.jade'], { interval: 500 }, ['jade:bs']);

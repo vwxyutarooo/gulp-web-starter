@@ -19,9 +19,7 @@ Choose css framework at the
 
 ```
 'cssBase'      : 'foundation'
-or
 'cssBase'      : 'bootstrap'
-or
 'cssBase'      : false
 ```
 
@@ -29,7 +27,6 @@ Enable/Disable installing _s
 
 ```
 '_s'           : true
-or
 '_s'           : false
 ```
 

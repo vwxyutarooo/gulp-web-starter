@@ -4,14 +4,16 @@
  * 2. FILE DESTINATIONS (RELATIVE TO ASSSETS FOLDER)
 ------------------------------------------------------------------------------*/
 // opt
-// @param Choose css framework between foundatino and bootstrap
-// @param boolem automatic _s install at the init task
-// @param false or virtual host name of local machine such as . Set false to browser-sync start as server mode.
-// @param false or Subdomains which must be between 4 and 20 alphanumeric characters.
-// @param browser which browserSync open
+// @param string: Choose css framework between foundatino and bootstrap
+// @param string: Specific css framework version
+// @param boolem: automatic _s install at the init task
+// @param false or string: virtual host name of local machine such as . Set false to browser-sync start as server mode.
+// @param false or string: Subdomains which must be between 4 and 20 alphanumeric characters.
+// @param string: browser which browserSync open
 module.exports = {
   'opt': {
     'cssBase'      : 'foundation',
+    'cssBaseVer    : 'latest',
     '_s'           : false,
     'proxy'        : '192.168.33.10',
     'tunnel'       : false,

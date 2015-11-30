@@ -16,7 +16,7 @@ gulp.task('bower:install', $.shell.task(['bower install']));
 gulp.task('install:cssBase', function() {
   if(opt.cssBase) {
     return gulp.src('./src/shell/', {read: false})
-      .pipe($.shell(['bash ./src/shell/' + opt.cssBase + '.sh']))
+      .pipe($.shell(['bash ./src/shell/' + opt.cssBase + '.sh ' + paths.srcBower + ' ' + opt.cssBaseVer]))
   } else {
     console.log('Skip installing css framework');
   }

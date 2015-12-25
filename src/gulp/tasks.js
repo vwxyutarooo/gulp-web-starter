@@ -15,11 +15,7 @@ gulp.task('watch', function() {
   gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], { interval: 500 }, ['sprite:inline-svg']);
 });
 
-gulp.task('default', [
-  'browser-sync',
-  'sprite',
-  'sprite:inline-svg',
-]);
+gulp.task('default', ['browser-sync']);
 
 gulp.task('init', function(cb) {
   runSequence('bower:install', ['install:cssBase'], 'install:_s', cb);

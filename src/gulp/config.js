@@ -28,7 +28,6 @@ module.exports = {
   // basic locations
   'paths': {
     'root'         : './',
-    'srcBower'     : 'bower_components/',
     'srcDir'       : 'src/',
     'srcImg'       : 'src/images/',
     'srcJade'      : 'src/jade/',

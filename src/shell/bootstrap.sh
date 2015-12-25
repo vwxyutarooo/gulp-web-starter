@@ -2,7 +2,7 @@
 
 function copy_bootstrap() {
   rm -rf "./${1}bootstrap-sass-official/"
-  bower install bootstrap-sass-official#$2 --save
+  npm install bootstrap-sass-official#$2 --save
   find $1 -iname "_bootstrap-sprockets.scss" -type f -exec mv {} ./src/scss/core/ \;
   find $1 -iname "_bootstrap.scss" -type f -exec mv {} ./src/scss/core/ \;
   return

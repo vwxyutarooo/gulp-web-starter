@@ -29,10 +29,10 @@ $.sourcemaps      = require('gulp-sourcemaps');
 ------------------------------------------------------------------------------*/
 switch(opt.cssBase) {
   case 'foundation':
-    nodeSassConf.includePaths.push(paths.srcBower + 'foundation/scss');
+    nodeSassConf.includePaths.push('./node_modules/foundation/scss');
     break;
   case 'bootstrap':
-    nodeSassConf.includePaths.push(paths.srcBower + 'bootstrap-sass-official/assets/stylesheets');
+    nodeSassConf.includePaths.push('./node_modules/bootstrap-sass-official/assets/stylesheets');
     break;
 }
 

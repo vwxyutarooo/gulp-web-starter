@@ -18,5 +18,5 @@ gulp.task('watch', function() {
 gulp.task('default', ['browser-sync']);
 
 gulp.task('init', function(cb) {
-  runSequence('bower:install', ['install:cssBase'], 'install:_s', cb);
+  runSequence(['install:cssBase'], 'install:_s', cb);
 });

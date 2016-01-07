@@ -19,7 +19,7 @@ var nodeSassConf  = require('./src/gulp/config.js').nodeSassConf;
 
 $.autoprefixer    = require('gulp-autoprefixer');
 $.cssGlobbing     = require('gulp-css-globbing');
-$.minifyCss       = require('gulp-minify-css');
+$.cssnano       = require('gulp-cssnano');
 $.sass            = require('gulp-sass');
 $.sourcemaps      = require('gulp-sourcemaps');
 
@@ -29,7 +29,7 @@ $.sourcemaps      = require('gulp-sourcemaps');
 ------------------------------------------------------------------------------*/
 switch(opt.cssBase) {
   case 'foundation':
-    nodeSassConf.includePaths.push('./node_modules/foundation/scss');
+    nodeSassConf.includePaths.push('./node_modules/foundation-sites/scss');
     break;
   case 'bootstrap':
     nodeSassConf.includePaths.push('./node_modules/bootstrap-sass-official/assets/stylesheets');
@@ -45,7 +45,7 @@ gulp.task('sass:node', function() {
       browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
       cascade: false
     }))
-    .pipe($.minifyCss())
+    .pipe($.cssnano())
     .pipe($.sourcemaps.write('maps', {
       includeContent: false,
       sourceRoot: paths.srcScss

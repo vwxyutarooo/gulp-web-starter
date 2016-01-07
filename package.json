@@ -9,9 +9,6 @@
   },
   "author": "Yutaro Miyazaki",
   "license": "MIT",
-  "browserify": {
-    "transform": []
-  },
   "devDependencies": {
     "babel-preset-es2015": "^6.1.2",
     "babel-preset-react": "^6.3.13",
@@ -23,11 +20,11 @@
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.2",
     "gulp-css-globbing": "^0.1.8",
+    "gulp-cssnano": "^2.1.0",
     "gulp-data": "^1.2.0",
     "gulp-filter": "^3.0.0",
     "gulp-imagemin": "^2.4.0",
     "gulp-jade": "^1.1.0",
-    "gulp-minify-css": "^1.2.1",
     "gulp-plumber": "^1.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.1.0",
@@ -44,5 +41,6 @@
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.6.1",
     "yargs": "^3.18.0"
-  }
+  },
+  "dependencies": {}
 }

@@ -41,11 +41,13 @@ gulp.task('sass:node', function() {
     .pipe($.sourcemaps.init())
     .pipe($.cssGlobbing({ extensions: ['.scss'] }))
     .pipe($.sass(nodeSassConf).on('error', $.sass.logError))
-    .pipe($.autoprefixer({
-      browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9'],
-      cascade: false
+    .pipe($.cssnano({
+      autoprefixer: {
+        add: true,
+        browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9']
+      },
+      postcssReduceTransforms: false
     }))
-    .pipe($.cssnano())
     .pipe($.sourcemaps.write('maps', {
       includeContent: false,
       sourceRoot: paths.srcScss
@@ -84,7 +86,6 @@ gulp.task('browser-sync', function() {
     args.startPath = paths.htmlDir;
   } else {
     args.proxy = opt.proxy;
-    args.open = 'external';
   }
 
   if (opt.tunnel != false) args.tunnel = opt.tunnel;

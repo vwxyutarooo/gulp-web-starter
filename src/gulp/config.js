@@ -11,37 +11,38 @@
 // @param false or string: Subdomains which must be between 4 and 20 alphanumeric characters.
 // @param string: browser which browserSync open
 module.exports = {
-  'opt': {
-    'cssBase'      : 'foundation',
-    'cssBaseVer'   : 'latest',
-    '_s'           : false,
-    'proxy'        : '192.168.33.10',
-    'tunnel'       : false,
-    'bs'           : {
-      'browser'    : 'google chrome canary',
-      'ghostMode'  : {
-        'clicks'     : false,
-        'scroll'     : false
-      }
+  opt: {
+    cssBase      : 'foundation',
+    cssBaseVer   : 'latest',
+    _s           : false,
+    proxy        : '192.168.33.10',
+    tunnel       : false,
+    bs           : {
+      browser    : 'google chrome canary',
+      ghostMode  : {
+        clicks     : false,
+        scroll     : false
+      },
+      open         : 'external'
     }
   },
   // basic locations
-  'paths': {
-    'root'         : './',
-    'srcDir'       : 'src/',
-    'srcImg'       : 'src/images/',
-    'srcJade'      : 'src/jade/',
-    'srcJs'        : 'src/js/',
-    'srcJson'      : './src/json/',
-    'srcScss'      : 'src/scss/',
-    'destDir'      : './assets/',
-    'destImg'      : './assets/images/',
-    'destCss'      : './assets/css/',
-    'destJs'       : './assets/js/',
-    'htmlDir'      : './',
-    'reloadOnly'   : ['**/*.php']
+  paths: {
+    root         : './',
+    srcDir       : 'src/',
+    srcImg       : 'src/images/',
+    srcJade      : 'src/jade/',
+    srcJs        : 'src/js/',
+    srcJson      : './src/json/',
+    srcScss      : 'src/scss/',
+    destDir      : './assets/',
+    destImg      : './assets/images/',
+    destCss      : './assets/css/',
+    destJs       : './assets/js/',
+    htmlDir      : './',
+    reloadOnly   : ['**/*.php']
   },
-  'nodeSassConf': {
-    'includePaths'   : []
+  nodeSassConf: {
+    includePaths   : []
   }
 }

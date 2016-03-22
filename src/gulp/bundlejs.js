@@ -20,7 +20,7 @@ $.uglify          = require('gulp-uglify');
  * js Tasks
 ------------------------------------------------------------------------------*/
 var jsBundle = function(bundler, folder) {
-  return bundler.transform(babelify.configure({ presets: ['es2015'], ignore: ['**/bower_components/**/*.js'] })).bundle()
+  return bundler.transform(babelify.configure({ presets: ['react', 'es2015'], ignore: ['node_modules'], sourceMaps: true })).bundle()
     .on('error', function (err) {
       console.log(err.toString());
       this.emit('end');
@@ -31,13 +31,17 @@ var jsBundle = function(bundler, folder) {
     .pipe($.uglify())
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(paths.destDir + 'js'));
-    // .pipe(browserSync.stream({ match: **/*.js }));
 };
 
 gulp.task('js:browserify', function() {
   var folders = functions.getFolders(paths.srcJs);
   var tasks = folders.map(function(folder) {
-    var bundler = browserify({ entries: path.join(paths.srcJs, folder, '/app.js'), debug: true });
+    var bundler = browserify({
+      entries: [path.join(paths.srcJs, folder, '/app.js')],
+      debug: true,
+      cache: {},
+      packageCache: {}
+    });
     return jsBundle(bundler, folder);
   });
   return merge(tasks);
@@ -46,7 +50,13 @@ gulp.task('js:browserify', function() {
 gulp.task('js:watchify', function() {
   var folders = functions.getFolders(paths.srcJs);
   var tasks = folders.map(function(folder) {
-    var bundler = watchify(browserify(path.join(paths.srcJs, folder, '/app.js'), watchify.args));
+    var bundler = browserify({
+      entries: [path.join(paths.srcJs, folder, '/app.js')],
+      debug: true,
+      cache: {},
+      packageCache: {},
+      plugin: [watchify]
+    });
     bundler.on('update', function() { jsBundle(bundler, folder); });
     bundler.on('log', function(message) { console.log(message); });
     return jsBundle(bundler, folder);

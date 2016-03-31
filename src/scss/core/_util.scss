@@ -1,0 +1,49 @@
+@charset 'utf-8';
+
+
+/*
+ * Calculate vw from px
+ */
+@function vw-calc($values, $base: $base-vw-size) {
+  $vw-values: ();
+  $count: length($values);
+
+  // If the base font size is a %, then multiply it by 16px
+  // This is because 100% font size = 16px in most all browsers
+  @if unit($base) == '%' {
+    $base: ($base / 100%) * 16px;
+  }
+
+  @if $count == 1 {
+    @return -zf-to-vw($values, $base);
+  }
+
+  @for $i from 1 through $count {
+    $vw-values: append($vw-values, -zf-to-vw(nth($values, $i), $base));
+  }
+
+  @return $vw-values;
+}
+
+@function -zf-to-vw($value, $base) {
+  @if type-of($value) != 'number' {
+    @warn inspect($value) + ' was passed to vw-calc(), which is not a number.';
+    @return $value;
+  }
+
+  @if unit($value) != 'rem' {
+    $value: (strip-unit($value) / strip-unit($base) * 100) * 1vw;
+  }
+
+  @return $value;
+}
+
+
+/*
+ * Strip unit
+ */
+@if (not function-exists('strip-unit')) {
+  @function strip-unit($num) {
+    @return $num / ($num * 0 + 1);
+  }
+}

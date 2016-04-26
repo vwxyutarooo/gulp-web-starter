@@ -3,52 +3,49 @@
 /*------------------------------------------------------------------------------
  * Include modules
 ------------------------------------------------------------------------------*/
-require('./src/gulp/install.js');
-require('./src/gulp/jade.js');
-require('./src/gulp/bundlejs.js');
-require('./src/gulp/image.js');
-require('./src/gulp/tasks.js');
+import './tools/gulp/install';
+import './tools/gulp/jade';
+import './tools/gulp/bundlejs';
+import './tools/gulp/image';
+import './tools/gulp/tasks';
 
-var $             = [];
-var argv          = require('yargs').argv;
-var browserSync   = require('browser-sync').create();
-var gulp          = require('gulp');
-var opt           = require('./src/gulp/config.js').opt;
-var paths         = require('./src/gulp/config.js').paths;
-var nodeSassConf  = require('./src/gulp/config.js').nodeSassConf;
+import { options, paths, sass_conf } from '/tools/confg';
 
-$.autoprefixer    = require('gulp-autoprefixer');
-$.cssGlobbing     = require('gulp-css-globbing');
-$.cssnano       = require('gulp-cssnano');
-$.sass            = require('gulp-sass');
-$.sourcemaps      = require('gulp-sourcemaps');
+import { argv } from 'yargs';
+import browserSync from 'browser-sync';
+
+import gulp from 'gulp';
+import cssGlobbing from 'gulp-css-globbing';
+import cssnano from 'gulp-cssnano';
+import sass from 'gulp-sass';
+import sourcemaps from 'gulp-sourcemaps';
 
 
 /*------------------------------------------------------------------------------
  * sass Tasks
 ------------------------------------------------------------------------------*/
-switch(opt.cssBase) {
+switch(options.cssBase) {
   case 'foundation':
-    nodeSassConf.includePaths.push('./node_modules/foundation-sites/scss');
+    sass_conf.includePaths.push('./node_modules/foundation-sites/scss');
     break;
   case 'bootstrap':
-    nodeSassConf.includePaths.push('./node_modules/bootstrap-sass-official/assets/stylesheets');
+    sass_conf.includePaths.push('./node_modules/bootstrap-sass-official/assets/stylesheets');
     break;
 }
 
-gulp.task('sass:node', function() {
+gulp.task('sass:node', () => {
   return gulp.src(paths.srcScss + '*.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.cssGlobbing({ extensions: ['.scss'] }))
-    .pipe($.sass(nodeSassConf).on('error', $.sass.logError))
-    .pipe($.cssnano({
+    .pipe(sourcemaps.init())
+    .pipe(cssGlobbing({ extensions: ['.scss'] }))
+    .pipe(sass(sass_conf).on('error', sass.logError))
+    .pipe(cssnano({
       autoprefixer: {
         add: true,
         browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9']
       },
       postcssReduceTransforms: false
     }))
-    .pipe($.sourcemaps.write('maps', {
+    .pipe(sourcemaps.write('maps', {
       includeContent: false,
       sourceRoot: paths.srcScss
     }))
@@ -60,35 +57,47 @@ gulp.task('sass:node', function() {
 /*------------------------------------------------------------------------------
  * browser-sync
 ------------------------------------------------------------------------------*/
-gulp.task('jade:bs', ['jade'], function() {
+gulp.task('jade:bs', ['jade'], () => {
   browserSync.reload();
   return;
 });
-gulp.task('js:bs', ['js:browserify'], function() {
+gulp.task('js:bs', ['js:browserify'], () => {
   browserSync.reload();
   return;
 });
-gulp.task('sprite:bs', ['sprite'], function() {
+gulp.task('sprite:bs', ['sprite'], () => {
   browserSync.reload();
   return;
 });
-gulp.task('inline-svg:bs', ['sprite:inline-svg'], function() {
+gulp.task('inline-svg:bs', ['sprite:inline-svg'], () => {
   browserSync.reload();
   return;
 });
 
-gulp.task('browser-sync', function() {
-  var args = {};
-  args = opt.bs;
 
-  if (argv.mode == 'server' ) {
-    args.server = { baseDir: paths.root };
-    args.startPath = paths.htmlDir;
+gulp.task('browser-sync', () => {
+  var args = options.bs;
+  var middle_ware = [];
+
+  if (argv.mode == 'server') {
+    Object.assign(args, {
+      server: Object.assign({}, args.server, {
+        baseDir: paths.root,
+        startPath: paths.htmlDir,
+        middleware: middle_ware
+      })
+    });
   } else {
-    args.proxy = opt.proxy;
+    Object.assign(args, {
+      proxy: {
+        target: argv.vhost ? argv.vhost : options.proxy,
+        middleware: middle_ware
+      },
+      open: 'external'
+    });
   }
 
-  if (opt.tunnel != false) args.tunnel = opt.tunnel;
+  if (options.tunnel != false) args.tunnel = options.tunnel;
 
   browserSync.init(args);
 

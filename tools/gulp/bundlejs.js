@@ -10,7 +10,7 @@ import source from 'vinyl-source-stream';
 import watchify from 'watchify';
 
 import { getFolders } from './functions';
-import { paths } from './config';
+import { paths } from '../config';
 
 import sourcemaps from 'gulp-sourcemaps';
 import uglify from 'gulp-uglify';

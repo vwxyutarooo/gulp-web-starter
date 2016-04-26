@@ -22,10 +22,7 @@ export const options = {
       scroll     : false
     },
     open         : 'external',
-    fils: [
-      'public/assets/css/*.css',
-      'public/assets/html/*.html'
-    ]
+    fils: []
   }
 };
 

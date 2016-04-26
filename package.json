@@ -1,7 +1,7 @@
 {
   "name": "gulp-web-starter",
   "uri": "https://github.com/vwxyutarooo/gulp-web-starter",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "Environment of web site develop.",
   "scripts": {
     "gulp": "gulp",
@@ -20,14 +20,14 @@
     "babel-register": "^6.7.2",
     "babelify": "^7.2.0",
     "browser-sync": "^2.11.1",
-    "browserify": "^12.0.2",
+    "browserify": "^13.0.0",
     "fs": "0.0.2",
-    "glob": "^6.0.4",
+    "glob": "^7.0.3",
     "gulp": "^3.9.1",
     "gulp-css-globbing": "^0.1.8",
     "gulp-cssnano": "^2.1.1",
     "gulp-data": "^1.2.0",
-    "gulp-filter": "^3.0.0",
+    "gulp-filter": "^4.0.0",
     "gulp-imagemin": "^2.4.0",
     "gulp-jade": "^1.1.0",
     "gulp-plumber": "^1.1.0",
@@ -45,9 +45,9 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.7.0",
-    "yargs": "^3.32.0"
+    "yargs": "^4.6.0"
   },
   "dependencies": {
-    "foundation-sites": "^6.2.0"
+    "foundation-sites": "^6.2.1"
   }
 }

@@ -13,7 +13,7 @@ import plumber from 'gulp-plumber';
 ------------------------------------------------------------------------------*/
 gulp.task('jade', () => {
   return gulp.src(paths.srcJade + '*.jade')
-    .pipe(data((file) => require('../json/setting.json')))
+    .pipe(data((file) => require('../../src/json/setting.json')))
     .pipe(plumber())
     .pipe(jade({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir));

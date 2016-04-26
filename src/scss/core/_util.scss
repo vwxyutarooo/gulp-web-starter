@@ -34,10 +34,8 @@
 
 
 /*
- * Strip unit
+ * Strip units
  */
-@if (not function-exists('strip-unit')) {
-  @function strip-unit($num) {
-    @return $num / ($num * 0 + 1);
-  }
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
 }

@@ -9,7 +9,7 @@ import './tools/gulp/bundlejs';
 import './tools/gulp/image';
 import './tools/gulp/tasks';
 
-import { options, paths, sass_conf } from '/tools/confg';
+import { options, paths, sass_conf } from './tools/config.js';
 
 import { argv } from 'yargs';
 import browserSync from 'browser-sync';
@@ -41,7 +41,7 @@ gulp.task('sass:node', () => {
     .pipe(cssnano({
       autoprefixer: {
         add: true,
-        browsers: ['> 1%', 'last 2 versions', 'ie 10', 'ie 9']
+        browsers: options.autoprefix
       },
       postcssReduceTransforms: false
     }))
@@ -92,8 +92,7 @@ gulp.task('browser-sync', () => {
       proxy: {
         target: argv.vhost ? argv.vhost : options.proxy,
         middleware: middle_ware
-      },
-      open: 'external'
+      }
     });
   }
 

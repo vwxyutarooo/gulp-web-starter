@@ -24,7 +24,7 @@ var jsBundle = (bundler, folder) => {
       presets: ['react', 'es2015'],
       ignore: ['node_modules'],
       sourceMaps: true
-    })).bundle().on('error', (err) => {
+    })).bundle().on('error', function(err) {
       console.log(err.toString());
       this.emit('end');
     })

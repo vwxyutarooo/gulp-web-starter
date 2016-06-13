@@ -8,8 +8,9 @@ import './tools/gulp/jade';
 import './tools/gulp/bundlejs';
 import './tools/gulp/image';
 import './tools/gulp/tasks';
+import './tools/gulp/test-gulp'
 
-import { options, paths, sass_conf } from './tools/config.js';
+import { options, paths, sass_conf } from './tools/config';
 
 import { argv } from 'yargs';
 import browserSync from 'browser-sync';

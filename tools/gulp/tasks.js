@@ -3,7 +3,7 @@
 import gulp from 'gulp';
 import runSequence from 'run-sequence';
 
-import { paths } from '../config.js';
+import { paths } from '../config';
 
 
 /*------------------------------------------------------------------------------

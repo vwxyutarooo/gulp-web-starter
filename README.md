@@ -1,7 +1,10 @@
 # gulpfile for web development
 ## Requires
-- npm (Tested on 3.3.6)
-- bower
+- Node.js
+  - 4
+  - 5
+  - 6
+- npm (Tested on 3.9.3)
 
 
 ## gulp-web-starter
@@ -10,7 +13,6 @@ Web development environment using
 - browserSync
 - browserify
 - foundation / bootstrap
-- _s
 
 
 ## Setup
@@ -23,17 +25,17 @@ Choose css framework at the
 'cssBase'      : false
 ```
 
-Enable/Disable installing _s
+Enable/Disable installing \_s for Wordpress
 
 ```
 '_s'           : true
 '_s'           : false
 ```
 
-After that, Once you initializing project with css framework and _s
+After that, Once you initializing project with css framework and \_s
 
 ```
-$ npm install; npm run gulp -- init
+$ npm install && npm run gulp -- init
 ```
 
 

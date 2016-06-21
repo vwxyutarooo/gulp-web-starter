@@ -1,4 +1,6 @@
 # gulpfile for web development
+[![Build Status](https://travis-ci.org/vwxyutarooo/gulp-web-starter.svg?branch=master)](https://travis-ci.org/vwxyutarooo/gulp-web-starter)
+
 ## Requires
 - Node.js
   - 4

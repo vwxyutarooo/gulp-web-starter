@@ -93,19 +93,12 @@ src/js/app.js
 Basically source file placed in "src/". It passed to "shared/" as destination through the "gulp".
 
 ```
+.
 ├── README.md
-├── bower.json
-├── gulpfile.js
+├── gulpfile.babel.js
+├── index.html
 ├── package.json
 ├── src
-│   ├── gulp
-│   │   ├── bundlejs.js
-│   │   ├── config.js
-│   │   ├── functions.js
-│   │   ├── image.js
-│   │   ├── install.js
-│   │   ├── jade.js
-│   │   └── tasks.js
 │   ├── images
 │   │   ├── sprite
 │   │   │   ├── pc
@@ -117,49 +110,62 @@ Basically source file placed in "src/". It passed to "shared/" as destination th
 │   │       │   └── dummy.svg
 │   │       └── sp
 │   │           └── dummy.svg
-│   ├── jade
-│   │   ├── inc
-│   │   │   ├── core
-│   │   │   │   ├── _base.jade
-│   │   │   │   ├── _config.jade
-│   │   │   │   └── _mixin.jade
-│   │   │   ├── layout
-│   │   │   │   ├── _l-footer.jade
-│   │   │   │   └── _l-header.jade
-│   │   │   └── module
-│   │   │       └── _m-button.jade
-│   │   └── index.jade
 │   ├── js
 │   │   ├── pc
-│   │   │   ├── app
-│   │   │   │   └── script.js
-│   │   │   └── app.js
+│   │   │   ├── app.js
+│   │   │   └── classes
+│   │   │       └── Foundation_Control.js
 │   │   └── sp
-│   │       ├── app
-│   │       │   └── script.js
-│   │       └── app.js
+│   │       ├── app.js
+│   │       └── classes
+│   │           └── Foundation_Control.js
 │   ├── json
 │   │   └── setting.json
-│   ├── scss
-│   │   ├── app.scss
-│   │   ├── base
-│   │   │   ├── _grid.scss
-│   │   │   ├── _partials.scss
-│   │   │   ├── _sprite-pc.scss
-│   │   │   └── _sprite-sp.scss
-│   │   ├── core
-│   │   │   ├── _config.scss
-│   │   │   ├── _default.scss
-│   │   │   └── _mixins.scss
-│   │   ├── layout
-│   │   │   ├── _footer.scss
-│   │   │   ├── _header.scss
-│   │   │   └── _layout.scss
-│   │   └── module
-│   │       └── _buttons.scss
+│   ├── pug
+│   │   ├── inc
+│   │   │   ├── core
+│   │   │   │   ├── _base.pug
+│   │   │   │   ├── _config.pug
+│   │   │   │   └── _mixin.pug
+│   │   │   ├── layout
+│   │   │   │   ├── _l-footer.pug
+│   │   │   │   └── _l-header.pug
+│   │   │   └── module
+│   │   │       └── _m-button.pug
+│   │   └── index.pug
+│   └── scss
+│       ├── app.scss
+│       ├── base
+│       │   ├── _grid.scss
+│       │   └── _partials.scss
+│       ├── core
+│       │   ├── _config.scss
+│       │   ├── _default.scss
+│       │   ├── _mixins.scss
+│       │   └── _util.scss
+│       ├── layout
+│       │   ├── _footer.scss
+│       │   ├── _header.scss
+│       │   └── _layout.scss
+│       ├── module
+│       │   └── _buttons.scss
+│       └── style
+│           └── _stylePost.scss
+├── style.css
+├── tools
+│   ├── config.js
+│   ├── gulp
+│   │   ├── bundlejs.js
+│   │   ├── functions.js
+│   │   ├── image.js
+│   │   ├── install.js
+│   │   ├── pug.js
+│   │   ├── tasks.js
+│   │   └── test-gulp.js
 │   └── shell
 │       ├── _s.sh
 │       ├── bootstrap.sh
-│       └── foundation.sh
-└── style.css
+│       ├── foundation.sh
+│       └── testclean.sh
+└── yarn.lock
 ```

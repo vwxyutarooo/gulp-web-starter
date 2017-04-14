@@ -4,17 +4,17 @@ import gulp from 'gulp';
 import { paths } from '../config';
 
 import data from 'gulp-data';
-import jade from 'gulp-jade';
+import pug from 'gulp-pug';
 import plumber from 'gulp-plumber';
 
 
 /*------------------------------------------------------------------------------
- * Jade Tasks
+ * pug Tasks
 ------------------------------------------------------------------------------*/
-gulp.task('jade', () => {
-  return gulp.src(paths.srcJade + '*.jade')
+gulp.task('pug', () => {
+  return gulp.src(paths.srcpug + '*.pug')
     .pipe(data((file) => require('../../src/json/setting.json')))
     .pipe(plumber())
-    .pipe(jade({ pretty: true }))
+    .pipe(pug({ pretty: true }))
     .pipe(gulp.dest(paths.htmlDir));
 });

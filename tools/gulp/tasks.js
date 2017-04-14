@@ -10,7 +10,7 @@ import { paths } from '../config';
  * gulp Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('watch', () => {
-  gulp.watch([paths.srcJade + '**/*.jade'], { interval: 500 }, ['jade']);
+  gulp.watch([paths.srcpug + '**/*.pug'], { interval: 500 }, ['pug']);
   gulp.watch([paths.srcJs   + '**/*.js'], { interval: 500 }, ['js:watchify']);
   gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['sass:node']);
   gulp.watch([paths.srcImg  + 'sprite/**/*.png'], { interval: 500 }, ['sprite']);

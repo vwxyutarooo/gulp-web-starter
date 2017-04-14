@@ -31,7 +31,7 @@ export const paths = {
   root         : './',
   srcDir       : 'src/',
   srcImg       : 'src/images/',
-  srcJade      : 'src/jade/',
+  srcpug      : 'src/pug/',
   srcJs        : 'src/js/',
   srcJson      : './src/json/',
   srcScss      : 'src/scss/',

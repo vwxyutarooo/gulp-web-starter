@@ -4,7 +4,7 @@
  * Include modules
 ------------------------------------------------------------------------------*/
 import './tools/gulp/install';
-import './tools/gulp/jade';
+import './tools/gulp/pug';
 import './tools/gulp/bundlejs';
 import './tools/gulp/image';
 import './tools/gulp/tasks';
@@ -58,7 +58,7 @@ gulp.task('sass:node', () => {
 /*------------------------------------------------------------------------------
  * browser-sync
 ------------------------------------------------------------------------------*/
-gulp.task('jade:bs', ['jade'], () => {
+gulp.task('pug:bs', ['pug'], () => {
   browserSync.reload();
   return;
 });
@@ -101,7 +101,7 @@ gulp.task('browser-sync', () => {
 
   browserSync.init(args);
 
-  gulp.watch([paths.srcJade + '**/*.jade'], { interval: 500 }, ['jade:bs']);
+  gulp.watch([paths.srcpug + '**/*.pug'], { interval: 500 }, ['pug:bs']);
   gulp.watch([paths.srcJs   + '**/*.js'], { interval: 500 }, ['js:bs']);
   gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['sass:node']);
   gulp.watch([paths.srcImg  + 'sprite/**/*.png'], { interval: 500 }, ['sprite:bs']);

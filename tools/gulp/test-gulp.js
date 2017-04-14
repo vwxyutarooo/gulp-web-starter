@@ -12,7 +12,7 @@ gulp.task('test:gulp', (cb) => {
   runSequence(
     'test:gulp:before',
     'install:cssBase',
-    ['jade', 'js:browserify', 'sass:node'],
+    ['pug', 'js:browserify', 'sass:node'],
     'clean:test',
     'test:gulp:after',
     cb

@@ -1,0 +1,16 @@
+body {
+  font-family: var(--font-family);
+  color: var(--color-font);
+  background-color: #fff;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  vertical-align: middle;
+}

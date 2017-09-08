@@ -3,54 +3,44 @@
 /*------------------------------------------------------------------------------
  * Include modules
 ------------------------------------------------------------------------------*/
-import './tools/gulp/install';
+import path from 'path';
 import './tools/gulp/pug';
 import './tools/gulp/bundlejs';
-import './tools/gulp/image';
 import './tools/gulp/tasks';
 import './tools/gulp/test-gulp'
 
-import { options, paths, sass_conf } from './tools/config';
+import { PATHS, BROWSERSYNC } from './tools/config';
 
-import { argv } from 'yargs';
 import browserSync from 'browser-sync';
 
 import gulp from 'gulp';
-import cssGlobbing from 'gulp-css-globbing';
+import plumber from 'gulp-plumber';
+import postcss from 'gulp-postcss';
 import cssnano from 'gulp-cssnano';
-import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+
+const PORT = process.env.PORT || null;
+const HOST = process.env.HOST || null;
 
 
 /*------------------------------------------------------------------------------
  * sass Tasks
 ------------------------------------------------------------------------------*/
-switch(options.cssBase) {
-  case 'foundation':
-    sass_conf.includePaths.push('./node_modules/foundation-sites/scss');
-    break;
-  case 'bootstrap':
-    sass_conf.includePaths.push('./node_modules/bootstrap-sass-official/assets/stylesheets');
-    break;
-}
+gulp.task('postcss', () => {
+  const cssDest = path.join(PATHS.destDir, 'css');
 
-gulp.task('sass:node', () => {
-  return gulp.src(paths.srcScss + '*.scss')
+  return gulp.src(PATHS.srcDir + 'css/*.css')
+    .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(cssGlobbing({ extensions: ['.scss'] }))
-    .pipe(sass(sass_conf).on('error', sass.logError))
-    .pipe(cssnano({
-      autoprefixer: {
-        add: true,
-        browsers: options.autoprefix
-      },
-      postcssReduceTransforms: false
-    }))
+    .pipe(postcss())
     .pipe(sourcemaps.write('maps', {
       includeContent: false,
-      sourceRoot: paths.srcScss
+      sourceRoot: cssDest
     }))
-    .pipe(gulp.dest(paths.destCss))
+    .pipe(gulp.dest(cssDest))
     .pipe(browserSync.stream({ match: '**/*.css' }));
 });
 
@@ -66,45 +56,31 @@ gulp.task('js:bs', ['js:browserify'], () => {
   browserSync.reload();
   return;
 });
-gulp.task('sprite:bs', ['sprite'], () => {
-  browserSync.reload();
-  return;
-});
-gulp.task('inline-svg:bs', ['sprite:inline-svg'], () => {
-  browserSync.reload();
-  return;
-});
 
 
 gulp.task('browser-sync', () => {
-  var args = options.bs;
-  var middle_ware = [];
-
-  if (argv.mode == 'server') {
-    Object.assign(args, {
-      server: Object.assign({}, args.server, {
-        baseDir: paths.root,
-        startPath: paths.htmlDir,
-        middleware: middle_ware
-      })
-    });
-  } else {
-    Object.assign(args, {
-      proxy: {
-        target: argv.vhost ? argv.vhost : options.proxy,
-        middleware: middle_ware
+  const middleware = [];
+  const options = Object.assign({}, BROWSERSYNC, {
+    ...(PORT !== null) ? {
+      port: PORT
+    } : {},
+    ...(HOST === null) ? {
+      server: {
+        baseDir: './',
+        startPath: PATHS.destDir,
+        middleware
       }
-    });
-  }
+    } : {
+      proxy: {
+        target: HOST,
+        middleware
+      }
+    }
+  });
 
-  if (options.tunnel != false) args.tunnel = options.tunnel;
+  browserSync.init(options);
 
-  browserSync.init(args);
-
-  gulp.watch([paths.srcpug + '**/*.pug'], { interval: 500 }, ['pug:bs']);
-  gulp.watch([paths.srcJs   + '**/*.js'], { interval: 500 }, ['js:bs']);
-  gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['sass:node']);
-  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], { interval: 500 }, ['sprite:bs']);
-  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], { interval: 500 }, ['inline-svg:bs']);
-  gulp.watch([paths.reloadOnly], { interval: 500 }).on('change', browserSync.reload);
+  gulp.watch([PATHS.srcDir + 'pug/**/*.pug'], { interval: 500 }, ['pug:bs']);
+  gulp.watch([PATHS.srcDir + 'js/**/*.js'], { interval: 500 }, ['js:bs']);
+  gulp.watch([PATHS.srcDir + 'css/**/*.css'], { interval: 500 }, ['postcss']);
 });

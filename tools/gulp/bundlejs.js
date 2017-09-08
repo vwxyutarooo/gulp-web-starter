@@ -10,7 +10,7 @@ import source from 'vinyl-source-stream';
 import watchify from 'watchify';
 
 import { getFolders } from './functions';
-import { paths } from '../config';
+import { PATHS } from '../config';
 
 import sourcemaps from 'gulp-sourcemaps';
 import uglify from 'gulp-uglify';
@@ -19,29 +19,29 @@ import uglify from 'gulp-uglify';
 /*------------------------------------------------------------------------------
  * js Tasks
 ------------------------------------------------------------------------------*/
-var jsBundle = (bundler, folder) => {
+const jsSrc = path.join(PATHS.srcDir, 'js');
+const jsBundle = (bundler, folder) => {
   return bundler.transform(babelify.configure({
-      presets: ['react', 'es2015'],
       ignore: ['node_modules'],
       sourceMaps: true
     })).bundle().on('error', function(err) {
       console.log(err.toString());
       this.emit('end');
     })
-    .pipe(source('bundle_' + folder + '.js'))
+    .pipe(source('bundle.' + folder + '.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(paths.destDir + 'js'));
+    .pipe(gulp.dest(PATHS.destDir + 'js'));
 };
 
 
 gulp.task('js:browserify', () => {
-  var folders = getFolders(paths.srcJs);
+  var folders = getFolders(jsSrc);
   var tasks = folders.map((folder) => {
     var bundler = browserify({
-      entries: [path.join(paths.srcJs, folder, '/app.js')],
+      entries: [path.join(jsSrc, folder, '/app.js')],
       debug: true,
       cache: {},
       packageCache: {}
@@ -53,10 +53,10 @@ gulp.task('js:browserify', () => {
 
 
 gulp.task('js:watchify', () => {
-  var folders = getFolders(paths.srcJs);
+  var folders = getFolders(jsSrc);
   var tasks = folders.map((folder) => {
     var bundler = browserify({
-      entries: [path.join(paths.srcJs, folder, '/app.js')],
+      entries: [path.join(jsSrc, folder, '/app.js')],
       debug: true,
       cache: {},
       packageCache: {},

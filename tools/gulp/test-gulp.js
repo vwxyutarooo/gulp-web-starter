@@ -11,7 +11,6 @@ gulp.task('test:gulp:after', shell.task(['rm -f package.json && mv .package.json
 gulp.task('test:gulp', (cb) => {
   runSequence(
     'test:gulp:before',
-    'install:cssBase',
     ['pug', 'js:browserify', 'sass:node'],
     'clean:test',
     'test:gulp:after',

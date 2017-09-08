@@ -1,0 +1,9 @@
+{
+  "presets": ["es2015", "stage-3"],
+  "plugins": [
+    "transform-es2015-object-super",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    ["transform-es2015-classes", { "loose": true }]
+  ]
+}

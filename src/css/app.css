@@ -1,0 +1,5 @@
+@import 'core/index.css';
+@import 'base/default.css';
+
+/* Modules */
+@import 'module/fade.css';

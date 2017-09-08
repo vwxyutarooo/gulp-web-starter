@@ -4,23 +4,26 @@
     "node": true,
     "es6": true
   },
-  "ignore": ["gulpfile.*", "webpack.config.*"],
-  "plugins": ["react"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "ignore": ["gulpfile.*", "webpack.config.*", "bundle.*.js", "public/", "tools/", "*.pug"],
+  "plugins": ["vue", "react"],
+  "extends": ["eslint:recommended"],
+  "parser": "babel-eslint",
   "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-          "jsx": true
-      }
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
   },
   "rules": {
-      "no-console": ["error", {
-        "allow": ["log", "debug", "error"]
-      }],
-      "no-process-env": 0,
-      "no-unused-vars": 1,
-      "react/no-did-mount-set-state": 0,
-      "react/no-danger": 0
+    "no-console": [
+      "error",
+      { "allow": ["log", "debug", "error", "warn"] }
+    ],
+    "no-process-env": 0,
+    "no-unused-vars": 1,
+    "object-shorthand": 0,
+    "semi": ["error", "always"]
   }
 }

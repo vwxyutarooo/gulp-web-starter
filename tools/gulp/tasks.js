@@ -3,24 +3,18 @@
 import gulp from 'gulp';
 import runSequence from 'run-sequence';
 
-import { paths } from '../config';
+import { PATHS } from '../config';
 
 
 /*------------------------------------------------------------------------------
  * gulp Tasks
 ------------------------------------------------------------------------------*/
 gulp.task('watch', () => {
-  gulp.watch([paths.srcpug + '**/*.pug'], { interval: 500 }, ['pug']);
-  gulp.watch([paths.srcJs   + '**/*.js'], { interval: 500 }, ['js:watchify']);
-  gulp.watch([paths.srcScss + '**/*.scss'], { interval: 500 }, ['sass:node']);
-  gulp.watch([paths.srcImg  + 'sprite/**/*.png'], { interval: 500 }, ['sprite']);
-  gulp.watch([paths.srcImg  + 'sprite-svg/**/*.svg'], { interval: 500 }, ['sprite:inline-svg']);
+  gulp.watch([PATHS.srcDir + 'pug/**/*.pug'], { interval: 500 }, ['pug']);
+  gulp.watch([PATHS.srcDir + 'js/**/*.js'], { interval: 500 }, ['js:watchify']);
+  gulp.watch([PATHS.srcDir + 'css/**/*.css'], { interval: 500 }, ['postcss']);
 });
 
 
 gulp.task('default', ['browser-sync']);
 
-
-gulp.task('init', (cb) => {
-  runSequence(['install:cssBase'], 'install:_s', cb);
-});

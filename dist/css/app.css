@@ -1,0 +1,29 @@
+@charset "utf-8";:root{
+  /* font-family */
+
+  /* sizes */
+
+  /* basic colors */
+
+  /* functional colors */
+
+  /* text colors */}
+/* Clearfix
+---------------------------------------- */
+/* iOS touch
+---------------------------------------- */
+/* Hover
+---------------------------------------- */
+/* Font antialiased
+---------------------------------------- */
+/* PC columns
+---------------------------------------- */
+/*
+ * @name line-clamp
+ * @param line number
+ */
+/*
+ * @name line-clamp-single
+ */body{font-family:Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,メイリオ,Meiryo,ＭＳ\ Ｐゴシック,Helvetica Neue,Helvetica,sans-serif;color:#262433;background-color:#fff}a{text-decoration:none}img{display:block;max-width:100%;vertical-align:middle}
+/* Modules */.fade-enter-active,.fade-leave-active{-webkit-transition:opacity .2s ease;-o-transition:opacity .2s ease;transition:opacity .2s ease}.fade-enter,.fade-leave-active{opacity:0}.slide-enter{-webkit-transform:translateX(100%);-ms-transform:translateX(100%);transform:translateX(100%);opacity:0}.slide-enter-active{-webkit-transition:opacity .6s ease,-webkit-transform .3s ease;transition:opacity .6s ease,-webkit-transform .3s ease;-o-transition:transform .3s ease,opacity .6s ease;transition:transform .3s ease,opacity .6s ease;transition:transform .3s ease,opacity .6s ease,-webkit-transform .3s ease}.slide-leave-active{opacity:0}
+/*# sourceMappingURL=maps/app.css.map */

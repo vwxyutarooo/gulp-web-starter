@@ -1,6 +1,3 @@
-'use strict';
-
-
 exports.PATHS = {
   root: './',
   srcDir: 'src/',

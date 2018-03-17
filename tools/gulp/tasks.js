@@ -1,20 +1,18 @@
-'use strict';
+const gulp = require('gulp');
 
-import gulp from 'gulp';
-import runSequence from 'run-sequence';
-
-import { PATHS } from '../config';
+const { PATHS } = require('../config');
+const { pug } = require('./pug');
+const { taskWatchify } = require('./bundlejs');
 
 
 /*------------------------------------------------------------------------------
  * gulp Tasks
 ------------------------------------------------------------------------------*/
-gulp.task('watch', () => {
-  gulp.watch([PATHS.srcDir + 'pug/**/*.pug'], { interval: 500 }, ['pug']);
-  gulp.watch([PATHS.srcDir + 'js/**/*.js'], { interval: 500 }, ['js:watchify']);
-  gulp.watch([PATHS.srcDir + 'css/**/*.css'], { interval: 500 }, ['postcss']);
-});
+function watch() {
+  gulp.watch([PATHS.srcDir + 'pug/**/*.pug'], { interval: 500 }, gulp.series(taskPug));
+  gulp.watch([PATHS.srcDir + 'js/**/*.js'], { interval: 500 }, gulp.series(taskWatchify));
+  gulp.watch([PATHS.srcDir + 'css/**/*.css'], { interval: 500 }, gulp.series(postcssWithStream));
+}
 
-
-gulp.task('default', ['browser-sync']);
+exports.watch = watch;
 

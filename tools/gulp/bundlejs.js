@@ -1,19 +1,17 @@
-'use strict';
+const babelify = require('babelify');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const gulp = require('gulp');
+const merge = require('merge-stream');
+const path = require('path');
+const source = require('vinyl-source-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const watchify = require('watchify');
 
-import babelify from 'babelify';
-import browserify from 'browserify';
-import buffer from 'vinyl-buffer';
-import gulp from 'gulp';
-import merge from 'merge-stream';
-import path from 'path';
-import source from 'vinyl-source-stream';
-import watchify from 'watchify';
+const { getFolders } = require('./functions');
+const { PATHS } = require('../config');
 
-import { getFolders } from './functions';
-import { PATHS } from '../config';
-
-import sourcemaps from 'gulp-sourcemaps';
-import uglify from 'gulp-uglify';
 
 
 /*------------------------------------------------------------------------------
@@ -37,10 +35,10 @@ const jsBundle = (bundler, folder) => {
 };
 
 
-gulp.task('js:browserify', () => {
-  var folders = getFolders(jsSrc);
-  var tasks = folders.map((folder) => {
-    var bundler = browserify({
+function taskBrowserify() {
+  const folders = getFolders(jsSrc);
+  const tasks = folders.map((folder) => {
+    const bundler = browserify({
       entries: [path.join(jsSrc, folder, '/app.js')],
       debug: true,
       cache: {},
@@ -49,13 +47,13 @@ gulp.task('js:browserify', () => {
     return jsBundle(bundler, folder);
   });
   return merge(tasks);
-});
+}
 
 
-gulp.task('js:watchify', () => {
-  var folders = getFolders(jsSrc);
-  var tasks = folders.map((folder) => {
-    var bundler = browserify({
+function taskWatchify() {
+  const folders = getFolders(jsSrc);
+  const tasks = folders.map((folder) => {
+    const bundler = browserify({
       entries: [path.join(jsSrc, folder, '/app.js')],
       debug: true,
       cache: {},
@@ -67,4 +65,8 @@ gulp.task('js:watchify', () => {
     return jsBundle(bundler, folder);
   });
   return merge(tasks);
-});
+}
+
+
+exports.taskBrowserify = taskBrowserify;
+exports.taskWatchify = taskWatchify;

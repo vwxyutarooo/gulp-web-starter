@@ -2,28 +2,51 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "worker": true
   },
-  "ignore": ["gulpfile.*", "webpack.config.*", "bundle.*.js", "public/", "tools/", "*.pug"],
-  "plugins": ["vue", "react"],
-  "extends": ["eslint:recommended"],
-  "parser": "babel-eslint",
+  "plugins": ["import"],
+  "settings": {
+    "import/resolver": {
+      "webpack": { "config": "config/webpack.config.client.js" }
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "parser": "babel-eslint",
+    "ecmaVersion": 2017,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true,
       "experimentalObjectRestSpread": true
     }
   },
   "rules": {
+    "array-callback-return": "off",
+    "arrow-body-style": ["error", "always"],
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", "never"],
+    "consistent-return": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
     "no-console": [
       "error",
       { "allow": ["log", "debug", "error", "warn"] }
     ],
-    "no-process-env": 0,
-    "no-unused-vars": 1,
-    "object-shorthand": 0,
+    "no-param-reassign": ["error", {
+      "props": true,
+      "ignorePropertyModificationsFor": ["state"]
+    }],
+    "no-process-env": "off",
+    "no-shadow": ["error", {
+      "allow": ["state"],
+      "hoist": "never"
+    }],
+    "no-unused-vars": "warn",
+    "object-shorthand": "off",
+    "prefer-promise-reject-errors": "off",
     "semi": ["error", "always"]
   }
 }

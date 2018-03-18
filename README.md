@@ -49,7 +49,7 @@ dist/js/bundle.app.js
 
 ## Options
 |Task|Option|Require|Description|Sample command|
-|---|---|---|---|
+|---|---|---|---|---|
 |gulp|||||
 ||PORT||BrowserSync port|PORT=3002 npm run gulp|
 ||HOST||BrowserSync proxy host|HOST=localhost:8080 npm run gulp|

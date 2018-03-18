@@ -2,11 +2,11 @@
 [![Build Status](https://travis-ci.org/vwxyutarooo/gulp-web-starter.svg?branch=master)](https://travis-ci.org/vwxyutarooo/gulp-web-starter)
 
 ## Requires
-- Node.js
+- Node.js (reccomended)
   - 4
-  - 5
   - 6
-- npm (Tested on 3.9.3)
+  - 8 
+- npm (Tested on 5.7.1)
 
 
 ## gulp-web-starter
@@ -36,16 +36,17 @@ $ npm run gulp
 To call specified task.
 
 ```
-$ npm run gulp -- taskname
+$ npm run gulp -- tasks
 ```
 
 
-## browserify entry point
-```
-src/js/name/app.js
+## browserify task
+taskBrowserify founds all of js files in `src/js`. Out put file will be as following.
 
-// Thil result will
-dist/js/bundle.name.js
+```
+src/js/app.js
+// to be
+dist/js/bundle.app.js
 ```
 
 ## Options

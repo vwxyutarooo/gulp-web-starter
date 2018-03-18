@@ -2,11 +2,18 @@
   "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-order"],
   "rules": {
+    "at-rule-no-unknown": [true, {
+      "ignoreAtRules": [
+        "mixin",
+        "define-mixin"
+      ]
+    }],
     "indentation": 2,
     "number-leading-zero": null,
     "max-empty-lines": 2,
     "declaration-empty-line-before": null,
-    "property-no-unknown": [ true, {
+    "string-quotes": "single",
+    "property-no-unknown": [true, {
       "ignoreProperties": ["composes"]
     }],
     "order/order": [
@@ -30,11 +37,15 @@
         "name": "unspecified"
       },
       "declarations",
-      "rules"
+      "rules",
+      {
+        "type": "at-rule",
+        "name": "media"
+      }
     ],
     "order/properties-order": [
       {
-        properties: [
+        "properties": [
           "font",
           "font-family",
           "font-size",
@@ -199,13 +210,13 @@
         ]
       },
       {
-        properties: [
+        "properties": [
           "font-smoothing",
           "overflow-scrolling",
           "-webkit-overflow-scrolling"
         ],
-        emptyLineBefore: "always",
-        unspecified: "bottomAlphabetical"
+        "emptyLineBefore": "always",
+        "unspecified": "bottomAlphabetical"
       }
     ]
   }

@@ -9,23 +9,21 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
-const { getFolders } = require('./functions');
 const { PATHS } = require('../config');
+const { getFiles } = require('./functions');
 
 
 /*------------------------------------------------------------------------------
  * js Tasks
 ------------------------------------------------------------------------------*/
 const jsSrc = path.join(PATHS.srcDir, 'js');
-const jsBundle = (bundler, folder) => {
+const jsBundle = (bundler, file) => {
   return bundler.transform(babelify.configure({
     ignore: ['node_modules'],
     sourceMaps: true
-  })).bundle().on('error', (err) => {
-    console.log(err.toString());
-    this.emit('end');
-  })
-    .pipe(source(`bundle.${folder}.js`))
+  }))
+    .bundle()
+    .pipe(source(`bundle.${file}.js`))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
@@ -35,33 +33,31 @@ const jsBundle = (bundler, folder) => {
 
 
 function taskBrowserify() {
-  const folders = getFolders(jsSrc);
-  const tasks = folders.map((folder) => {
+  const tasks = getFiles(path.resolve(PATHS.srcDir, 'js')).map((file) => {
     const bundler = browserify({
-      entries: [path.join(jsSrc, folder, '/app.js')],
+      entries: [path.join(jsSrc, file)],
       debug: true,
       cache: {},
       packageCache: {}
     });
-    return jsBundle(bundler, folder);
+    return jsBundle(bundler, file);
   });
   return merge(tasks);
 }
 
 
 function taskWatchify() {
-  const folders = getFolders(jsSrc);
-  const tasks = folders.map((folder) => {
+  const tasks = getFiles(path.resolve(PATHS.srcDir, 'js')).map((file) => {
     const bundler = browserify({
-      entries: [path.join(jsSrc, folder, '/app.js')],
+      entries: [path.join(jsSrc, file, '/app.js')],
       debug: true,
       cache: {},
       packageCache: {},
       plugin: [watchify]
     });
-    bundler.on('update', () => { return jsBundle(bundler, folder); });
+    bundler.on('update', () => { return jsBundle(bundler, file); });
     bundler.on('log', (message) => { console.log(message); });
-    return jsBundle(bundler, folder);
+    return jsBundle(bundler, file);
   });
   return merge(tasks);
 }

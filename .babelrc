@@ -1,13 +1,10 @@
 {
   "comments": false,
-  "production": {
-    "presets": [
-      ["env", { "modules": false }],
-      "stage-2"
-    ],
-    "plugins": [
-      "transform-decorators-legacy",
-      "transform-class-properties"
-    ]
-  }
+  "presets": [
+    ["env", { "modules": false }]
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties"
+  ]
 }

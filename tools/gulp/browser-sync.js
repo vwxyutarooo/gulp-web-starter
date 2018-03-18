@@ -4,6 +4,7 @@ const path = require('path');
 
 const { PATHS, BROWSERSYNC } = require('../config');
 const { taskBrowserify } = require('./bundlejs');
+const { taskEslint } = require('./eslint');
 const { taskPostcss } = require('./postcss');
 const { taskPug } = require('./pug');
 
@@ -57,9 +58,21 @@ function postcssWithStream() {
 
 
 function watchWithReload() {
-  gulp.watch([path.resolve(PATHS.srcDir, 'pug/**/*.pug')], { interval: 500 }, gulp.series(taskPug, reload));
-  gulp.watch([path.resolve(PATHS.srcDir, 'js/**/*.js')], { interval: 500 }, gulp.series(taskBrowserify, reload));
-  gulp.watch([path.resolve(PATHS.srcDir, 'css/**/*.css')], { interval: 500 }, gulp.series(postcssWithStream));
+  gulp.watch(
+    [path.resolve(PATHS.srcDir, 'pug/**/*.pug')],
+    { interval: 500 },
+    gulp.series(taskPug, reload)
+  );
+  gulp.watch(
+    [path.resolve(PATHS.srcDir, 'js/**/*.js')],
+    { interval: 500 },
+    gulp.series(taskEslint, taskBrowserify, reload)
+  );
+  gulp.watch(
+    [path.resolve(PATHS.srcDir, 'css/**/*.css')],
+    { interval: 500 },
+    gulp.series(postcssWithStream)
+  );
 }
 
 

@@ -8,5 +8,12 @@ function getFolders(dir) {
   });
 }
 
+function getFiles(dir) {
+  return fs.readdirSync(dir).filter((file) => {
+    return fs.statSync(path.join(dir, file)).isFile();
+  });
+}
+
 
 exports.getFolders = getFolders;
+exports.getFiles = getFiles;

@@ -1,5 +1,12 @@
+@import 'sanitize.css';
 @import 'core/index.css';
+@import 'base/mixins.css';
 @import 'base/default.css';
+
+
+/* Layouts */
+@import 'layout/footer.css';
+
 
 /* Modules */
 @import 'module/fade.css';

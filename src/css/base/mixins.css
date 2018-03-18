@@ -42,25 +42,18 @@
 }
 
 
-/* PC columns
----------------------------------------- */
-@define-mixin columnPcMain {
-  box-sizing: border-box;
-  width: $max-width;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-
 /*
  * @name line-clamp
  * @param line number
  */
 @define-mixin line-clamp $line {
+  /* autoprefixer: off */
   display: -webkit-box;
   overflow: hidden;
   flex-direction: column;
   -webkit-line-clamp: $line;
+
+  -webkit-box-orient: vertical;
 }
 
 

@@ -6,11 +6,6 @@
     "worker": true
   },
   "plugins": ["import"],
-  "settings": {
-    "import/resolver": {
-      "webpack": { "config": "config/webpack.config.client.js" }
-    }
-  },
   "extends": [
     "eslint:recommended",
     "airbnb-base"

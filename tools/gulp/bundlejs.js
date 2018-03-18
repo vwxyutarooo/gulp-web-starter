@@ -13,25 +13,24 @@ const { getFolders } = require('./functions');
 const { PATHS } = require('../config');
 
 
-
 /*------------------------------------------------------------------------------
  * js Tasks
 ------------------------------------------------------------------------------*/
 const jsSrc = path.join(PATHS.srcDir, 'js');
 const jsBundle = (bundler, folder) => {
   return bundler.transform(babelify.configure({
-      ignore: ['node_modules'],
-      sourceMaps: true
-    })).bundle().on('error', function(err) {
-      console.log(err.toString());
-      this.emit('end');
-    })
-    .pipe(source('bundle.' + folder + '.js'))
+    ignore: ['node_modules'],
+    sourceMaps: true
+  })).bundle().on('error', (err) => {
+    console.log(err.toString());
+    this.emit('end');
+  })
+    .pipe(source(`bundle.${folder}.js`))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(PATHS.destDir + 'js'));
+    .pipe(gulp.dest(path.resolve(PATHS.destDir, 'js')));
 };
 
 
@@ -60,8 +59,8 @@ function taskWatchify() {
       packageCache: {},
       plugin: [watchify]
     });
-    bundler.on('update', () => jsBundle(bundler, folder));
-    bundler.on('log', (message) => console.log(message));
+    bundler.on('update', () => { return jsBundle(bundler, folder); });
+    bundler.on('log', (message) => { console.log(message); });
     return jsBundle(bundler, folder);
   });
   return merge(tasks);

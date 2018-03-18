@@ -6,10 +6,18 @@
   "scripts": {
     "gulp": "gulp",
     "start": "gulp",
+    "lint:es": "eslint --ext .js ./",
+    "lint:style": "stylelint \"src/css/*.css\"",
+    "lint": "npm run lint:es && npm run lint:style",
     "test": "gulp taskTest"
   },
   "author": "Yutaro Miyazaki",
   "license": "MIT",
+  "browserslist": [
+    "> 1%",
+    "last 4 versions",
+    "ie 10"
+  ],
   "dependencies": {},
   "devDependencies": {
     "babel": "^6.23.0",
@@ -25,6 +33,7 @@
     "cssnano": "^3.10.0",
     "eslint": "^4.19.0",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
     "glob": "^7.1.2",
     "gulp": "^4.0.0",
     "gulp-cssnano": "^2.1.1",

@@ -1,12 +1,10 @@
 const gulp = require('gulp');
-const gulpCssnano = require('gulp-cssnano');
 const gulpPlumber = require('gulp-plumber');
 const gulpPostcss = require('gulp-postcss');
 const gulpSourcemaps = require('gulp-sourcemaps');
 const path = require('path');
 
 const { PATHS } = require('../config');
-const { devServer } = require('./browser-sync');
 
 
 /*------------------------------------------------------------------------------
@@ -15,7 +13,7 @@ const { devServer } = require('./browser-sync');
 function taskPostcss() {
   const cssDest = path.join(PATHS.destDir, 'css');
 
-  return gulp.src(PATHS.srcDir + 'css/*.css')
+  return gulp.src(path.resolve(PATHS.srcDir, 'css/*.css'))
     .pipe(gulpPlumber())
     .pipe(gulpSourcemaps.init())
     .pipe(gulpPostcss())

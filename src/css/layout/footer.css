@@ -1,0 +1,11 @@
+.l-footer {
+  margin: 1em 0 0;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background-color: #444;
+
+  & p {
+    margin: 0;
+  }
+}

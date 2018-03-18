@@ -1,11 +1,19 @@
-'use strict';
-
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 
-export function getFolders(dir) {
-  return fs.readdirSync(dir).filter(function(file) {
+function getFolders(dir) {
+  return fs.readdirSync(dir).filter((file) => {
     return fs.statSync(path.join(dir, file)).isDirectory();
   });
 }
+
+function getFiles(dir) {
+  return fs.readdirSync(dir).filter((file) => {
+    return fs.statSync(path.join(dir, file)).isFile();
+  });
+}
+
+
+exports.getFolders = getFolders;
+exports.getFiles = getFiles;

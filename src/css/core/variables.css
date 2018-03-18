@@ -1,0 +1,24 @@
+:root {
+  /* font-family */
+  --font-family-en: 'Helvetica Neue', 'Helvetica';
+  --font-family-ja: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック';
+  --font-family: var(--font-family-ja), var(--font-family-en), sans-serif, 'Arial', 'Verdana';
+
+  /* sizes */
+  --grid-gutter: 16px;
+
+  /* basic colors */
+  --color-red: #ff2c35;
+  --color-blue: #276de6;
+  --color-black: #140509;
+  --color-gray: #282a2b;
+
+  /* functional colors */
+  --color-theme: var(--color-red);
+
+  /* text colors */
+  --color-font: #262433;
+  --color-font-light1: #51505c;
+  --color-font-light2: #787e7f;
+  --color-font-light3: #929199;
+}

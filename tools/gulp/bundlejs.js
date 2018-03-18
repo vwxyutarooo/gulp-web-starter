@@ -1,70 +1,68 @@
-'use strict';
+const babelify = require('babelify');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const gulp = require('gulp');
+const merge = require('merge-stream');
+const path = require('path');
+const source = require('vinyl-source-stream');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const watchify = require('watchify');
 
-import babelify from 'babelify';
-import browserify from 'browserify';
-import buffer from 'vinyl-buffer';
-import gulp from 'gulp';
-import merge from 'merge-stream';
-import path from 'path';
-import source from 'vinyl-source-stream';
-import watchify from 'watchify';
-
-import { getFolders } from './functions';
-import { paths } from '../config';
-
-import sourcemaps from 'gulp-sourcemaps';
-import uglify from 'gulp-uglify';
+const { PATHS } = require('../config');
+const { getFiles } = require('./functions');
 
 
 /*------------------------------------------------------------------------------
  * js Tasks
 ------------------------------------------------------------------------------*/
-var jsBundle = (bundler, folder) => {
+const jsSrc = path.join(PATHS.srcDir, 'js');
+const jsBundle = (bundler, file) => {
+  console.log(file);
   return bundler.transform(babelify.configure({
-      presets: ['react', 'es2015'],
-      ignore: ['node_modules'],
-      sourceMaps: true
-    })).bundle().on('error', function(err) {
-      console.log(err.toString());
-      this.emit('end');
-    })
-    .pipe(source('bundle_' + folder + '.js'))
+    ignore: ['node_modules'],
+    sourceMaps: true
+  }))
+    .bundle()
+    .pipe(source(`bundle.${file}`))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(paths.destDir + 'js'));
+    .pipe(gulp.dest(path.resolve(PATHS.destDir, 'js')));
 };
 
 
-gulp.task('js:browserify', () => {
-  var folders = getFolders(paths.srcJs);
-  var tasks = folders.map((folder) => {
-    var bundler = browserify({
-      entries: [path.join(paths.srcJs, folder, '/app.js')],
+function taskBrowserify() {
+  const tasks = getFiles(path.resolve(PATHS.srcDir, 'js')).map((file) => {
+    const bundler = browserify({
+      entries: [path.join(jsSrc, file)],
       debug: true,
       cache: {},
       packageCache: {}
     });
-    return jsBundle(bundler, folder);
+    return jsBundle(bundler, file);
   });
   return merge(tasks);
-});
+}
 
 
-gulp.task('js:watchify', () => {
-  var folders = getFolders(paths.srcJs);
-  var tasks = folders.map((folder) => {
-    var bundler = browserify({
-      entries: [path.join(paths.srcJs, folder, '/app.js')],
+function taskWatchify() {
+  const tasks = getFiles(path.resolve(PATHS.srcDir, 'js')).map((file) => {
+    const bundler = browserify({
+      entries: [path.join(jsSrc, file, '/app.js')],
       debug: true,
       cache: {},
       packageCache: {},
       plugin: [watchify]
     });
-    bundler.on('update', () => jsBundle(bundler, folder));
-    bundler.on('log', (message) => console.log(message));
-    return jsBundle(bundler, folder);
+    bundler.on('update', () => { return jsBundle(bundler, file); });
+    bundler.on('log', (message) => { console.log(message); });
+    return jsBundle(bundler, file);
   });
   return merge(tasks);
-});
+}
+
+
+exports.taskBrowserify = taskBrowserify;
+exports.taskWatchify = taskWatchify;

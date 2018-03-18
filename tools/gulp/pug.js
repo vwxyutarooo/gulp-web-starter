@@ -1,20 +1,24 @@
-'use strict';
+const gulp = require('gulp');
+const path = require('path');
 
-import gulp from 'gulp';
-import { paths } from '../config';
+const data = require('gulp-data');
+const gulpPug = require('gulp-pug');
+const plumber = require('gulp-plumber');
 
-import data from 'gulp-data';
-import pug from 'gulp-pug';
-import plumber from 'gulp-plumber';
+const { PATHS } = require('../config');
+const dataJson = require('../../src/json/data.json');
 
 
 /*------------------------------------------------------------------------------
  * pug Tasks
 ------------------------------------------------------------------------------*/
-gulp.task('pug', () => {
-  return gulp.src(paths.srcpug + '*.pug')
-    .pipe(data((file) => require('../../src/json/setting.json')))
+function taskPug() {
+  return gulp.src(path.resolve(PATHS.srcDir, 'pug/*.pug'))
+    .pipe(data(() => { return dataJson; }))
     .pipe(plumber())
-    .pipe(pug({ pretty: true }))
-    .pipe(gulp.dest(paths.htmlDir));
-});
+    .pipe(gulpPug({ pretty: true }))
+    .pipe(gulp.dest(PATHS.htmlDir));
+}
+
+
+exports.taskPug = taskPug;

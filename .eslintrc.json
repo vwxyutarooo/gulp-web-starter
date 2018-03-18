@@ -2,25 +2,46 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "worker": true
   },
-  "ignore": ["gulpfile.*", "webpack.config.*"],
-  "plugins": ["react"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["import"],
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
   "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-          "jsx": true
-      }
+    "parser": "babel-eslint",
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "rules": {
-      "no-console": ["error", {
-        "allow": ["log", "debug", "error"]
-      }],
-      "no-process-env": 0,
-      "no-unused-vars": 1,
-      "react/no-did-mount-set-state": 0,
-      "react/no-danger": 0
+    "array-callback-return": "off",
+    "arrow-body-style": ["error", "always"],
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", "never"],
+    "consistent-return": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "no-console": [
+      "error",
+      { "allow": ["log", "debug", "error", "warn"] }
+    ],
+    "no-param-reassign": ["error", {
+      "props": true,
+      "ignorePropertyModificationsFor": ["state"]
+    }],
+    "no-process-env": "off",
+    "no-shadow": ["error", {
+      "allow": ["state"],
+      "hoist": "never"
+    }],
+    "no-unused-vars": "warn",
+    "object-shorthand": "off",
+    "prefer-promise-reject-errors": "off",
+    "semi": ["error", "always"]
   }
 }

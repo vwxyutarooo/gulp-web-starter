@@ -2,9 +2,7 @@
 [![Build Status](https://travis-ci.org/vwxyutarooo/gulp-web-starter.svg?branch=master)](https://travis-ci.org/vwxyutarooo/gulp-web-starter)
 
 ## Requires
-- Node.js (reccomended)
-  - 4
-  - 6
+- Node.js
   - 8 
 - npm (Tested on 5.7.1)
 

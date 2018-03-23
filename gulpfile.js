@@ -8,6 +8,7 @@ const { taskPug } = require('./tools/gulp/pug');
 
 
 gulp.task('default', gulp.series(taskBrowserSync, watchWithReload));
+gulp.task('build', gulp.parallel(gulp.series(taskEslint, taskBrowserify), taskPostcss, taskPug));
 gulp.task('taskTest', gulp.parallel(taskEslint, taskBrowserify, taskPostcss, taskPug));
 
 

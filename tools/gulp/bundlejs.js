@@ -18,7 +18,6 @@ const { getFiles } = require('./functions');
 ------------------------------------------------------------------------------*/
 const jsSrc = path.join(PATHS.srcDir, 'js');
 const jsBundle = (bundler, file) => {
-  console.log(file);
   return bundler.transform(babelify.configure({
     ignore: ['node_modules'],
     sourceMaps: true

@@ -31,20 +31,27 @@ $ npm run gulp
 ```
 
 
-To call specified task.
+To check all of defined task.
 
 ```
 $ npm run gulp -- tasks
 ```
 
+To call specified task
+```
+$ npm run gulp -- taskname
+```
+
 
 ## browserify task
-taskBrowserify founds all of js files in `src/js`. Out put file will be as following.
+taskBrowserify founds all of js files on `src/js`, Result will be as following.
 
 ```
 src/js/app.js
+src/js/vendor.js
 // to be
 dist/js/bundle.app.js
+dist/js/bundle.vendor.js
 ```
 
 ## Options
@@ -53,4 +60,5 @@ dist/js/bundle.app.js
 |gulp|||||
 ||PORT||BrowserSync port|PORT=3002 npm run gulp|
 ||HOST||BrowserSync proxy host|HOST=localhost:8080 npm run gulp|
+|build|||||
 

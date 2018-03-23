@@ -4,8 +4,9 @@
   "version": "0.5.1",
   "description": "Environment of web site develop.",
   "scripts": {
-    "gulp": "gulp",
     "start": "gulp",
+    "gulp": "gulp",
+    "build": "gulp build",
     "lint:es": "eslint --ext .js ./",
     "lint:style": "stylelint \"src/css/*.css\"",
     "lint": "npm run lint:es && npm run lint:style",

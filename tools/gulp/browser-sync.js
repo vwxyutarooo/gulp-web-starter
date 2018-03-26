@@ -34,7 +34,7 @@ function taskBrowserSync(done) {
     } : {},
     ...(HOST === null) ? {
       server: {
-        baseDir: PATHS.root,
+        baseDir: PATHS.htmlDir,
         startPath: PATHS.destDir,
         middleware
       }

@@ -1,8 +1,7 @@
 exports.PATHS = {
-  root: '.',
   srcDir: 'src',
-  destDir: 'dist',
-  htmlDir: '.'
+  destDir: 'public/dist',
+  htmlDir: 'public/'
 };
 
 

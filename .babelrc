@@ -1,7 +1,7 @@
 {
   "comments": false,
   "presets": [
-    ["env", { "modules": false }]
+    ["env"]
   ],
   "plugins": [
     "transform-decorators-legacy",

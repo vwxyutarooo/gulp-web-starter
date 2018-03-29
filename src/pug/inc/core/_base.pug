@@ -1,17 +1,21 @@
+include _config
 doctype html
 html(xmlns:og="http://ogp.me/ns#", xmlns:fb='https://www.facebook.com/2008/fbml')
   head
     meta(charset='UTF-8')
-    block title
     block meta
-      meta(name='description', content=description)
-      meta(name='keywords', content=keywords)
-      meta(property='og:type', content='website')
-      meta(property='og:locale', content='ja_JP')
-      meta(property='og:site_name', content=name)
-      meta(property='og:title', content=title)
-      meta(property='og:description', content=description)
-      meta(property='og:image', content=ogpimage)
+      title= title
+      meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+      meta(name="description", content=description)
+      meta(name="keywords", content=keywords)
+      meta(name="twitter:card" content="summary_large_image")
+      meta(name="twitter:site" content=url)
+      meta(property="og:type", content="website")
+      meta(property="og:locale", content="ja_JP")
+      meta(property="og:site_name", content=name)
+      meta(property="og:title", content=title)
+      meta(property="og:description", content=description)
+      meta(property="og:image", content=url+ogpimage)
     block link
       link(rel='icon', href='/favicon.png')
       link(rel='shortcut icon', href='/favicon.ico')

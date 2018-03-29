@@ -1,11 +1,8 @@
 extends inc/core/_base
 
-
-include inc/core/_config
-block title
-  title= title
 block prepend meta
   - var sitename = name
+  - var title = page.top.title
   - var keywords = page.top.keywords
   - var description = page.top.description
   - var ogpimage = page.top.ogpimage

@@ -59,7 +59,10 @@ function postcssWithStream() {
 
 function watchWithReload() {
   gulp.watch(
-    [path.resolve(PATHS.srcDir, 'pug/**/*.pug')],
+    [
+      path.resolve(PATHS.srcDir, 'pug/**/*.pug'),
+      path.resolve(PATHS.srcDir, 'json/**/*.json')
+    ],
     { interval: 500 },
     gulp.series(taskPug, reload)
   );
